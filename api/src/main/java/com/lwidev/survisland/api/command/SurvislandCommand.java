@@ -1,5 +1,7 @@
 package com.lwidev.survisland.api.command;
 
+import com.destroystokyo.paper.profile.PlayerProfile;
+import com.lwidev.survisland.api.utils.MessageUtils;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
@@ -8,12 +10,14 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
+import io.papermc.paper.command.brigadier.argument.resolvers.PlayerProfileListResolver;
 import io.papermc.paper.command.brigadier.argument.resolvers.selector.PlayerSelectorArgumentResolver;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionDefault;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -41,7 +45,7 @@ public abstract class SurvislandCommand {
     private final List<String> aliases;
     private final boolean playerOnly;
     private final PermissionDefault permissionDefault;
-    private final CommandChain rootChain = new CommandChain();
+    private final CommandChain rootChain;
     private final List<Subcommand> subcommands = new ArrayList<>();
 
     protected SurvislandCommand(String name, String description, PermissionDefault permissionDefault) {
@@ -55,6 +59,7 @@ public abstract class SurvislandCommand {
         this.aliases = aliases;
         this.playerOnly = playerOnly;
         this.permissionDefault = permissionDefault;
+        this.rootChain = new CommandChain("/" + name);
     }
 
     public final String description() {
@@ -80,9 +85,26 @@ public abstract class SurvislandCommand {
         return this;
     }
 
+    /** @param hint short human-readable description of the expected value, shown if this argument ends up missing */
+    public final <T> SurvislandCommand argument(String name, ArgumentType<T> type, String hint) {
+        rootChain.argument(name, type, hint);
+        return this;
+    }
+
     /** Adds the final argument of this command's own (flat) chain, executed directly. */
     public final <T> SurvislandCommand argument(String name, ArgumentType<T> type, Command<CommandSourceStack> executor) {
         rootChain.argument(name, type);
+        rootChain.executes(executor);
+        return this;
+    }
+
+    /**
+     * Adds the final argument of this command's own (flat) chain, executed directly.
+     *
+     * @param hint short human-readable description of the expected value, shown if this argument ends up missing
+     */
+    public final <T> SurvislandCommand argument(String name, ArgumentType<T> type, String hint, Command<CommandSourceStack> executor) {
+        rootChain.argument(name, type, hint);
         rootChain.executes(executor);
         return this;
     }
@@ -111,7 +133,7 @@ public abstract class SurvislandCommand {
      * automatically by {@link SurvislandCommands#register}.
      */
     public final Subcommand subcommand(String name) {
-        Subcommand sub = new Subcommand(name, permission() + "." + name, playerOnly);
+        Subcommand sub = new Subcommand(name, permission() + "." + name, playerOnly, "/" + this.name);
         subcommands.add(sub);
         return sub;
     }
@@ -119,12 +141,24 @@ public abstract class SurvislandCommand {
     /** Resolves a single-player selector argument (name or @a/@e/@p/@r/@s selector). */
     public final Player resolvePlayer(CommandContext<CommandSourceStack> ctx, String argName) throws CommandSyntaxException {
         PlayerSelectorArgumentResolver resolver = ctx.getArgument(argName, PlayerSelectorArgumentResolver.class);
-        return resolver.resolve(ctx.getSource()).get(0);
+        return resolver.resolve(ctx.getSource()).getFirst();
     }
 
     /** Resolves a multi-player selector argument (@a/@e/@r or a single name). */
     public final List<Player> resolvePlayers(CommandContext<CommandSourceStack> ctx, String argName) throws CommandSyntaxException {
         PlayerSelectorArgumentResolver resolver = ctx.getArgument(argName, PlayerSelectorArgumentResolver.class);
+        return resolver.resolve(ctx.getSource());
+    }
+
+    /**
+     * Resolves a player-profile argument (name or @a/@e/@p/@r/@s selector). Unlike
+     * {@link #resolvePlayer}/{@link #resolvePlayers}, this also matches players who
+     * are currently offline: for a plain name, it's looked up via the server's local
+     * profile cache (usercache.json) first, falling back to a blocking Mojang HTTP
+     * call only for a name never seen on this server before.
+     */
+    public final Collection<PlayerProfile> resolvePlayerProfiles(CommandContext<CommandSourceStack> ctx, String argName) throws CommandSyntaxException {
+        PlayerProfileListResolver resolver = ctx.getArgument(argName, PlayerProfileListResolver.class);
         return resolver.resolve(ctx.getSource());
     }
 
@@ -147,6 +181,13 @@ public abstract class SurvislandCommand {
         rootChain.applyTo(root);
         for (Subcommand sub : subcommands) {
             root.then(sub.build());
+        }
+        if (!rootChain.hasExecutor() && !subcommands.isEmpty()) {
+            String usage = "Utilisation : /" + name + " <" + String.join("|", subcommandNames()) + ">";
+            root.executes(ctx -> {
+                MessageUtils.sendErrorMessage(ctx.getSource().getSender(), usage);
+                return Command.SINGLE_SUCCESS;
+            });
         }
         return root.build();
     }

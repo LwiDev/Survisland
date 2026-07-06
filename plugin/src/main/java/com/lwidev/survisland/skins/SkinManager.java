@@ -4,6 +4,7 @@ import com.lwidev.survisland.Survisland;
 import com.lwidev.survisland.api.skin.MojangAPI;
 import com.lwidev.survisland.api.skin.SkinApplier;
 import com.lwidev.survisland.api.skin.SkinData;
+import com.lwidev.survisland.api.utils.MessageUtils;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -163,29 +164,6 @@ public class SkinManager implements Listener {
         plugin.getLogger().info("Removed forced skin for player " + playerName);
     }
 
-    public void applySkinToAll(String skinInput) {
-        int count = 0;
-        for (Player player : plugin.getServer().getOnlinePlayers()) {
-            forceSkin(player.getName(), skinInput);
-            count++;
-        }
-
-        String displayName = MojangAPI.isValidBase64Texture(skinInput) ? "texture personnalisée" : skinInput;
-        plugin.getLogger().info("Applied skin '" + displayName + "' to " + count + " online players");
-    }
-
-    public void restoreAllSkins() {
-        int count = 0;
-        for (Player player : plugin.getServer().getOnlinePlayers()) {
-            if (forcedSkins.containsKey(player.getName())) {
-                removeForcedSkin(player.getName());
-                count++;
-            }
-        }
-
-        plugin.getLogger().info("Restored original skins for " + count + " players");
-    }
-
     public Map<String, String> getAllForcedSkins() {
         return Map.copyOf(forcedSkins);
     }
@@ -196,23 +174,23 @@ public class SkinManager implements Listener {
 
         if (originalSkin != null) {
             if (skinApplier.applySkin(player, originalSkin)) {
-                player.sendMessage("§aSkin original restauré");
+                MessageUtils.sendSuccessMessage(player, "Skin original restauré");
             } else {
-                player.sendMessage("§cErreur lors de la restauration du skin original");
+                MessageUtils.sendErrorMessage(player, "Erreur lors de la restauration du skin original");
             }
         } else {
             // Fallback: remove any applied skin (will show default/random skin)
             if (skinApplier.removeSkin(player)) {
-                player.sendMessage("§aSkin réinitialisé");
+                MessageUtils.sendSuccessMessage(player, "Skin réinitialisé");
             } else {
-                player.sendMessage("§cErreur lors de la réinitialisation du skin");
+                MessageUtils.sendErrorMessage(player, "Erreur lors de la réinitialisation du skin");
             }
         }
     }
 
     public void applySkin(Player player, String skinInput) {
         if (skinInput == null || skinInput.isEmpty()) {
-            player.sendMessage("§cErreur : Skin invalide");
+            MessageUtils.sendErrorMessage(player, "Erreur : Skin invalide");
             return;
         }
         
@@ -233,20 +211,20 @@ public class SkinManager implements Listener {
             skinTask = applySkinFromPlayer(player, skinInput);
         } else {
             plugin.getLogger().warning("Invalid skin format: " + skinInput.substring(0, Math.min(50, skinInput.length())));
-            player.sendMessage("§cErreur : Format de skin invalide");
-            player.sendMessage("§7Utilisez un nom de joueur ou une texture base64");
+            MessageUtils.sendErrorMessage(player, "Erreur : Format de skin invalide");
+            MessageUtils.sendSecondaryMessage(player, "Utilisez un nom de joueur ou une texture base64");
             return;
         }
-        
+
         // Handle result
         skinTask.whenComplete((result, throwable) -> {
             plugin.getServer().getScheduler().runTask(plugin, () -> {
                 if (throwable != null) {
-                    player.sendMessage("§cErreur lors de l'application du skin : " + throwable.getMessage());
+                    MessageUtils.sendErrorMessage(player, "Erreur lors de l'application du skin : " + throwable.getMessage());
                     plugin.getLogger().warning("Failed to apply skin for " + player.getName() + ": " + throwable.getMessage());
                 } else {
                     String displayName = MojangAPI.isValidBase64Texture(skinInput) ? "texture personnalisée" : skinInput;
-                    player.sendMessage("§aSkin appliqué : " + displayName);
+                    MessageUtils.sendSuccessMessage(player, "Skin appliqué : " + displayName);
                 }
             });
         });
@@ -278,9 +256,9 @@ public class SkinManager implements Listener {
                     plugin.getLogger().info("Skin application result: " + success);
                     
                     if (success) {
-                        player.sendMessage("§aSkin appliqué : texture personnalisée");
+                        MessageUtils.sendSuccessMessage(player, "Skin appliqué : texture personnalisée");
                     } else {
-                        player.sendMessage("§cErreur lors de l'application du skin");
+                        MessageUtils.sendErrorMessage(player, "Erreur lors de l'application du skin");
                     }
                 });
                 
@@ -293,39 +271,39 @@ public class SkinManager implements Listener {
     }
     
     private CompletableFuture<Void> applySkinFromPlayer(Player player, String targetPlayerName) {
-        return CompletableFuture.runAsync(() -> {
+        return CompletableFuture.supplyAsync(() -> {
             try {
-                SkinData skinData;
-                
-                // Check cache first
-                if (skinCache.containsKey(targetPlayerName)) {
-                    skinData = skinCache.get(targetPlayerName);
-                    
-                    // Check if cache is expired
-                    if (skinData.isExpired(cacheDuration)) {
-                        plugin.getLogger().info("Skin cache expired for " + targetPlayerName + ", fetching new data");
-                        skinCache.remove(targetPlayerName);
-                        skinData = null;
-                    }
+                SkinData skinData = skinCache.get(targetPlayerName);
+
+                // Drop expired cache entries so they get refetched below
+                if (skinData != null && skinData.isExpired(cacheDuration)) {
+                    plugin.getLogger().info("Skin cache expired for " + targetPlayerName + ", fetching new data");
+                    skinCache.remove(targetPlayerName);
+                    skinData = null;
                 }
-                
-                // Fetch from Mojang API if not in cache or expired
-                if (!skinCache.containsKey(targetPlayerName)) {
+
+                if (skinData == null) {
                     skinData = mojangAPI.fetchSkinData(targetPlayerName).get();
                     skinCache.put(targetPlayerName, skinData);
                     plugin.getLogger().info("Fetched and cached skin data for " + targetPlayerName);
-                } else {
-                    skinData = skinCache.get(targetPlayerName);
                 }
-                
-                // Apply the skin
-                if (!skinApplier.applySkin(player, skinData)) {
-                    throw new RuntimeException("Échec de l'application du skin via NMS");
-                }
-                
+
+                return skinData;
             } catch (Exception e) {
                 throw new RuntimeException("Erreur lors de la récupération du skin : " + e.getMessage());
             }
+        }).thenComposeAsync(skinData -> {
+            // NMS entity mutations (setPlayerProfile) must happen on the main thread,
+            // not on the ForkJoinPool thread this future was running on.
+            CompletableFuture<Void> applied = new CompletableFuture<>();
+            plugin.getServer().getScheduler().runTask(plugin, () -> {
+                if (skinApplier.applySkin(player, skinData)) {
+                    applied.complete(null);
+                } else {
+                    applied.completeExceptionally(new RuntimeException("Échec de l'application du skin via NMS"));
+                }
+            });
+            return applied;
         });
     }
     
