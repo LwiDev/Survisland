@@ -1,4 +1,4 @@
-package com.lwidev.survisland.skins;
+package com.lwidev.survisland.api.skin;
 
 public class SkinData {
     

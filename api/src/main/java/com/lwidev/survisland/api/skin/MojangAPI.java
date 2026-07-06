@@ -1,13 +1,14 @@
-package com.lwidev.survisland.skins;
+package com.lwidev.survisland.api.skin;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.lwidev.survisland.Survisland;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.net.URL;
 import java.util.Base64;
 import java.util.UUID;
@@ -18,9 +19,9 @@ public class MojangAPI {
     private static final String UUID_API = "https://api.mojang.com/users/profiles/minecraft/";
     private static final String PROFILE_API = "https://sessionserver.mojang.com/session/minecraft/profile/";
     private static final ObjectMapper MAPPER = new ObjectMapper();
-    private final Survisland plugin;
-    
-    public MojangAPI(Survisland plugin) {
+    private final JavaPlugin plugin;
+
+    public MojangAPI(JavaPlugin plugin) {
         this.plugin = plugin;
     }
     
@@ -44,7 +45,7 @@ public class MojangAPI {
     }
     
     private String fetchUUID(String playerName) throws IOException {
-        URL url = new URL(UUID_API + playerName);
+        URL url = URI.create(UUID_API + playerName).toURL();
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
         connection.setConnectTimeout(5000);
@@ -72,7 +73,7 @@ public class MojangAPI {
     }
     
     private SkinData fetchProfile(String uuid, String playerName) throws IOException {
-        URL url = new URL(PROFILE_API + uuid + "?unsigned=false");
+        URL url = URI.create(PROFILE_API + uuid + "?unsigned=false").toURL();
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
         connection.setConnectTimeout(5000);

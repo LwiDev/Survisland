@@ -1,19 +1,15 @@
-name: CI
+name: Deploy Javadoc
 
 on:
-  pull_request:
-    branches:
-      - main
-
   push:
     branches:
       - main
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -30,8 +26,11 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
 
-      - name: Build with Gradle
-        run: ./gradlew clean build
-
       - name: Build Javadoc
-        run: ./gradlew javadoc
+        run: ./gradlew :api:javadoc
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: api/build/docs/javadoc

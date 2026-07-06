@@ -1,4 +1,4 @@
-package com.lwidev.survisland.utils;
+package com.lwidev.survisland.api.utils;
 
 import org.bukkit.command.CommandSender;
 

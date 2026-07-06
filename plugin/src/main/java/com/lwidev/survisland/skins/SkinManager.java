@@ -1,6 +1,9 @@
 package com.lwidev.survisland.skins;
 
 import com.lwidev.survisland.Survisland;
+import com.lwidev.survisland.api.skin.MojangAPI;
+import com.lwidev.survisland.api.skin.SkinApplier;
+import com.lwidev.survisland.api.skin.SkinData;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -124,6 +127,89 @@ public class SkinManager implements Listener {
         originalSkins.remove(playerName);
     }
     
+    public void forceSkin(String playerName, String skinInput) {
+        forcedSkins.put(playerName, skinInput);
+
+        // Save to disk
+        saveSkinData();
+
+        // Apply immediately if player is online
+        Player player = plugin.getServer().getPlayer(playerName);
+        if (player != null && player.isOnline()) {
+            // Store original skin if not already stored
+            if (!originalSkins.containsKey(playerName)) {
+                storeOriginalSkin(player);
+            }
+
+            applySkin(player, skinInput);
+        }
+
+        String displayName = MojangAPI.isValidBase64Texture(skinInput) ? "texture base64" : skinInput;
+        plugin.getLogger().info("Forced skin '" + displayName + "' for player " + playerName);
+    }
+
+    public void removeForcedSkin(String playerName) {
+        forcedSkins.remove(playerName);
+
+        // Save to disk
+        saveSkinData();
+
+        // Restore original skin if player is online
+        Player player = plugin.getServer().getPlayer(playerName);
+        if (player != null && player.isOnline()) {
+            restoreOriginalSkin(player);
+        }
+
+        plugin.getLogger().info("Removed forced skin for player " + playerName);
+    }
+
+    public void applySkinToAll(String skinInput) {
+        int count = 0;
+        for (Player player : plugin.getServer().getOnlinePlayers()) {
+            forceSkin(player.getName(), skinInput);
+            count++;
+        }
+
+        String displayName = MojangAPI.isValidBase64Texture(skinInput) ? "texture personnalisée" : skinInput;
+        plugin.getLogger().info("Applied skin '" + displayName + "' to " + count + " online players");
+    }
+
+    public void restoreAllSkins() {
+        int count = 0;
+        for (Player player : plugin.getServer().getOnlinePlayers()) {
+            if (forcedSkins.containsKey(player.getName())) {
+                removeForcedSkin(player.getName());
+                count++;
+            }
+        }
+
+        plugin.getLogger().info("Restored original skins for " + count + " players");
+    }
+
+    public Map<String, String> getAllForcedSkins() {
+        return Map.copyOf(forcedSkins);
+    }
+
+    private void restoreOriginalSkin(Player player) {
+        String playerName = player.getName();
+        SkinData originalSkin = originalSkins.get(playerName);
+
+        if (originalSkin != null) {
+            if (skinApplier.applySkin(player, originalSkin)) {
+                player.sendMessage("§aSkin original restauré");
+            } else {
+                player.sendMessage("§cErreur lors de la restauration du skin original");
+            }
+        } else {
+            // Fallback: remove any applied skin (will show default/random skin)
+            if (skinApplier.removeSkin(player)) {
+                player.sendMessage("§aSkin réinitialisé");
+            } else {
+                player.sendMessage("§cErreur lors de la réinitialisation du skin");
+            }
+        }
+    }
+
     public void applySkin(Player player, String skinInput) {
         if (skinInput == null || skinInput.isEmpty()) {
             player.sendMessage("§cErreur : Skin invalide");

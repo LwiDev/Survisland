@@ -1,61 +1,49 @@
 package com.lwidev.survisland.commands;
 
-import com.lwidev.survisland.Survisland;
+import com.lwidev.survisland.api.command.SurvislandCommand;
 import com.lwidev.survisland.confess.LinkCodeManager;
-import com.lwidev.survisland.utils.MessageUtils;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
+import com.lwidev.survisland.api.utils.MessageUtils;
+import com.mojang.brigadier.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+import org.bukkit.permissions.PermissionDefault;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class LinkCommand implements CommandExecutor, TabCompleter {
-    
-    private final Survisland plugin;
+public class LinkCommand extends SurvislandCommand {
+
     private final LinkCodeManager linkCodeManager;
-    
-    public LinkCommand(Survisland plugin, LinkCodeManager linkCodeManager) {
-        this.plugin = plugin;
+
+    public LinkCommand(LinkCodeManager linkCodeManager) {
+        super("link", "Générer un code pour lier votre compte au confess Discord", List.of(), true, PermissionDefault.TRUE);
         this.linkCodeManager = linkCodeManager;
+
+        executes(ctx -> {
+            Player player = (Player) ctx.getSource().getSender();
+            generateLink(player);
+            return Command.SINGLE_SUCCESS;
+        });
     }
-    
-    @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        
-        if (!sender.hasPermission("survisland.confess.link")) {
-            MessageUtils.sendErrorMessage(sender, "Vous n'avez pas la permission d'utiliser cette commande !");
-            return true;
-        }
-        
-        if (!(sender instanceof Player)) {
-            MessageUtils.sendErrorMessage(sender, "Cette commande ne peut être utilisée que par un joueur !");
-            return true;
-        }
-        
-        Player player = (Player) sender;
+
+    private void generateLink(Player player) {
+        CommandSender sender = player;
         String playerName = player.getName();
 
-        // Vérifier si le joueur a déjà un code en attente
         if (linkCodeManager.hasValidCode(playerName)) {
             String existingCode = linkCodeManager.getPlayerCode(playerName);
             MessageUtils.sendSuccessMessage(sender, "§7Vous avez déjà un code en attente : §f§l" + existingCode);
             MessageUtils.sendSecondaryMessage(sender, "Allez sur Discord dans votre salon confess-xxx et tapez : §f/verify " + existingCode);
             MessageUtils.sendSecondaryMessage(sender, "§7Ce code expire dans " + linkCodeManager.getCodeExpiryMinutes() + " minutes.");
-            return true;
+            return;
         }
-        
-        // Générer un nouveau code
+
         String code = linkCodeManager.generateLinkCode(playerName);
-        
+
         if (code == null) {
             MessageUtils.sendErrorMessage(sender, "Erreur lors de la génération du code de liaison !");
-            return true;
+            return;
         }
-        
-        // Afficher les instructions au joueur
+
         MessageUtils.sendSuccessMessage(sender, "§7Code de liaison généré : §f§l" + code);
         MessageUtils.sendMessage(sender, "§8§m▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬");
         MessageUtils.sendMessage(sender, "§6§l1.§r §7Allez sur Discord dans votre salon §fconfess-xxx");
@@ -64,13 +52,5 @@ public class LinkCommand implements CommandExecutor, TabCompleter {
         MessageUtils.sendMessage(sender, "");
         MessageUtils.sendMessage(sender, "§c⚠ §7Ce code expire dans §c" + linkCodeManager.getCodeExpiryMinutes() + " minutes§7 !");
         MessageUtils.sendMessage(sender, "§8§m▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬");
-        
-        return true;
-    }
-    
-    @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-        // Pas d'arguments pour cette commande
-        return new ArrayList<>();
     }
 }

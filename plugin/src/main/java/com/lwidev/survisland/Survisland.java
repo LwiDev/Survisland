@@ -1,11 +1,13 @@
 package com.lwidev.survisland;
 
+import com.lwidev.survisland.api.command.SurvislandCommands;
 import com.lwidev.survisland.commands.LiveCommand;
 import com.lwidev.survisland.commands.SetLiveCommand;
 import com.lwidev.survisland.commands.ConfessCommand;
 import com.lwidev.survisland.commands.LinkCommand;
 import com.lwidev.survisland.commands.CampCommand;
 import com.lwidev.survisland.commands.PauseCommand;
+import com.lwidev.survisland.commands.SkinCommand;
 import com.lwidev.survisland.confess.ConfessLinkManager;
 import com.lwidev.survisland.listeners.PauseListener;
 import com.lwidev.survisland.confess.LinkCodeManager;
@@ -14,7 +16,7 @@ import com.lwidev.survisland.chatspec.ChatSpecManager;
 import com.lwidev.survisland.skins.SkinManager;
 import com.lwidev.survisland.config.DiscordConfig;
 import com.lwidev.survisland.utils.CompassTask;
-import com.lwidev.survisland.utils.PauseTask;
+import com.lwidev.survisland.utils.PauseManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.logging.Level;
@@ -24,7 +26,6 @@ public final class Survisland extends JavaPlugin {
     private EmbeddedDiscordBot discordBot;
     private ConfessLinkManager confessLinkManager;
     private LinkCodeManager linkCodeManager;
-    private ChatSpecManager chatSpecManager;
     private SkinManager skinManager;
     private DiscordConfig discordConfig;
 
@@ -40,9 +41,9 @@ public final class Survisland extends JavaPlugin {
             this.linkCodeManager = new LinkCodeManager(this);
             this.discordBot = new EmbeddedDiscordBot(this, discordConfig);
             this.discordBot.setConfessLinkManager(confessLinkManager);
-            this.chatSpecManager = new ChatSpecManager(this);
             this.skinManager = new SkinManager(this);
-            
+            new ChatSpecManager(this);
+
             // Initialize Discord bot asynchronously
             initializeDiscordBot();
             
@@ -74,7 +75,7 @@ public final class Survisland extends JavaPlugin {
         // Nettoyer toutes les tâches de boussole actives
         CompassTask.cleanupAll();
         // Nettoyer la pause
-        PauseTask.cleanup();
+        PauseManager.cleanup();
         getLogger().info("Survisland plugin disabled");
     }
     
@@ -89,28 +90,17 @@ public final class Survisland extends JavaPlugin {
     }
     
     private void registerCommands() {
-        // Paper/Bukkit commands
-        LiveCommand liveCommand = new LiveCommand(this, discordBot);
-        SetLiveCommand setLiveCommand = new SetLiveCommand(this, discordBot);
-        ConfessCommand confessCommand = new ConfessCommand(this, discordBot, confessLinkManager);
-        LinkCommand linkCommand = new LinkCommand(this, linkCodeManager);
-        CampCommand campCommand = new CampCommand(this);
-        PauseCommand pauseCommand = new PauseCommand(this);
+        SurvislandCommands.register(this,
+                new LiveCommand(discordBot),
+                new SetLiveCommand(this, discordBot),
+                new ConfessCommand(discordBot, confessLinkManager),
+                new LinkCommand(linkCodeManager),
+                new CampCommand(this),
+                new PauseCommand(this),
+                new SkinCommand(skinManager)
+        );
 
-        getCommand("live").setExecutor(liveCommand);
-        getCommand("live").setTabCompleter(liveCommand);
-        getCommand("setlive").setExecutor(setLiveCommand);
-        getCommand("setlive").setTabCompleter(setLiveCommand);
-        getCommand("confess").setExecutor(confessCommand);
-        getCommand("confess").setTabCompleter(confessCommand);
-        getCommand("link").setExecutor(linkCommand);
-        getCommand("link").setTabCompleter(linkCommand);
-        getCommand("camp").setExecutor(campCommand);
-        getCommand("camp").setTabCompleter(campCommand);
-        getCommand("pause").setExecutor(pauseCommand);
-        getCommand("pause").setTabCompleter(pauseCommand);
-
-        getLogger().info("Commandes Bukkit enregistrées : /live, /setlive, /confess, /link, /camp, /pause");
+        getLogger().info("Commandes enregistrées : /live, /setlive, /confess, /link, /camp, /pause, /skin");
     }
     
     private void initializeDiscordBot() {
