@@ -1,16 +1,17 @@
-package com.lwidev.survisland.skins;
+package com.lwidev.survisland.api.skin;
 
 import com.destroystokyo.paper.profile.PlayerProfile;
 import com.destroystokyo.paper.profile.ProfileProperty;
-import com.lwidev.survisland.Survisland;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.jspecify.annotations.NonNull;
 
 public class SkinApplier {
-    
-    private final Survisland plugin;
-    
-    public SkinApplier(Survisland plugin) {
+
+    private final JavaPlugin plugin;
+
+    public SkinApplier(JavaPlugin plugin) {
         this.plugin = plugin;
         plugin.getLogger().info("SkinApplier initialized with Paper API");
     }
@@ -18,20 +19,8 @@ public class SkinApplier {
     public boolean applySkin(Player player, SkinData skinData) {
         try {
             // Create PlayerProfile using Paper API
-            PlayerProfile profile = player.getPlayerProfile();
-            
-            // Clear existing texture properties
-            profile.removeProperty("textures");
-            
-            // Add new texture property
-            String signature = skinData.getSignature();
-            ProfileProperty textureProperty = new ProfileProperty(
-                "textures", 
-                skinData.getTexture(), 
-                signature.isEmpty() ? null : signature
-            );
-            profile.setProperty(textureProperty);
-            
+            PlayerProfile profile = getPlayerProfile(player, skinData);
+
             // Apply the profile back to player
             player.setPlayerProfile(profile);
             
@@ -47,7 +36,24 @@ public class SkinApplier {
             return false;
         }
     }
-    
+
+    private static @NonNull PlayerProfile getPlayerProfile(Player player, SkinData skinData) {
+        PlayerProfile profile = player.getPlayerProfile();
+
+        // Clear existing texture properties
+        profile.removeProperty("textures");
+
+        // Add new texture property
+        String signature = skinData.getSignature();
+        ProfileProperty textureProperty = new ProfileProperty(
+            "textures",
+            skinData.getTexture(),
+            signature.isEmpty() ? null : signature
+        );
+        profile.setProperty(textureProperty);
+        return profile;
+    }
+
     public boolean removeSkin(Player player) {
         try {
             // Get player profile using Paper API

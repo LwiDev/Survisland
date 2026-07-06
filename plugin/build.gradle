@@ -30,6 +30,9 @@ dependencies {
     // Paper API with NMS access
     paperweight.paperDevBundle("26.2.build.48-alpha")
 
+    // Survisland command/menu API
+    implementation project(':api')
+
     // Discord bot integration
     implementation 'net.dv8tion:JDA:6.5.0'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.22.0'

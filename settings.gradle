@@ -6,3 +6,4 @@ plugins {
 rootProject.name = 'survisland-core'
 
 include 'plugin'
+include 'api'

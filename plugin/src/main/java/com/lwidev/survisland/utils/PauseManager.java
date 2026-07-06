@@ -21,7 +21,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-public class PauseTask {
+public class PauseManager {
 
     private static boolean isPaused = false;
     private static BukkitTask titleTask = null;

@@ -36,9 +36,12 @@ allprojects {
         options.release.set(25)
     }
 
-    jar {
-        archiveBaseName.set("survisland")
+    tasks.withType(Javadoc).configureEach {
+        options.encoding = 'UTF-8'
+        options.memberLevel = JavadocMemberLevel.PUBLIC
+        failOnError = true
     }
+
 }
 
 

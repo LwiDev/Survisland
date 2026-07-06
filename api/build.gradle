@@ -1,0 +1,4 @@
+dependencies {
+    compileOnly 'io.papermc.paper:paper-api:26.2.build.48-alpha'
+    compileOnly 'com.fasterxml.jackson.core:jackson-databind:2.22.0'
+}

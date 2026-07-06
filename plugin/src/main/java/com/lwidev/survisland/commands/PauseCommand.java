@@ -1,37 +1,19 @@
 package com.lwidev.survisland.commands;
 
 import com.lwidev.survisland.Survisland;
-import com.lwidev.survisland.utils.MessageUtils;
-import com.lwidev.survisland.utils.PauseTask;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
+import com.lwidev.survisland.api.command.SurvislandCommand;
+import com.lwidev.survisland.utils.PauseManager;
+import com.mojang.brigadier.Command;
+import org.bukkit.permissions.PermissionDefault;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class PauseCommand implements CommandExecutor, TabCompleter {
-
-    private final Survisland plugin;
+public class PauseCommand extends SurvislandCommand {
 
     public PauseCommand(Survisland plugin) {
-        this.plugin = plugin;
-    }
+        super("pause", "Activer ou désactiver la pause du jeu", PermissionDefault.OP);
 
-    @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!sender.hasPermission("survisland.pause.use")) {
-            MessageUtils.sendErrorMessage(sender, "Vous n'avez pas la permission d'utiliser cette commande !");
-            return true;
-        }
-
-        PauseTask.toggle(plugin);
-        return true;
-    }
-
-    @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-        return new ArrayList<>(); // Aucune auto-complétion nécessaire
+        executes(ctx -> {
+            PauseManager.toggle(plugin);
+            return Command.SINGLE_SUCCESS;
+        });
     }
 }
