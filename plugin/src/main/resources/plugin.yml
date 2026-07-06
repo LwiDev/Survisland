@@ -1,0 +1,183 @@
+name: Survisland
+version: ${version}
+main: com.lwidev.survisland.Survisland
+api-version: '1.21'
+authors: [LwiDev]
+description: Plugin Minecraft pour Survisland avec intégration Discord
+website: https://survisland.com
+
+commands:
+#  survisland:
+#    description: Commande principale de Survisland
+#    aliases: [surv]
+#    usage: /<command> [action] [args...]
+#    permission: survisland.use
+  live:
+    description: Envoyer un message sur Discord
+    usage: /<command> <message>
+    permission: survisland.live.send
+  setlive:
+    description: Configurer le channel Discord
+    usage: /<command> [channel_id]
+    permission: survisland.live.config
+  confess:
+    description: Envoyer un message dans votre confess Discord
+    aliases: [conf]
+    usage: /<command> <message>
+    permission: survisland.confess.send
+  link:
+    description: Générer un code pour lier votre compte au confess Discord
+    usage: /<command>
+    permission: survisland.confess.link
+  camp:
+    description: Afficher la direction vers votre campement
+    aliases: [campement]
+    usage: /<command>
+    permission: survisland.camp.use
+  pause:
+    description: Activer ou désactiver la pause du jeu
+    usage: /<command>
+    permission: survisland.pause.use
+
+permissions:
+  survisland.*:
+    description: Toutes les permissions Survisland
+    children:
+      survisland.use: true
+      survisland.action.*: true
+      survisland.live.*: true
+      survisland.confess.*: true
+      survisland.chatspec.*: true
+      survisland.skins.*: true
+      survisland.camp.*: true
+      survisland.pause.*: true
+    default: op
+    
+  survisland.use:
+    description: Utiliser la commande de base
+    default: true
+    
+  survisland.action.*:
+    description: Toutes les permissions d'actions
+    children:
+      survisland.action.menu: true
+      survisland.action.add: true
+      survisland.action.remove: true
+      survisland.action.modify: true
+      survisland.action.grant: true
+      survisland.action.revoke: true
+      survisland.action.admin: true
+    default: op
+    
+  survisland.action.menu:
+    description: Ouvrir le menu des actions
+    default: true
+    
+  survisland.action.add:
+    description: Ajouter des actions
+    default: op
+    
+  survisland.action.remove:
+    description: Supprimer des actions
+    default: op
+    
+  survisland.action.modify:
+    description: Modifier des actions
+    default: op
+    
+  survisland.action.grant:
+    description: Donner des permissions d'actions
+    default: op
+    
+  survisland.action.revoke:
+    description: Retirer des permissions d'actions
+    default: op
+    
+  survisland.action.admin:
+    description: Outils administrateur pour les actions
+    default: op
+    
+  survisland.live.*:
+    description: Toutes les permissions Discord
+    children:
+      survisland.live.send: true
+      survisland.live.config: true
+    default: op
+    
+  survisland.live.send:
+    description: Envoyer des messages sur Discord
+    default: op
+    
+  survisland.live.config:
+    description: Configurer l'intégration Discord
+    default: op
+    
+  survisland.confess.*:
+    description: Toutes les permissions confess
+    children:
+      survisland.confess.send: true
+      survisland.confess.link: true
+    default: op
+    
+  survisland.confess.send:
+    description: Envoyer des messages dans son confess Discord
+    default: true
+    
+  survisland.confess.link:
+    description: Générer un code pour lier son compte au confess Discord
+    default: true
+    
+  survisland.chatspec.*:
+    description: Toutes les permissions chat spectateur
+    children:
+      survisland.chatspec.use: true
+      survisland.chatspec.receive: true
+      survisland.chatspec.admin: true
+    default: op
+    
+  survisland.chatspec.use:
+    description: Utiliser le chat spectateur
+    default: true
+    
+  survisland.chatspec.receive:
+    description: Recevoir les messages du chat spectateur
+    default: op
+    
+  survisland.chatspec.admin:
+    description: Administrer le chat spectateur
+    default: op
+    
+  survisland.skins.*:
+    description: Toutes les permissions de gestion des skins
+    children:
+      survisland.skins.force: true
+      survisland.skins.admin: true
+    default: op
+    
+  survisland.skins.force:
+    description: Forcer des skins
+    default: op
+    
+  survisland.skins.admin:
+    description: Administrer les skins
+    default: op
+    
+  survisland.camp.*:
+    description: Toutes les permissions de campement
+    children:
+      survisland.camp.use: true
+    default: op
+
+  survisland.camp.use:
+    description: Utiliser la commande de direction vers le campement
+    default: true
+
+  survisland.pause.*:
+    description: Toutes les permissions de pause
+    children:
+      survisland.pause.use: true
+    default: op
+
+  survisland.pause.use:
+    description: Mettre le jeu en pause ou reprendre
+    default: op

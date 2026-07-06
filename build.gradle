@@ -1,0 +1,57 @@
+plugins {
+    id 'java'
+    id 'jvm-toolchains'
+}
+
+allprojects {
+    group = 'com.lwidev.survisland'
+    version = '1.0-SNAPSHOT'
+    
+    apply plugin: 'java'
+    
+    repositories {
+        mavenCentral()
+        maven {
+            name = "papermc-repo"
+            url = "https://repo.papermc.io/repository/maven-public/"
+        }
+        maven {
+            name = "sonatype"
+            url = "https://oss.sonatype.org/content/groups/public/"
+        }
+        maven {
+            name = "jitpack"
+            url = "https://jitpack.io"
+        }
+    }
+    
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(21)
+        }
+    }
+    
+    tasks.withType(JavaCompile).configureEach {
+        options.encoding = 'UTF-8'
+        options.release.set(21)
+    }
+}
+
+
+configure(project(':plugin')) {
+    dependencies {
+        implementation project(':shared')
+    }
+}
+
+// Task de développement
+tasks.register('dev') {
+    group = 'development'
+    description = '🚀 Lance le serveur Minecraft avec bot Discord intégré'
+    
+    dependsOn ':plugin:build'
+    
+    doLast {
+        project(':plugin').tasks.runServer.actions.each { it.execute(project(':plugin').tasks.runServer) }
+    }
+}

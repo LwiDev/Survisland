@@ -1,0 +1,9 @@
+// Configuration des toolchains repositories pour téléchargement automatique de Java 21
+plugins {
+    id 'org.gradle.toolchains.foojay-resolver-convention' version '0.8.0'
+}
+
+rootProject.name = 'survisland-core'
+
+include 'plugin'
+include 'shared'
