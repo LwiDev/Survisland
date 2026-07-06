@@ -61,13 +61,16 @@ loadScripts(document, 'script');</script>
 <li><a href="#permissionDefault()" tabindex="0">permissionDefault()</a></li>
 <li><a href="#permission()" tabindex="0">permission()</a></li>
 <li><a href="#argument(java.lang.String,com.mojang.brigadier.arguments.ArgumentType)" tabindex="0">argument(String, ArgumentType)</a></li>
+<li><a href="#argument(java.lang.String,com.mojang.brigadier.arguments.ArgumentType,java.lang.String)" tabindex="0">argument(String, ArgumentType, String)</a></li>
 <li><a href="#argument(java.lang.String,com.mojang.brigadier.arguments.ArgumentType,com.mojang.brigadier.Command)" tabindex="0">argument(String, ArgumentType, Command)</a></li>
+<li><a href="#argument(java.lang.String,com.mojang.brigadier.arguments.ArgumentType,java.lang.String,com.mojang.brigadier.Command)" tabindex="0">argument(String, ArgumentType, String, Command)</a></li>
 <li><a href="#executes(com.mojang.brigadier.Command)" tabindex="0">executes(Command)</a></li>
 <li><a href="#onLiteral(java.lang.String,com.mojang.brigadier.Command)" tabindex="0">onLiteral(String, Command)</a></li>
 <li><a href="#onArgument(java.lang.String,com.mojang.brigadier.arguments.ArgumentType,com.mojang.brigadier.Command)" tabindex="0">onArgument(String, ArgumentType, Command)</a></li>
 <li><a href="#subcommand(java.lang.String)" tabindex="0">subcommand(String)</a></li>
 <li><a href="#resolvePlayer(com.mojang.brigadier.context.CommandContext,java.lang.String)" tabindex="0">resolvePlayer(CommandContext, String)</a></li>
 <li><a href="#resolvePlayers(com.mojang.brigadier.context.CommandContext,java.lang.String)" tabindex="0">resolvePlayers(CommandContext, String)</a></li>
+<li><a href="#resolvePlayerProfiles(com.mojang.brigadier.context.CommandContext,java.lang.String)" tabindex="0">resolvePlayerProfiles(CommandContext, String)</a></li>
 </ol>
 </li>
 </ol>
@@ -129,6 +132,19 @@ No <code>.then(...)</code> chaining and no manual registration bookkeeping neede
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Adds the final argument of this command's own (flat) chain, executed directly.</div>
 </div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final &lt;T&gt;&nbsp;<a href="SurvislandCommand.html" title="class in com.lwidev.survisland.api.command">SurvislandCommand</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#argument(java.lang.String,com.mojang.brigadier.arguments.ArgumentType,java.lang.String)" class="member-name-link">argument</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
+ com.mojang.brigadier.arguments.ArgumentType&lt;T&gt;&nbsp;type,
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;hint)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final &lt;T&gt;&nbsp;<a href="SurvislandCommand.html" title="class in com.lwidev.survisland.api.command">SurvislandCommand</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#argument(java.lang.String,com.mojang.brigadier.arguments.ArgumentType,java.lang.String,com.mojang.brigadier.Command)" class="member-name-link">argument</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
+ com.mojang.brigadier.arguments.ArgumentType&lt;T&gt;&nbsp;type,
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;hint,
+ com.mojang.brigadier.Command&lt;io.papermc.paper.command.brigadier.CommandSourceStack&gt;&nbsp;executor)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Adds the final argument of this command's own (flat) chain, executed directly.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#description()" class="member-name-link">description</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
@@ -164,15 +180,21 @@ No <code>.then(...)</code> chaining and no manual registration bookkeeping neede
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Resolves a single-player selector argument (name or @a/@e/@p/@r/@s selector).</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;org.bukkit.entity.Player&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#resolvePlayers(com.mojang.brigadier.context.CommandContext,java.lang.String)" class="member-name-link">resolvePlayers</a><wbr>(com.mojang.brigadier.context.CommandContext&lt;io.papermc.paper.command.brigadier.CommandSourceStack&gt;&nbsp;ctx,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Collection.html" title="class or interface in java.util" class="external-link">Collection</a><wbr>&lt;com.destroystokyo.paper.profile.PlayerProfile&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#resolvePlayerProfiles(com.mojang.brigadier.context.CommandContext,java.lang.String)" class="member-name-link">resolvePlayerProfiles</a><wbr>(com.mojang.brigadier.context.CommandContext&lt;io.papermc.paper.command.brigadier.CommandSourceStack&gt;&nbsp;ctx,
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;argName)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Resolves a player-profile argument (name or @a/@e/@p/@r/@s selector).</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;org.bukkit.entity.Player&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#resolvePlayers(com.mojang.brigadier.context.CommandContext,java.lang.String)" class="member-name-link">resolvePlayers</a><wbr>(com.mojang.brigadier.context.CommandContext&lt;io.papermc.paper.command.brigadier.CommandSourceStack&gt;&nbsp;ctx,
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;argName)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Resolves a multi-player selector argument (@a/@e/@r or a single name).</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final <a href="Subcommand.html" title="class in com.lwidev.survisland.api.command">Subcommand</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#subcommand(java.lang.String)" class="member-name-link">subcommand</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final <a href="Subcommand.html" title="class in com.lwidev.survisland.api.command">Subcommand</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#subcommand(java.lang.String)" class="member-name-link">subcommand</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Declares a subcommand (e.g.</div>
 </div>
 </div>
@@ -236,6 +258,20 @@ No <code>.then(...)</code> chaining and no manual registration bookkeeping neede
 </section>
 </li>
 <li>
+<section class="detail" id="argument(java.lang.String,com.mojang.brigadier.arguments.ArgumentType,java.lang.String)">
+<h3>argument</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="type-parameters">&lt;T&gt;</span>&nbsp;<span class="return-type"><a href="SurvislandCommand.html" title="class in com.lwidev.survisland.api.command">SurvislandCommand</a></span>&nbsp;<span class="element-name">argument</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
+ com.mojang.brigadier.arguments.ArgumentType&lt;T&gt;&nbsp;type,
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;hint)</span></div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>hint</code> - short human-readable description of the expected value, shown if this argument ends up missing</dd>
+</dl>
+</div>
+</section>
+</li>
+<li>
 <section class="detail" id="argument(java.lang.String,com.mojang.brigadier.arguments.ArgumentType,com.mojang.brigadier.Command)">
 <h3>argument</h3>
 <div class="horizontal-scroll">
@@ -243,6 +279,22 @@ No <code>.then(...)</code> chaining and no manual registration bookkeeping neede
  com.mojang.brigadier.arguments.ArgumentType&lt;T&gt;&nbsp;type,
  com.mojang.brigadier.Command&lt;io.papermc.paper.command.brigadier.CommandSourceStack&gt;&nbsp;executor)</span></div>
 <div class="block">Adds the final argument of this command's own (flat) chain, executed directly.</div>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="argument(java.lang.String,com.mojang.brigadier.arguments.ArgumentType,java.lang.String,com.mojang.brigadier.Command)">
+<h3>argument</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="type-parameters">&lt;T&gt;</span>&nbsp;<span class="return-type"><a href="SurvislandCommand.html" title="class in com.lwidev.survisland.api.command">SurvislandCommand</a></span>&nbsp;<span class="element-name">argument</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
+ com.mojang.brigadier.arguments.ArgumentType&lt;T&gt;&nbsp;type,
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;hint,
+ com.mojang.brigadier.Command&lt;io.papermc.paper.command.brigadier.CommandSourceStack&gt;&nbsp;executor)</span></div>
+<div class="block">Adds the final argument of this command's own (flat) chain, executed directly.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>hint</code> - short human-readable description of the expected value, shown if this argument ends up missing</dd>
+</dl>
 </div>
 </section>
 </li>
@@ -310,6 +362,25 @@ automatically by <a href="SurvislandCommands.html#register(org.bukkit.plugin.jav
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;argName)</span>
                                                     throws <span class="exceptions">com.mojang.brigadier.exceptions.CommandSyntaxException</span></div>
 <div class="block">Resolves a multi-player selector argument (@a/@e/@r or a single name).</div>
+<dl class="notes">
+<dt>Throws:</dt>
+<dd><code>com.mojang.brigadier.exceptions.CommandSyntaxException</code></dd>
+</dl>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="resolvePlayerProfiles(com.mojang.brigadier.context.CommandContext,java.lang.String)">
+<h3>resolvePlayerProfiles</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Collection.html" title="class or interface in java.util" class="external-link">Collection</a>&lt;com.destroystokyo.paper.profile.PlayerProfile&gt;</span>&nbsp;<span class="element-name">resolvePlayerProfiles</span><wbr><span class="parameters">(com.mojang.brigadier.context.CommandContext&lt;io.papermc.paper.command.brigadier.CommandSourceStack&gt;&nbsp;ctx,
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;argName)</span>
+                                                                                      throws <span class="exceptions">com.mojang.brigadier.exceptions.CommandSyntaxException</span></div>
+<div class="block">Resolves a player-profile argument (name or @a/@e/@p/@r/@s selector). Unlike
+<a href="#resolvePlayer(com.mojang.brigadier.context.CommandContext,java.lang.String)"><code>resolvePlayer(CommandContext, String)</code></a>/<a href="#resolvePlayers(com.mojang.brigadier.context.CommandContext,java.lang.String)"><code>resolvePlayers(CommandContext, String)</code></a>, this also matches players who
+are currently offline: for a plain name, it's looked up via the server's local
+profile cache (usercache.json) first, falling back to a blocking Mojang HTTP
+call only for a name never seen on this server before.</div>
 <dl class="notes">
 <dt>Throws:</dt>
 <dd><code>com.mojang.brigadier.exceptions.CommandSyntaxException</code></dd>

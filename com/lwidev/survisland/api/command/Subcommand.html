@@ -57,7 +57,11 @@ loadScripts(document, 'script');</script>
 <li><a href="#method-detail" tabindex="0">Method Details</a>
 <ol class="toc-list">
 <li><a href="#argument(java.lang.String,com.mojang.brigadier.arguments.ArgumentType)" tabindex="0">argument(String, ArgumentType)</a></li>
+<li><a href="#argument(java.lang.String,com.mojang.brigadier.arguments.ArgumentType,java.lang.String)" tabindex="0">argument(String, ArgumentType, String)</a></li>
 <li><a href="#argument(java.lang.String,com.mojang.brigadier.arguments.ArgumentType,com.mojang.brigadier.Command)" tabindex="0">argument(String, ArgumentType, Command)</a></li>
+<li><a href="#argument(java.lang.String,com.mojang.brigadier.arguments.ArgumentType,java.lang.String,com.mojang.brigadier.Command)" tabindex="0">argument(String, ArgumentType, String, Command)</a></li>
+<li><a href="#argument(java.lang.String,com.mojang.brigadier.arguments.ArgumentType,java.lang.String,com.mojang.brigadier.suggestion.SuggestionProvider)" tabindex="0">argument(String, ArgumentType, String, SuggestionProvider)</a></li>
+<li><a href="#argument(java.lang.String,com.mojang.brigadier.arguments.ArgumentType,java.lang.String,com.mojang.brigadier.suggestion.SuggestionProvider,com.mojang.brigadier.Command)" tabindex="0">argument(String, ArgumentType, String, SuggestionProvider, Command)</a></li>
 <li><a href="#executes(com.mojang.brigadier.Command)" tabindex="0">executes(Command)</a></li>
 <li><a href="#onLiteral(java.lang.String,com.mojang.brigadier.Command)" tabindex="0">onLiteral(String, Command)</a></li>
 <li><a href="#onArgument(java.lang.String,com.mojang.brigadier.arguments.ArgumentType,com.mojang.brigadier.Command)" tabindex="0">onArgument(String, ArgumentType, Command)</a></li>
@@ -107,6 +111,34 @@ auto-derived as "&lt;command permission&gt;.&lt;name&gt;".</div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Adds the final argument of this subcommand's chain, executed directly.</div>
 </div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>&lt;T&gt;&nbsp;<a href="Subcommand.html" title="class in com.lwidev.survisland.api.command">Subcommand</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#argument(java.lang.String,com.mojang.brigadier.arguments.ArgumentType,java.lang.String)" class="member-name-link">argument</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
+ com.mojang.brigadier.arguments.ArgumentType&lt;T&gt;&nbsp;type,
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;hint)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>&lt;T&gt;&nbsp;<a href="Subcommand.html" title="class in com.lwidev.survisland.api.command">Subcommand</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#argument(java.lang.String,com.mojang.brigadier.arguments.ArgumentType,java.lang.String,com.mojang.brigadier.Command)" class="member-name-link">argument</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
+ com.mojang.brigadier.arguments.ArgumentType&lt;T&gt;&nbsp;type,
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;hint,
+ com.mojang.brigadier.Command&lt;io.papermc.paper.command.brigadier.CommandSourceStack&gt;&nbsp;executor)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Adds the final argument of this subcommand's chain, executed directly.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>&lt;T&gt;&nbsp;<a href="Subcommand.html" title="class in com.lwidev.survisland.api.command">Subcommand</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#argument(java.lang.String,com.mojang.brigadier.arguments.ArgumentType,java.lang.String,com.mojang.brigadier.suggestion.SuggestionProvider)" class="member-name-link">argument</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
+ com.mojang.brigadier.arguments.ArgumentType&lt;T&gt;&nbsp;type,
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;hint,
+ com.mojang.brigadier.suggestion.SuggestionProvider&lt;io.papermc.paper.command.brigadier.CommandSourceStack&gt;&nbsp;suggestions)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>&lt;T&gt;&nbsp;<a href="Subcommand.html" title="class in com.lwidev.survisland.api.command">Subcommand</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#argument(java.lang.String,com.mojang.brigadier.arguments.ArgumentType,java.lang.String,com.mojang.brigadier.suggestion.SuggestionProvider,com.mojang.brigadier.Command)" class="member-name-link">argument</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
+ com.mojang.brigadier.arguments.ArgumentType&lt;T&gt;&nbsp;type,
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;hint,
+ com.mojang.brigadier.suggestion.SuggestionProvider&lt;io.papermc.paper.command.brigadier.CommandSourceStack&gt;&nbsp;suggestions,
+ com.mojang.brigadier.Command&lt;io.papermc.paper.command.brigadier.CommandSourceStack&gt;&nbsp;executor)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Adds the final argument of this subcommand's chain, executed directly.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="Subcommand.html" title="class in com.lwidev.survisland.api.command">Subcommand</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#executes(com.mojang.brigadier.Command)" class="member-name-link">executes</a><wbr>(com.mojang.brigadier.Command&lt;io.papermc.paper.command.brigadier.CommandSourceStack&gt;&nbsp;executor)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
@@ -150,6 +182,20 @@ auto-derived as "&lt;command permission&gt;.&lt;name&gt;".</div>
 </section>
 </li>
 <li>
+<section class="detail" id="argument(java.lang.String,com.mojang.brigadier.arguments.ArgumentType,java.lang.String)">
+<h3>argument</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="type-parameters">&lt;T&gt;</span>&nbsp;<span class="return-type"><a href="Subcommand.html" title="class in com.lwidev.survisland.api.command">Subcommand</a></span>&nbsp;<span class="element-name">argument</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
+ com.mojang.brigadier.arguments.ArgumentType&lt;T&gt;&nbsp;type,
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;hint)</span></div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>hint</code> - short human-readable description of the expected value, shown if this argument ends up missing</dd>
+</dl>
+</div>
+</section>
+</li>
+<li>
 <section class="detail" id="argument(java.lang.String,com.mojang.brigadier.arguments.ArgumentType,com.mojang.brigadier.Command)">
 <h3>argument</h3>
 <div class="horizontal-scroll">
@@ -157,6 +203,55 @@ auto-derived as "&lt;command permission&gt;.&lt;name&gt;".</div>
  com.mojang.brigadier.arguments.ArgumentType&lt;T&gt;&nbsp;type,
  com.mojang.brigadier.Command&lt;io.papermc.paper.command.brigadier.CommandSourceStack&gt;&nbsp;executor)</span></div>
 <div class="block">Adds the final argument of this subcommand's chain, executed directly.</div>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="argument(java.lang.String,com.mojang.brigadier.arguments.ArgumentType,java.lang.String,com.mojang.brigadier.Command)">
+<h3>argument</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="type-parameters">&lt;T&gt;</span>&nbsp;<span class="return-type"><a href="Subcommand.html" title="class in com.lwidev.survisland.api.command">Subcommand</a></span>&nbsp;<span class="element-name">argument</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
+ com.mojang.brigadier.arguments.ArgumentType&lt;T&gt;&nbsp;type,
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;hint,
+ com.mojang.brigadier.Command&lt;io.papermc.paper.command.brigadier.CommandSourceStack&gt;&nbsp;executor)</span></div>
+<div class="block">Adds the final argument of this subcommand's chain, executed directly.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>hint</code> - short human-readable description of the expected value, shown if this argument ends up missing</dd>
+</dl>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="argument(java.lang.String,com.mojang.brigadier.arguments.ArgumentType,java.lang.String,com.mojang.brigadier.suggestion.SuggestionProvider)">
+<h3>argument</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="type-parameters">&lt;T&gt;</span>&nbsp;<span class="return-type"><a href="Subcommand.html" title="class in com.lwidev.survisland.api.command">Subcommand</a></span>&nbsp;<span class="element-name">argument</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
+ com.mojang.brigadier.arguments.ArgumentType&lt;T&gt;&nbsp;type,
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;hint,
+ com.mojang.brigadier.suggestion.SuggestionProvider&lt;io.papermc.paper.command.brigadier.CommandSourceStack&gt;&nbsp;suggestions)</span></div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>suggestions</code> - tab-completion suggestions for this argument</dd>
+</dl>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="argument(java.lang.String,com.mojang.brigadier.arguments.ArgumentType,java.lang.String,com.mojang.brigadier.suggestion.SuggestionProvider,com.mojang.brigadier.Command)">
+<h3>argument</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="type-parameters">&lt;T&gt;</span>&nbsp;<span class="return-type"><a href="Subcommand.html" title="class in com.lwidev.survisland.api.command">Subcommand</a></span>&nbsp;<span class="element-name">argument</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
+ com.mojang.brigadier.arguments.ArgumentType&lt;T&gt;&nbsp;type,
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;hint,
+ com.mojang.brigadier.suggestion.SuggestionProvider&lt;io.papermc.paper.command.brigadier.CommandSourceStack&gt;&nbsp;suggestions,
+ com.mojang.brigadier.Command&lt;io.papermc.paper.command.brigadier.CommandSourceStack&gt;&nbsp;executor)</span></div>
+<div class="block">Adds the final argument of this subcommand's chain, executed directly.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>hint</code> - short human-readable description of the expected value, shown if this argument ends up missing</dd>
+<dd><code>suggestions</code> - tab-completion suggestions for this argument</dd>
+</dl>
 </div>
 </section>
 </li>
