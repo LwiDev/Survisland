@@ -14,7 +14,8 @@ public class LiveCommand extends SurvislandCommand {
     public LiveCommand(EmbeddedDiscordBot discordBot) {
         super("live", "Envoyer un message sur Discord", PermissionDefault.OP);
 
-        argument("message", StringArgumentType.greedyString(), ctx -> {
+        argument("message", StringArgumentType.greedyString(),
+                "le texte à envoyer sur le salon Discord", ctx -> {
             CommandSender sender = ctx.getSource().getSender();
             String message = StringArgumentType.getString(ctx, "message");
             String senderName = sender instanceof Player ? sender.getName() : "Console";

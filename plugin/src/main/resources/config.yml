@@ -25,11 +25,3 @@ chatspec:
   
   # Couleur du chat spectateur
   color: "GRAY"
-
-# Configuration des skins (non implémenté)
-skins:
-  # Activer la gestion des skins
-  enabled: false
-  
-  # Cache des skins (en secondes)
-  cache-duration: 3600

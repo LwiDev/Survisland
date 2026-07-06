@@ -3,6 +3,7 @@ package com.lwidev.survisland.api.command;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import com.mojang.brigadier.suggestion.SuggestionProvider;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import org.bukkit.command.CommandSender;
@@ -18,12 +19,13 @@ public final class Subcommand {
     private final String name;
     private final String permission;
     private final boolean playerOnly;
-    private final CommandChain chain = new CommandChain();
+    private final CommandChain chain;
 
-    Subcommand(String name, String permission, boolean playerOnly) {
+    Subcommand(String name, String permission, boolean playerOnly, String parentLabel) {
         this.name = name;
         this.permission = permission;
         this.playerOnly = playerOnly;
+        this.chain = new CommandChain(parentLabel + " " + name);
     }
 
     public <T> Subcommand argument(String name, ArgumentType<T> type) {
@@ -31,9 +33,44 @@ public final class Subcommand {
         return this;
     }
 
+    /** @param hint short human-readable description of the expected value, shown if this argument ends up missing */
+    public <T> Subcommand argument(String name, ArgumentType<T> type, String hint) {
+        chain.argument(name, type, hint);
+        return this;
+    }
+
     /** Adds the final argument of this subcommand's chain, executed directly. */
     public <T> Subcommand argument(String name, ArgumentType<T> type, Command<CommandSourceStack> executor) {
         chain.argument(name, type);
+        chain.executes(executor);
+        return this;
+    }
+
+    /**
+     * Adds the final argument of this subcommand's chain, executed directly.
+     *
+     * @param hint short human-readable description of the expected value, shown if this argument ends up missing
+     */
+    public <T> Subcommand argument(String name, ArgumentType<T> type, String hint, Command<CommandSourceStack> executor) {
+        chain.argument(name, type, hint);
+        chain.executes(executor);
+        return this;
+    }
+
+    /** @param suggestions tab-completion suggestions for this argument */
+    public <T> Subcommand argument(String name, ArgumentType<T> type, String hint, SuggestionProvider<CommandSourceStack> suggestions) {
+        chain.argument(name, type, hint, suggestions);
+        return this;
+    }
+
+    /**
+     * Adds the final argument of this subcommand's chain, executed directly.
+     *
+     * @param hint        short human-readable description of the expected value, shown if this argument ends up missing
+     * @param suggestions tab-completion suggestions for this argument
+     */
+    public <T> Subcommand argument(String name, ArgumentType<T> type, String hint, SuggestionProvider<CommandSourceStack> suggestions, Command<CommandSourceStack> executor) {
+        chain.argument(name, type, hint, suggestions);
         chain.executes(executor);
         return this;
     }

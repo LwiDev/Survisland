@@ -23,7 +23,8 @@ public class ConfessCommand extends SurvislandCommand {
         this.discordBot = discordBot;
         this.confessLinkManager = confessLinkManager;
 
-        argument("message", StringArgumentType.greedyString(), ctx -> {
+        argument("message", StringArgumentType.greedyString(),
+                "le texte anonyme à envoyer dans votre confess Discord", ctx -> {
             Player player = (Player) ctx.getSource().getSender();
             sendConfess(player, StringArgumentType.getString(ctx, "message"));
             return Command.SINGLE_SUCCESS;
