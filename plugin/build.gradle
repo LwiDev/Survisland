@@ -1,8 +1,8 @@
 plugins {
     id 'java'
-    id 'io.papermc.paperweight.userdev' version '2.0.0-beta.18'
-    id 'xyz.jpenilla.run-paper' version '2.3.1'
-    id 'com.gradleup.shadow' version '8.3.3'
+    id 'io.papermc.paperweight.userdev' version '2.0.0-beta.21'
+    id 'xyz.jpenilla.run-paper' version '3.0.2'
+    id 'com.gradleup.shadow' version '9.4.3'
 }
 
 group = 'com.lwidev.survisland'
@@ -10,8 +10,8 @@ version = '1.1'
 description = 'Survisland'
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_21
-    targetCompatibility = JavaVersion.VERSION_21
+    sourceCompatibility = JavaVersion.VERSION_25
+    targetCompatibility = JavaVersion.VERSION_25
 }
 
 repositories {
@@ -28,25 +28,21 @@ repositories {
 
 dependencies {
     // Paper API with NMS access
-    paperweight.paperDevBundle("1.21.8-R0.1-SNAPSHOT")
-    
+    paperweight.paperDevBundle("26.2.build.48-alpha")
+
     // Discord bot integration
-    implementation 'net.dv8tion:JDA:5.0.0-beta.20'
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.16.1'
-    
-    // Command framework
-    implementation 'cloud.commandframework:cloud-paper:1.8.4'
-    implementation 'cloud.commandframework:cloud-minecraft-extras:1.8.4'
+    implementation 'net.dv8tion:JDA:6.5.0'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.22.0'
 }
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
-    options.release = 21
+    options.release = 25
 }
 
 // Configure run-paper plugin
 tasks.runServer {
-    minecraftVersion("1.21.8")
+    minecraftVersion("26.2")
 }
 
 // Shadow configuration
@@ -59,7 +55,6 @@ shadowJar {
 
     // Relocate dependencies to avoid conflicts
     relocate 'net.dv8tion', 'com.lwidev.survisland.libs.jda'
-    relocate 'cloud.commandframework', 'com.lwidev.survisland.libs.cloud'
     relocate 'com.fasterxml.jackson', 'com.lwidev.survisland.libs.jackson'
 
     // Exclude unnecessary files
@@ -69,8 +64,9 @@ shadowJar {
 }
 
 // Build order for paperweight
+// Note: reobfJar is no longer used from Paper 26.1+ onward, since Mojang ships
+// unobfuscated server jars and Paper dropped plugin remapping support.
 assemble.dependsOn(shadowJar)
-reobfJar.dependsOn(shadowJar)
 
 processResources {
     filteringCharset = 'UTF-8'

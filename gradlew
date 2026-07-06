@@ -177,4 +177,4 @@ fi
 # Now we can define the JAVACMD and GRADLE_OPTS with command substitution.
 GRADLE_OPTS="-Dorg.gradle.appname=$APP_BASE_NAME ${GRADLE_OPTS:-""}"
 
-exec "$JAVACMD" "$@" $DEFAULT_JVM_OPTS $JAVA_OPTS $GRADLE_OPTS -classpath "$CLASSPATH" org.gradle.wrapper.GradleWrapperMain "$@"
+exec "$JAVACMD" $DEFAULT_JVM_OPTS $JAVA_OPTS $GRADLE_OPTS -classpath "$CLASSPATH" org.gradle.wrapper.GradleWrapperMain "$@"

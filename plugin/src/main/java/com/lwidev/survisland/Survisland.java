@@ -1,10 +1,5 @@
 package com.lwidev.survisland;
 
-import cloud.commandframework.CommandManager;
-import cloud.commandframework.execution.CommandExecutionCoordinator;
-import cloud.commandframework.paper.PaperCommandManager;
-// import com.lwidev.survisland.actions.ActionManager;
-// import com.lwidev.survisland.commands.SurvislandCommand;
 import com.lwidev.survisland.commands.LiveCommand;
 import com.lwidev.survisland.commands.SetLiveCommand;
 import com.lwidev.survisland.commands.ConfessCommand;
@@ -17,18 +12,15 @@ import com.lwidev.survisland.confess.LinkCodeManager;
 import com.lwidev.survisland.discord.EmbeddedDiscordBot;
 import com.lwidev.survisland.chatspec.ChatSpecManager;
 import com.lwidev.survisland.skins.SkinManager;
-import com.lwidev.survisland.shared.config.DiscordConfig;
+import com.lwidev.survisland.config.DiscordConfig;
 import com.lwidev.survisland.utils.CompassTask;
 import com.lwidev.survisland.utils.PauseTask;
-import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.logging.Level;
 
 public final class Survisland extends JavaPlugin {
     
-    private CommandManager<CommandSender> commandManager;
-    // private ActionManager actionManager;
     private EmbeddedDiscordBot discordBot;
     private ConfessLinkManager confessLinkManager;
     private LinkCodeManager linkCodeManager;
@@ -43,11 +35,7 @@ public final class Survisland extends JavaPlugin {
             saveDefaultConfig();
             loadDiscordConfig();
             
-            // Initialize command manager
-            initializeCommandManager();
-            
             // Initialize managers
-            // this.actionManager = new ActionManager(this);
             this.confessLinkManager = new ConfessLinkManager(this);
             this.linkCodeManager = new LinkCodeManager(this);
             this.discordBot = new EmbeddedDiscordBot(this, discordConfig);
@@ -77,9 +65,6 @@ public final class Survisland extends JavaPlugin {
         if (discordBot != null) {
             discordBot.shutdown();
         }
-        // if (actionManager != null) {
-        //     actionManager.saveActions();
-        // }
         if (linkCodeManager != null) {
             linkCodeManager.shutdown();
         }
@@ -101,29 +86,10 @@ public final class Survisland extends JavaPlugin {
         if (!channelId.isEmpty()) {
             discordConfig.setLiveChannelId(channelId);
         }
-        
-        int botPort = getConfig().getInt("discord.port", 8081);
-        discordConfig.setBotPort(botPort);
-        
-        String botHost = getConfig().getString("discord.host", "localhost");
-        discordConfig.setBotHost(botHost);
-    }
-    
-    private void initializeCommandManager() throws Exception {
-        this.commandManager = new PaperCommandManager<>(
-            this,
-            CommandExecutionCoordinator.simpleCoordinator(),
-            commandSender -> commandSender,
-            commandSender -> commandSender
-        );
-        
-        // Enable debug mode
-        getLogger().info("Cloud Command Framework initialisé avec succès !");
     }
     
     private void registerCommands() {
         // Paper/Bukkit commands
-        // SurvislandCommand survislandCommand = new SurvislandCommand(this, actionManager);
         LiveCommand liveCommand = new LiveCommand(this, discordBot);
         SetLiveCommand setLiveCommand = new SetLiveCommand(this, discordBot);
         ConfessCommand confessCommand = new ConfessCommand(this, discordBot, confessLinkManager);
@@ -131,8 +97,6 @@ public final class Survisland extends JavaPlugin {
         CampCommand campCommand = new CampCommand(this);
         PauseCommand pauseCommand = new PauseCommand(this);
 
-        // getCommand("survisland").setExecutor(survislandCommand);
-        // getCommand("survisland").setTabCompleter(survislandCommand);
         getCommand("live").setExecutor(liveCommand);
         getCommand("live").setTabCompleter(liveCommand);
         getCommand("setlive").setExecutor(setLiveCommand);
@@ -163,30 +127,14 @@ public final class Survisland extends JavaPlugin {
         });
     }
     
-    public CommandManager<CommandSender> getCommandManager() {
-        return commandManager;
-    }
-    
-    // public ActionManager getActionManager() {
-    //     return actionManager;
-    // }
-    
     public EmbeddedDiscordBot getDiscordBot() {
         return discordBot;
     }
-    
+
     public DiscordConfig getDiscordConfig() {
         return discordConfig;
     }
-    
-    public ChatSpecManager getChatSpecManager() {
-        return chatSpecManager;
-    }
-    
-    public SkinManager getSkinManager() {
-        return skinManager;
-    }
-    
+
     public ConfessLinkManager getConfessLinkManager() {
         return confessLinkManager;
     }

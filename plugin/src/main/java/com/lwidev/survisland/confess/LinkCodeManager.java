@@ -157,10 +157,6 @@ public class LinkCodeManager {
         plugin.getLogger().info("LinkCodeManager shutdown");
     }
     
-    public int getPendingLinksCount() {
-        return pendingLinks.size();
-    }
-    
     private static class PendingLink {
         private final String playerName;
         private final long expiryTime;

@@ -1,7 +1,7 @@
 name: Survisland
 version: ${version}
 main: com.lwidev.survisland.Survisland
-api-version: '1.21'
+api-version: '26.2'
 authors: [LwiDev]
 description: Plugin Minecraft pour Survisland avec intégration Discord
 website: https://survisland.com

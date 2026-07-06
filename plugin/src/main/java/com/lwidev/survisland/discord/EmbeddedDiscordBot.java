@@ -1,7 +1,7 @@
 package com.lwidev.survisland.discord;
 
 import com.lwidev.survisland.Survisland;
-import com.lwidev.survisland.shared.config.DiscordConfig;
+import com.lwidev.survisland.config.DiscordConfig;
 import com.lwidev.survisland.confess.ConfessLinkManager;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -81,7 +81,7 @@ public class EmbeddedDiscordBot extends ListenerAdapter {
     public void sendMessage(String channelId, String message, String sender, BiConsumer<Boolean, String> callback) {
         sendMessage(channelId, message, sender, false, callback);
     }
-    
+
     public void sendConfessMessage(String channelId, String message, String sender, BiConsumer<Boolean, String> callback) {
         sendMessage(channelId, message, sender, true, callback);
     }
@@ -147,11 +147,7 @@ public class EmbeddedDiscordBot extends ListenerAdapter {
     public JDA getJDA() {
         return jda;
     }
-    
-    public DiscordConfig getConfig() {
-        return config;
-    }
-    
+
     private String getDiscordToken() {
         // Try environment variable first (Docker/production friendly)
         String token = System.getenv("DISCORD_BOT_TOKEN");
@@ -206,9 +202,5 @@ public class EmbeddedDiscordBot extends ListenerAdapter {
     
     public void setConfessLinkManager(ConfessLinkManager confessLinkManager) {
         this.confessLinkManager = confessLinkManager;
-    }
-    
-    public ConfessLinkManager getConfessLinkManager() {
-        return confessLinkManager;
     }
 }
