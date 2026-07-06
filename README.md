@@ -1,94 +1,95 @@
-# Survisland Monorepo
+# Survisland
 
-Un monorepo complet pour le plugin Minecraft Paper Survisland avec intégration Discord.
+Plugin Minecraft Paper pour Survisland, avec intégration Discord embarquée (JDA).
 
-## Fonctionnalités
+## Stack technique
 
-### 🎮 Plugin Minecraft
+- **Minecraft / Paper API**: 26.2 (alpha)
+- **Java**: 25
+- **Build**: Gradle 9.6.1
+- **Discord**: JDA 6.5.0 (bot embarqué dans le plugin, pas de service séparé)
 
-#### Commandes
-- **`/camp`**: Ajoute la direction vers le centre du campement dans l'Action bar
-- **`/live <message>`**: Envoie un message du serveur vers Discord
-- **`/set_live <channel_id>`**: Configure le channel Discord cible
+## Structure du projet
 
-#### Gestion des Skins
-- Forcer des skins spécifiques pour les épreuves
-- Support des skins personnalisés
-- Cache intelligent des données
-
-### 🤖 Bot Discord
-
-- **JDA (Java Discord API)** pour une intégration native
-- **API REST** intégrée pour recevoir les messages du plugin
-- **Endpoints disponibles**:
-  - `GET /health` - Statut du bot
-  - `POST /api/send-message` - Envoyer un message
-
-### 📚 Module Shared
-
-- **Models communs**: Action, MessageRequest, DiscordConfig
-- **DTOs** pour la communication inter-modules
-- **Configuration centralisée**
-
-### 4. Configuration in-game
-
-```bash
-# Configurer le channel Discord
-/set_live 123456789012345678
-
-# Envoyer un message test
-/live Serveur en ligne!
-
-# Ajouter une action
-/surv action add "aveuglement" "/effect give @s blindness 10 255,/tell @s Tu es aveuglé!"
+```
+plugin/   → le plugin Minecraft (commandes, listeners, bot Discord, skins, chat spectateur)
 ```
 
-## Permissions
+Il n'y a pas de module ou service Discord séparé : le bot JDA tourne à l'intérieur du plugin
+(`plugin/src/main/java/com/lwidev/survisland/discord/EmbeddedDiscordBot.java`) et se connecte
+directement à l'API Discord (pas d'API REST intermédiaire).
 
-### Actions
-- `survisland.action.menu` - Ouvrir le menu (défaut: true)
-- `survisland.action.add` - Ajouter des actions (défaut: op)
-- `survisland.action.modify` - Modifier des actions (défaut: op)
-- `survisland.action.grant/revoke` - Gérer les permissions (défaut: op)
+## Commandes
 
-### Discord
-- `survisland.live.send` - Envoyer messages Discord (défaut: op)
-- `survisland.live.config` - Configurer Discord (défaut: op)
+| Commande | Alias | Description | Permission |
+|---|---|---|---|
+| `/live <message>` | — | Envoie un message sur Discord | `survisland.live.send` |
+| `/setlive [channel_id]` | — | Configure le channel Discord cible | `survisland.live.config` |
+| `/confess <message>` | `/conf` | Envoie un message dans son confess Discord lié | `survisland.confess.send` |
+| `/link` | — | Génère un code pour lier son compte au confess Discord (`/verify <code>` côté Discord) | `survisland.confess.link` |
+| `/camp` | `/campement` | Affiche la direction vers son campement dans l'action bar | `survisland.camp.use` |
+| `/pause` | — | Active/désactive la pause du jeu (gel des joueurs) | `survisland.pause.use` |
 
-### Chat Spectateur
-- `survisland.chatspec.use` - Utiliser le chat spec (défaut: true)
-- `survisland.chatspec.receive` - Recevoir les messages spec (défaut: op)
+## Fonctionnalités additionnelles
+
+- **Chat spectateur** : si activé dans `config.yml` (`chatspec.enabled`), les messages des joueurs
+  en mode spectateur sont automatiquement reformatés et redirigés vers les spectateurs et les
+  joueurs ayant la permission `survisland.chatspec.receive`. Pas de commande de toggle en jeu.
+- **Skins forcés** : un skin forcé pour un joueur (stocké dans `skin-data.yml`) est réappliqué
+  automatiquement à sa connexion. Il n'y a actuellement pas de commande en jeu pour en assigner un
+  nouveau.
+
+## Configuration (`config.yml`)
+
+```yaml
+discord:
+  token: ""                 # ou variable d'env DISCORD_BOT_TOKEN
+  live-channel-id: ""
+  message-format: "**{sender} »** {message}"
+  confess-format: "{message}"
+
+chatspec:
+  enabled: false
+  prefix: "[SPEC]"
+  color: "GRAY"
+
+skins:
+  enabled: false
+  cache-duration: 3600       # secondes
+```
+
+Le token du bot Discord peut être fourni via `discord.token` dans `config.yml` ou via la variable
+d'environnement `DISCORD_BOT_TOKEN` (prioritaire).
 
 ## Développement
 
-### Ajouter une nouvelle fonctionnalité
+```bash
+# Build complet
+./gradlew build
 
-1. **Models communs** → `shared/src/main/java/com/lwidev/survisland/shared/`
-2. **Plugin Minecraft** → `plugin/src/main/java/com/lwidev/survisland/`
-3. **Bot Discord** → `discord/src/main/java/com/lwidev/survisland/discord/`
+# Lancer un serveur Paper local avec le plugin chargé
+./gradlew runServer
 
-### Architecture des commandes
-
-Le système utilise **Cloud Command Framework** pour:
-- ✅ Autocomplétion avancée
-- ✅ Validation automatique des arguments
-- ✅ Suggestions contextuelles
-- ✅ Gestion des permissions intégrée
-
-### Communication Plugin ↔ Discord
-
-```
-Plugin Minecraft  →  HTTP POST  →  Bot Discord  →  Discord API
-      ↓                              ↓
-   /live cmd        MessageRequest   JDA.sendMessage()
+# Nettoyer les artefacts de build
+./gradlew clean
 ```
 
-## Support et Contribution
+## Workflow de contribution
 
-- **Issues**: Signalez les bugs dans les issues GitHub
-- **Pull Requests**: Contributions bienvenues
-- **Documentation**: Mise à jour automatique avec les nouvelles fonctionnalités
+Ce dépôt suit un modèle strict : **aucun changement n'est mergé sur `main` sans validation explicite
+du mainteneur (LwiDev)**.
 
-## Licence
+1. Créer une branche depuis `main` (`feature/xxx`, `fix/xxx`).
+2. Faire les changements, vérifier que `./gradlew build` passe.
+3. Ouvrir une Pull Request vers `main` avec une description claire de ce qui change et pourquoi.
+4. Attendre la relecture et l'approbation explicite avant tout merge — pas de merge automatique,
+   pas de push direct sur `main`.
+5. Une fois approuvée, la PR est mergée (par le mainteneur ou après son accord explicite).
 
-© 2024 LwiDev - Tous droits réservés
+Aucun outil ne doit pousser sur `main` ou merger une PR sans confirmation préalable de LwiDev.
+
+## Versioning
+
+Le dépôt utilise des tags git `vMAJOR.MINOR.PATCH` (semver). Un tag est créé à chaque merge sur
+`main` (patch incrémenté par défaut) ; un bump minor ou major se fait explicitement selon la nature
+du changement (nouvelle fonctionnalité rétrocompatible → minor, changement incompatible → major).

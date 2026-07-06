@@ -63,27 +63,7 @@ public class ConfessLinkManager {
         plugin.getLogger().info("Linked player " + minecraftPseudo + " to channel " + channelName);
     }
     
-    public void unlinkPlayer(String minecraftPseudo) {
-        String removed = links.remove(minecraftPseudo.toLowerCase());
-        if (removed != null) {
-            saveLinks();
-            plugin.getLogger().info("Unlinked player " + minecraftPseudo + " from channel " + removed);
-        }
-    }
-    
     public String getPlayerChannel(String minecraftPseudo) {
         return links.get(minecraftPseudo.toLowerCase());
-    }
-    
-    public boolean isPlayerLinked(String minecraftPseudo) {
-        return links.containsKey(minecraftPseudo.toLowerCase());
-    }
-    
-    public Map<String, String> getAllLinks() {
-        return new HashMap<>(links);
-    }
-    
-    public int getLinksCount() {
-        return links.size();
     }
 }

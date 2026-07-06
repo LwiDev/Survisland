@@ -22,15 +22,7 @@ public class MessageUtils {
         sender.sendMessage(PREFIX + "§e" + message);
     }
     
-    public static void sendWarningMessage(CommandSender sender, String message) {
-        sender.sendMessage(PREFIX + "§6" + message);
-    }
-    
     public static void sendSecondaryMessage(CommandSender sender, String message) {
         sender.sendMessage(PREFIX + "§7" + message);
-    }
-    
-    public static String getPrefix() {
-        return PREFIX;
     }
 }

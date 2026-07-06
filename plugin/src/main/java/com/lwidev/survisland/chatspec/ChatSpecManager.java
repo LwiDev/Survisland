@@ -10,21 +10,16 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-
 public class ChatSpecManager implements Listener {
-    
+
     private final Survisland plugin;
-    private final Set<Player> spectatorChatEnabled;
     private final String prefix;
     private final NamedTextColor color;
     private boolean enabled;
-    
+
     public ChatSpecManager(Survisland plugin) {
         this.plugin = plugin;
-        this.spectatorChatEnabled = ConcurrentHashMap.newKeySet();
-        
+
         // Load configuration
         this.enabled = plugin.getConfig().getBoolean("chatspec.enabled", true);
         this.prefix = plugin.getConfig().getString("chatspec.prefix", "[SPEC]");
@@ -86,36 +81,5 @@ public class ChatSpecManager implements Listener {
         
         // OPs can see spectator chat
         return player.isOp();
-    }
-    
-    public void toggleSpectatorChat(Player player) {
-        if (spectatorChatEnabled.contains(player)) {
-            spectatorChatEnabled.remove(player);
-            player.sendMessage(Component.text("Chat spectateur désactivé", NamedTextColor.RED));
-        } else {
-            spectatorChatEnabled.add(player);
-            player.sendMessage(Component.text("Chat spectateur activé", NamedTextColor.GREEN));
-        }
-    }
-    
-    public boolean isSpectatorChatEnabled(Player player) {
-        return spectatorChatEnabled.contains(player);
-    }
-    
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-        plugin.getConfig().set("chatspec.enabled", enabled);
-        plugin.saveConfig();
-    }
-    
-    public boolean isEnabled() {
-        return enabled;
-    }
-    
-    public void reload() {
-        // Reload configuration
-        plugin.reloadConfig();
-        
-        this.enabled = plugin.getConfig().getBoolean("chatspec.enabled", true);
     }
 }
