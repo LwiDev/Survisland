@@ -100,7 +100,7 @@ enforcement automatically.
 }
 </code></pre>
 No <code>.then(...)</code> chaining and no manual registration bookkeeping needed —
-<a href="SurvislandCommands.html#register(org.bukkit.plugin.java.JavaPlugin,com.lwidev.survisland.api.command.SurvislandCommand...)"><code>SurvislandCommands.register(JavaPlugin, SurvislandCommand...)</code></a> builds and registers everything.</div>
+<a href="SurvislandCommandManager.html#register(org.bukkit.plugin.java.JavaPlugin,com.lwidev.survisland.api.command.SurvislandCommand...)"><code>SurvislandCommandManager.register(JavaPlugin, SurvislandCommand...)</code></a> builds and registers everything.</div>
 </div>
 </section>
 <section class="summary">
@@ -335,7 +335,7 @@ No <code>.then(...)</code> chaining and no manual registration bookkeeping neede
 <div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type"><a href="Subcommand.html" title="class in com.lwidev.survisland.api.command">Subcommand</a></span>&nbsp;<span class="element-name">subcommand</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</span></div>
 <div class="block">Declares a subcommand (e.g. "force" for "/skin force ..."). Its permission
 is auto-derived as <code>permission() + "." + name</code> and is registered
-automatically by <a href="SurvislandCommands.html#register(org.bukkit.plugin.java.JavaPlugin,com.lwidev.survisland.api.command.SurvislandCommand...)"><code>SurvislandCommands.register(JavaPlugin, SurvislandCommand...)</code></a>.</div>
+automatically by <a href="SurvislandCommandManager.html#register(org.bukkit.plugin.java.JavaPlugin,com.lwidev.survisland.api.command.SurvislandCommand...)"><code>SurvislandCommandManager.register(JavaPlugin, SurvislandCommand...)</code></a>.</div>
 </div>
 </section>
 </li>
