@@ -34,7 +34,7 @@ import java.util.List;
  * }
  * }</pre>
  * No {@code .then(...)} chaining and no manual registration bookkeeping needed —
- * {@link SurvislandCommands#register} builds and registers everything.
+ * {@link SurvislandCommandManager#register} builds and registers everything.
  */
 public abstract class SurvislandCommand {
 
@@ -130,7 +130,7 @@ public abstract class SurvislandCommand {
     /**
      * Declares a subcommand (e.g. "force" for "/skin force ..."). Its permission
      * is auto-derived as {@code permission() + "." + name} and is registered
-     * automatically by {@link SurvislandCommands#register}.
+     * automatically by {@link SurvislandCommandManager#register}.
      */
     public final Subcommand subcommand(String name) {
         Subcommand sub = new Subcommand(name, permission() + "." + name, playerOnly, "/" + this.name);
@@ -170,7 +170,7 @@ public abstract class SurvislandCommand {
         return !playerOnly || sender instanceof Player;
     }
 
-    /** Subcommand names, used by {@link SurvislandCommands} to auto-register their permissions. */
+    /** Subcommand names, used by {@link SurvislandCommandManager} to auto-register their permissions. */
     final List<String> subcommandNames() {
         return subcommands.stream().map(Subcommand::name).toList();
     }

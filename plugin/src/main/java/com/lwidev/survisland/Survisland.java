@@ -1,6 +1,7 @@
 package com.lwidev.survisland;
 
-import com.lwidev.survisland.api.command.SurvislandCommands;
+import com.lwidev.survisland.api.command.SurvislandCommandManager;
+import com.lwidev.survisland.api.menu.SurvislandMenuManager;
 import com.lwidev.survisland.commands.LiveCommand;
 import com.lwidev.survisland.commands.SetLiveCommand;
 import com.lwidev.survisland.commands.ConfessCommand;
@@ -50,6 +51,9 @@ public final class Survisland extends JavaPlugin {
             // Register commands
             registerCommands();
 
+            // Register the menu system's single listener
+            SurvislandMenuManager.register(this);
+
             // Register listeners
             getServer().getPluginManager().registerEvents(new PauseListener(), this);
 
@@ -90,7 +94,7 @@ public final class Survisland extends JavaPlugin {
     }
     
     private void registerCommands() {
-        SurvislandCommands.register(this,
+        SurvislandCommandManager.register(this,
                 new LiveCommand(discordBot),
                 new SetLiveCommand(this, discordBot),
                 new ConfessCommand(discordBot, confessLinkManager),

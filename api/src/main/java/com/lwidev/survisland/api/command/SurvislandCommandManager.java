@@ -13,9 +13,9 @@ import org.bukkit.plugin.java.JavaPlugin;
  * auto-registers their (and their subcommands') permission nodes with Bukkit.
  * No plugin.yml command/permission declaration needed.
  */
-public final class SurvislandCommands {
+public final class SurvislandCommandManager {
 
-    private SurvislandCommands() {
+    private SurvislandCommandManager() {
     }
 
     public static void register(JavaPlugin plugin, SurvislandCommand... commands) {
