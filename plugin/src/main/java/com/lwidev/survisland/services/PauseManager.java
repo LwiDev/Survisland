@@ -1,6 +1,7 @@
-package com.lwidev.survisland.utils;
+package com.lwidev.survisland.services;
 
 import com.lwidev.survisland.Survisland;
+import com.lwidev.survisland.api.utils.Shutdownable;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
@@ -21,29 +22,34 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-public class PauseManager {
+public class PauseManager implements Shutdownable {
 
-    private static boolean isPaused = false;
-    private static BukkitTask titleTask = null;
-    private static final Set<UUID> frozenPlayers = new HashSet<>();
+    private final Survisland plugin;
+    private boolean paused = false;
+    private BukkitTask titleTask = null;
+    private final Set<UUID> frozenPlayers = new HashSet<>();
     private static final NamespacedKey FREEZE_MODIFIER_KEY = new NamespacedKey("survisland", "pause_freeze");
 
-    /** Toggles the pause state and returns the new state, so callers can confirm it to whoever triggered it. */
-    public static boolean toggle(Survisland plugin) {
-        if (isPaused) {
-            unpause(plugin);
-        } else {
-            pause(plugin);
-        }
-        return isPaused;
+    public PauseManager(Survisland plugin) {
+        this.plugin = plugin;
     }
 
-    public static void pause(Survisland plugin) {
-        if (isPaused) {
+    /** Toggles the pause state and returns the new state, so callers can confirm it to whoever triggered it. */
+    public boolean toggle() {
+        if (paused) {
+            unpause();
+        } else {
+            pause();
+        }
+        return paused;
+    }
+
+    public void pause() {
+        if (paused) {
             return;
         }
 
-        isPaused = true;
+        paused = true;
 
         // Geler tous les joueurs en survie/aventure
         for (Player player : Bukkit.getOnlinePlayers()) {
@@ -54,13 +60,13 @@ public class PauseManager {
         }
 
         // Jouer le son de mise en pause (pitch descendant)
-        playSoundSequence(plugin, false);
+        playSoundSequence(false);
 
         // Démarrer la tâche d'affichage du titre
         titleTask = new BukkitRunnable() {
             @Override
             public void run() {
-                if (!isPaused) {
+                if (!paused) {
                     this.cancel();
                     return;
                 }
@@ -70,12 +76,12 @@ public class PauseManager {
         }.runTaskTimer(plugin, 0L, 20L); // Toutes les 20 ticks (1 seconde)
     }
 
-    public static void unpause(Survisland plugin) {
-        if (!isPaused) {
+    public void unpause() {
+        if (!paused) {
             return;
         }
 
-        isPaused = false;
+        paused = false;
 
         // Arrêter la tâche d'affichage du titre
         if (titleTask != null && !titleTask.isCancelled()) {
@@ -92,16 +98,15 @@ public class PauseManager {
         frozenPlayers.clear();
 
         // Jouer le son de reprise (pitch montant)
-        playSoundSequence(plugin, true);
+        playSoundSequence(true);
     }
 
-    private static void showPauseTitle() {
-        Component pauseTitle = Component.text("PAUSE").color(NamedTextColor.RED).decorate(TextDecoration.BOLD);
-        Title title = Title.title(pauseTitle, Component.empty(), Title.Times.times(Duration.ZERO, Duration.ofMillis(1500), Duration.ZERO));
+    private void showPauseTitle() {
+        Title title = Title.title(Component.text("PAUSE").color(NamedTextColor.RED).decorate(TextDecoration.BOLD), Component.empty(), Title.Times.times(Duration.ZERO, Duration.ofMillis(1500), Duration.ZERO));
         frozenPlayers.stream().map(Bukkit::getPlayer).filter(player -> player != null && player.isOnline()).filter(player -> player.getGameMode() == GameMode.SURVIVAL || player.getGameMode() == GameMode.ADVENTURE).forEach(player -> player.showTitle(title));
     }
 
-    private static void playSoundSequence(Survisland plugin, boolean ascending) {
+    private void playSoundSequence(boolean ascending) {
         float[] pitches;
 
         if (ascending) {
@@ -132,23 +137,23 @@ public class PauseManager {
         }.runTaskTimer(plugin, 0L, 2L); // Toutes les 2 ticks (0.1 seconde)
     }
 
-    public static boolean isPaused() {
-        return isPaused;
+    public boolean isPaused() {
+        return paused;
     }
 
-    public static boolean isFrozen(Player player) {
+    public boolean isFrozen(Player player) {
         return frozenPlayers.contains(player.getUniqueId());
     }
 
-    public static void freezePlayer(Player player) {
-        if (isPaused && (player.getGameMode() == GameMode.SURVIVAL || player.getGameMode() == GameMode.ADVENTURE)) {
+    public void freezePlayer(Player player) {
+        if (paused && (player.getGameMode() == GameMode.SURVIVAL || player.getGameMode() == GameMode.ADVENTURE)) {
             applyFreezeAttributes(player);
             frozenPlayers.add(player.getUniqueId());
             showPauseTitle();
         }
     }
 
-    private static void applyFreezeAttributes(Player player) {
+    private void applyFreezeAttributes(Player player) {
         AttributeModifier freezeModifier = new AttributeModifier(
                 FREEZE_MODIFIER_KEY,
                 -1.0,
@@ -217,7 +222,7 @@ public class PauseManager {
         }
     }
 
-    private static void removeFreezeAttributes(Player player) {
+    private void removeFreezeAttributes(Player player) {
         // Débloquer le mouvement
         AttributeInstance movementSpeed = player.getAttribute(Attribute.MOVEMENT_SPEED);
         if (movementSpeed != null) {
@@ -274,8 +279,9 @@ public class PauseManager {
         }
     }
 
-    public static void cleanup() {
-        isPaused = false;
+    @Override
+    public void shutdown() {
+        paused = false;
         frozenPlayers.clear();
 
         if (titleTask != null && !titleTask.isCancelled()) {

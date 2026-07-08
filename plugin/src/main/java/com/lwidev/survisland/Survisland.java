@@ -2,6 +2,7 @@ package com.lwidev.survisland;
 
 import com.lwidev.survisland.api.command.SurvislandCommandManager;
 import com.lwidev.survisland.api.menu.SurvislandMenuManager;
+import com.lwidev.survisland.api.utils.Shutdownable;
 import com.lwidev.survisland.commands.LiveCommand;
 import com.lwidev.survisland.commands.SetLiveCommand;
 import com.lwidev.survisland.commands.ConfessCommand;
@@ -20,18 +21,20 @@ import com.lwidev.survisland.confess.LinkCodeManager;
 import com.lwidev.survisland.discord.EmbeddedDiscordBot;
 import com.lwidev.survisland.chatspec.ChatSpecManager;
 import com.lwidev.survisland.menu.MenuContext;
+import com.lwidev.survisland.services.FollowManager;
+import com.lwidev.survisland.services.PauseManager;
 import com.lwidev.survisland.skins.SkinManager;
 import com.lwidev.survisland.config.DiscordConfig;
 import com.lwidev.survisland.teams.TeamManager;
 import com.lwidev.survisland.utils.CompassTask;
-import com.lwidev.survisland.utils.FollowManager;
-import com.lwidev.survisland.utils.PauseManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 
 public final class Survisland extends JavaPlugin {
-    
+
     private EmbeddedDiscordBot discordBot;
     private ConfessLinkManager confessLinkManager;
     private LinkCodeManager linkCodeManager;
@@ -39,6 +42,8 @@ public final class Survisland extends JavaPlugin {
     private DiscordConfig discordConfig;
     private TimerService timerService;
     private FollowManager followManager;
+    private PauseManager pauseManager;
+    private final List<Shutdownable> shutdownables = new ArrayList<>();
 
     @Override
     public void onEnable() {
@@ -46,31 +51,31 @@ public final class Survisland extends JavaPlugin {
             // Load configuration
             saveDefaultConfig();
             loadDiscordConfig();
-            
+
             // Initialize managers
             this.confessLinkManager = new ConfessLinkManager(this);
-            this.linkCodeManager = new LinkCodeManager(this);
-            this.discordBot = new EmbeddedDiscordBot(this, discordConfig);
+            this.linkCodeManager = track(new LinkCodeManager(this));
+            this.discordBot = track(new EmbeddedDiscordBot(this, discordConfig));
             this.discordBot.setConfessLinkManager(confessLinkManager);
-            this.skinManager = new SkinManager(this);
+            this.skinManager = track(new SkinManager(this));
             new ChatSpecManager(this);
-            this.timerService = new TimerService(this);
-            this.followManager = new FollowManager(this);
+            this.timerService = track(new TimerService(this));
+            this.followManager = track(new FollowManager(this));
+            this.pauseManager = track(new PauseManager(this));
+            new PauseListener(this, pauseManager);
+            shutdownables.add(CompassTask::shutdownAll);
 
             // Initialize Discord bot asynchronously
             initializeDiscordBot();
-            
+
             // Register commands
             registerCommands();
 
             // Register the menu system's single listener
             SurvislandMenuManager.register(this);
 
-            // Register listeners
-            getServer().getPluginManager().registerEvents(new PauseListener(), this);
-
             getLogger().info("Survisland plugin enabled successfully!");
-            
+
         } catch (Exception e) {
             getLogger().log(Level.SEVERE, "Failed to enable Survisland plugin", e);
             getServer().getPluginManager().disablePlugin(this);
@@ -79,38 +84,26 @@ public final class Survisland extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        if (discordBot != null) {
-            discordBot.shutdown();
-        }
-        if (linkCodeManager != null) {
-            linkCodeManager.shutdown();
-        }
-        if (skinManager != null) {
-            skinManager.shutdown();
-        }
-        // Nettoyer toutes les tâches de boussole actives
-        CompassTask.cleanupAll();
-        // Nettoyer la pause
-        PauseManager.cleanup();
-        if (timerService != null) {
-            timerService.cleanup();
-        }
-        if (followManager != null) {
-            followManager.shutdown();
-        }
+        shutdownables.forEach(Shutdownable::shutdown);
         getLogger().info("Survisland plugin disabled");
     }
-    
+
+    /** Registers a manager/service for automatic shutdown() on plugin disable, and returns it for inline assignment. */
+    private <T extends Shutdownable> T track(T shutdownable) {
+        shutdownables.add(shutdownable);
+        return shutdownable;
+    }
+
     private void loadDiscordConfig() {
         discordConfig = new DiscordConfig();
-        
+
         // Load from plugin config
         String channelId = getConfig().getString("discord.live-channel-id", "");
         if (!channelId.isEmpty()) {
             discordConfig.setLiveChannelId(channelId);
         }
     }
-    
+
     private void registerCommands() {
         SurvislandCommandManager.register(this,
                 new LiveCommand(discordBot),
@@ -118,15 +111,15 @@ public final class Survisland extends JavaPlugin {
                 new ConfessCommand(discordBot, confessLinkManager),
                 new LinkCommand(linkCodeManager),
                 new CampCommand(this),
-                new PauseCommand(this),
+                new PauseCommand(pauseManager),
                 new SkinCommand(skinManager),
                 new FollowCommand(this, followManager),
-                new MenuCommand(new MenuContext(this, new TeamManager(), new AnnouncementService(this), timerService, new VoteService(this)))
+                new MenuCommand(new MenuContext(this, new TeamManager(), new AnnouncementService(this), timerService, new VoteService(this), pauseManager))
         );
 
         getLogger().info("Commandes enregistrées : /live, /setlive, /confess, /link, /camp, /pause, /skin, /follow, /menu");
     }
-    
+
     private void initializeDiscordBot() {
         discordBot.initialize().thenAccept(success -> {
             if (success) {
@@ -140,7 +133,7 @@ public final class Survisland extends JavaPlugin {
             return null;
         });
     }
-    
+
     public EmbeddedDiscordBot getDiscordBot() {
         return discordBot;
     }
@@ -152,7 +145,7 @@ public final class Survisland extends JavaPlugin {
     public ConfessLinkManager getConfessLinkManager() {
         return confessLinkManager;
     }
-    
+
     public LinkCodeManager getLinkCodeManager() {
         return linkCodeManager;
     }

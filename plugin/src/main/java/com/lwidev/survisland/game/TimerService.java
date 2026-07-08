@@ -1,6 +1,7 @@
 package com.lwidev.survisland.game;
 
 import com.lwidev.survisland.Survisland;
+import com.lwidev.survisland.api.utils.Shutdownable;
 import com.lwidev.survisland.api.utils.SoundUtils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -11,7 +12,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /** Named countdown timers (e.g. "épreuve"), started/listed/cancelled from the /menu game page. */
-public class TimerService {
+public class TimerService implements Shutdownable {
 
     private final Survisland plugin;
     private final Map<String, BukkitTask> tasks = new LinkedHashMap<>();
@@ -49,7 +50,8 @@ public class TimerService {
         return remaining;
     }
 
-    public void cleanup() {
+    @Override
+    public void shutdown() {
         tasks.values().forEach(BukkitTask::cancel);
         tasks.clear();
         endTimesMillis.clear();

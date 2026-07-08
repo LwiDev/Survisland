@@ -3,7 +3,7 @@ package com.lwidev.survisland.commands;
 import com.lwidev.survisland.Survisland;
 import com.lwidev.survisland.api.command.SurvislandCommand;
 import com.lwidev.survisland.api.utils.MessageUtils;
-import com.lwidev.survisland.utils.FollowManager;
+import com.lwidev.survisland.services.FollowManager;
 import com.mojang.brigadier.Command;
 import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
 import org.bukkit.GameMode;
