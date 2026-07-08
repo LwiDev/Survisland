@@ -3,6 +3,7 @@ package com.lwidev.survisland.commands;
 import com.lwidev.survisland.api.command.SurvislandCommand;
 import com.lwidev.survisland.confess.ConfessLinkManager;
 import com.lwidev.survisland.discord.EmbeddedDiscordBot;
+import com.lwidev.survisland.api.utils.BrandUtils;
 import com.lwidev.survisland.api.utils.MessageUtils;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.StringArgumentType;
@@ -58,7 +59,7 @@ public class ConfessCommand extends SurvislandCommand {
         }
 
         if (targetChannel == null) {
-            MessageUtils.sendErrorMessage(sender, "Salon Discord introuvable : " + channelName);
+            MessageUtils.sendErrorMessage(sender, "Salon Discord introuvable : ", channelName);
             MessageUtils.sendSecondaryMessage(sender, "Contactez un administrateur ou reliez votre compte");
             return;
         }
@@ -66,7 +67,7 @@ public class ConfessCommand extends SurvislandCommand {
         String channelId = targetChannel.getId();
         discordBot.sendConfessMessage(channelId, message, playerName, (success, error) -> {
             if (success) {
-                MessageUtils.sendSuccessMessage(sender, "§7Message envoyé : §f" + message);
+                MessageUtils.sendSuccessMessage(sender, "Message envoyé : ", MessageUtils.highlight(message, BrandUtils.TERTIARY));
             } else {
                 MessageUtils.sendErrorMessage(sender, "Erreur lors de l'envoi du message : " + (error != null ? error : "Erreur inconnue"));
             }

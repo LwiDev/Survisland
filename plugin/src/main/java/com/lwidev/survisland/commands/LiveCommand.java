@@ -2,6 +2,7 @@ package com.lwidev.survisland.commands;
 
 import com.lwidev.survisland.api.command.SurvislandCommand;
 import com.lwidev.survisland.discord.EmbeddedDiscordBot;
+import com.lwidev.survisland.api.utils.BrandUtils;
 import com.lwidev.survisland.api.utils.MessageUtils;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.StringArgumentType;
@@ -22,7 +23,7 @@ public class LiveCommand extends SurvislandCommand {
 
             discordBot.sendLiveMessage(message, senderName, (success, error) -> {
                 if (success) {
-                    MessageUtils.sendSuccessMessage(sender, "§7" + senderName + " §8» §7Discord : §f" + message);
+                    MessageUtils.sendSuccessMessage(sender, MessageUtils.highlight(senderName, BrandUtils.PRIMARY), " » Discord : ", MessageUtils.highlight(message, BrandUtils.TERTIARY));
                 } else {
                     MessageUtils.sendErrorMessage(sender, "Erreur lors de l'envoi du message : " + (error != null ? error : "Erreur inconnue"));
                     if (error != null && error.contains("channel")) {

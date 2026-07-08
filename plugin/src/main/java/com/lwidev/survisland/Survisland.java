@@ -7,15 +7,21 @@ import com.lwidev.survisland.commands.SetLiveCommand;
 import com.lwidev.survisland.commands.ConfessCommand;
 import com.lwidev.survisland.commands.LinkCommand;
 import com.lwidev.survisland.commands.CampCommand;
+import com.lwidev.survisland.commands.MenuCommand;
 import com.lwidev.survisland.commands.PauseCommand;
 import com.lwidev.survisland.commands.SkinCommand;
 import com.lwidev.survisland.confess.ConfessLinkManager;
+import com.lwidev.survisland.game.AnnouncementService;
+import com.lwidev.survisland.game.TimerService;
+import com.lwidev.survisland.game.VoteService;
 import com.lwidev.survisland.listeners.PauseListener;
 import com.lwidev.survisland.confess.LinkCodeManager;
 import com.lwidev.survisland.discord.EmbeddedDiscordBot;
 import com.lwidev.survisland.chatspec.ChatSpecManager;
+import com.lwidev.survisland.menu.MenuContext;
 import com.lwidev.survisland.skins.SkinManager;
 import com.lwidev.survisland.config.DiscordConfig;
+import com.lwidev.survisland.teams.TeamManager;
 import com.lwidev.survisland.utils.CompassTask;
 import com.lwidev.survisland.utils.PauseManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -29,6 +35,7 @@ public final class Survisland extends JavaPlugin {
     private LinkCodeManager linkCodeManager;
     private SkinManager skinManager;
     private DiscordConfig discordConfig;
+    private TimerService timerService;
 
     @Override
     public void onEnable() {
@@ -44,6 +51,7 @@ public final class Survisland extends JavaPlugin {
             this.discordBot.setConfessLinkManager(confessLinkManager);
             this.skinManager = new SkinManager(this);
             new ChatSpecManager(this);
+            this.timerService = new TimerService(this);
 
             // Initialize Discord bot asynchronously
             initializeDiscordBot();
@@ -80,6 +88,9 @@ public final class Survisland extends JavaPlugin {
         CompassTask.cleanupAll();
         // Nettoyer la pause
         PauseManager.cleanup();
+        if (timerService != null) {
+            timerService.cleanup();
+        }
         getLogger().info("Survisland plugin disabled");
     }
     
@@ -101,10 +112,11 @@ public final class Survisland extends JavaPlugin {
                 new LinkCommand(linkCodeManager),
                 new CampCommand(this),
                 new PauseCommand(this),
-                new SkinCommand(skinManager)
+                new SkinCommand(skinManager),
+                new MenuCommand(new MenuContext(this, new TeamManager(), new AnnouncementService(this), timerService, new VoteService(this)))
         );
 
-        getLogger().info("Commandes enregistrées : /live, /setlive, /confess, /link, /camp, /pause, /skin");
+        getLogger().info("Commandes enregistrées : /live, /setlive, /confess, /link, /camp, /pause, /skin, /menu");
     }
     
     private void initializeDiscordBot() {

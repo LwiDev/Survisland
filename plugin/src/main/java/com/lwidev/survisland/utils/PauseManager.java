@@ -28,12 +28,14 @@ public class PauseManager {
     private static final Set<UUID> frozenPlayers = new HashSet<>();
     private static final NamespacedKey FREEZE_MODIFIER_KEY = new NamespacedKey("survisland", "pause_freeze");
 
-    public static void toggle(Survisland plugin) {
+    /** Toggles the pause state and returns the new state, so callers can confirm it to whoever triggered it. */
+    public static boolean toggle(Survisland plugin) {
         if (isPaused) {
             unpause(plugin);
         } else {
             pause(plugin);
         }
+        return isPaused;
     }
 
     public static void pause(Survisland plugin) {

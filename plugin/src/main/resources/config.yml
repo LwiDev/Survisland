@@ -15,6 +15,21 @@ discord:
   # Format des messages confess (sans le sender pour l'anonymat)
   confess-format: "🎮 {message}"
 
+# Configuration du menu /menu (gestion joueurs/équipes/partie)
+menu:
+  # Messages d'annonce prédéfinis, proposés en un clic dans le menu Partie > Annonces
+  # (en plus de la saisie libre via enclume, pour les messages qui reviennent à chaque partie)
+  announcement-presets:
+    - "Immunité dans 30 minutes"
+    - "Immunité dans 10 minutes"
+    - "Confort dans 30 minutes"
+    - "Confort dans 10 minutes"
+
+  # Pseudos des deux joueurs notifiés (via un title en jeu) quand une place se libère
+  vote-recipients:
+    gold: "GoldVision98"
+    marcus: "Marcouscous"
+
 # Configuration du chat spectateur (non implémenté)
 chatspec:
   # Activer le chat spectateur
