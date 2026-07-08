@@ -72,6 +72,7 @@ public final class MenuTheme {
         return ItemBuilder.of(material)
                 .setName(Component.text(label, NamedTextColor.WHITE))
                 .setLore(Component.text("État : ", NamedTextColor.GRAY).append(Component.text(state, stateColor)))
+                .addClickLore(enabled ? "Désactiver" : "Activer")
                 .build();
     }
 }
