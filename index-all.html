@@ -49,16 +49,18 @@ loadScripts(document, 'script');</script>
 <div class="header">
 <h1>Index</h1>
 </div>
-<a href="#I:A">A</a>&nbsp;<a href="#I:B">B</a>&nbsp;<a href="#I:C">C</a>&nbsp;<a href="#I:D">D</a>&nbsp;<a href="#I:E">E</a>&nbsp;<a href="#I:F">F</a>&nbsp;<a href="#I:G">G</a>&nbsp;<a href="#I:H">H</a>&nbsp;<a href="#I:I">I</a>&nbsp;<a href="#I:M">M</a>&nbsp;<a href="#I:N">N</a>&nbsp;<a href="#I:O">O</a>&nbsp;<a href="#I:P">P</a>&nbsp;<a href="#I:R">R</a>&nbsp;<a href="#I:S">S</a>&nbsp;<a href="#I:T">T</a>&nbsp;<a href="#I:W">W</a>&nbsp;<br><a href="allclasses-index.html">All&nbsp;Classes&nbsp;and&nbsp;Interfaces</a><span class="vertical-separator">|</span><a href="allpackages-index.html">All&nbsp;Packages</a><span class="vertical-separator">|</span><a href="constant-values.html">Constant&nbsp;Field&nbsp;Values</a>
+<a href="#I:A">A</a>&nbsp;<a href="#I:B">B</a>&nbsp;<a href="#I:C">C</a>&nbsp;<a href="#I:D">D</a>&nbsp;<a href="#I:E">E</a>&nbsp;<a href="#I:F">F</a>&nbsp;<a href="#I:G">G</a>&nbsp;<a href="#I:H">H</a>&nbsp;<a href="#I:I">I</a>&nbsp;<a href="#I:K">K</a>&nbsp;<a href="#I:M">M</a>&nbsp;<a href="#I:N">N</a>&nbsp;<a href="#I:O">O</a>&nbsp;<a href="#I:P">P</a>&nbsp;<a href="#I:R">R</a>&nbsp;<a href="#I:S">S</a>&nbsp;<a href="#I:T">T</a>&nbsp;<a href="#I:W">W</a>&nbsp;<br><a href="allclasses-index.html">All&nbsp;Classes&nbsp;and&nbsp;Interfaces</a><span class="vertical-separator">|</span><a href="allpackages-index.html">All&nbsp;Packages</a><span class="vertical-separator">|</span><a href="constant-values.html">Constant&nbsp;Field&nbsp;Values</a>
 <h2 class="title" id="I:A">A</h2>
 <dl class="index">
 <dt><a href="com/lwidev/survisland/api/item/ItemBuilder.html#addClickLore(java.lang.String)" class="member-name-link">addClickLore(String)</a> - Method in class com.lwidev.survisland.api.item.<a href="com/lwidev/survisland/api/item/ItemBuilder.html" title="class in com.lwidev.survisland.api.item">ItemBuilder</a></dt>
 <dd>
-<div class="block">Consistent "Clic : ..." hint, for items with a single click action worth spelling out.</div>
+<div class="block">Consistent <code>"&lt;click key&gt; : ..."</code> hint, for items with a single click action worth
+spelling out (any click triggers it, so the left-click keybind is shown as the default label).</div>
 </dd>
 <dt><a href="com/lwidev/survisland/api/item/ItemBuilder.html#addLeftRightClickLore(java.lang.String,java.lang.String)" class="member-name-link">addLeftRightClickLore(String, String)</a> - Method in class com.lwidev.survisland.api.item.<a href="com/lwidev/survisland/api/item/ItemBuilder.html" title="class in com.lwidev.survisland.api.item">ItemBuilder</a></dt>
 <dd>
-<div class="block">Consistent "Clic gauche : .../Clic droit : ..." hint, for items whose two click types do different things.</div>
+<div class="block">Consistent <code>"&lt;left-click key&gt; : .../&lt;right-click key&gt; : ..."</code> hint, for items whose two
+click types do different things.</div>
 </dd>
 <dt><a href="com/lwidev/survisland/api/item/ItemBuilder.html#addLore(net.kyori.adventure.text.Component...)" class="member-name-link">addLore(Component...)</a> - Method in class com.lwidev.survisland.api.item.<a href="com/lwidev/survisland/api/item/ItemBuilder.html" title="class in com.lwidev.survisland.api.item">ItemBuilder</a></dt>
 <dd>&nbsp;</dd>
@@ -235,6 +237,17 @@ detail page, or every member of a team).</div>
 <dt><a href="com/lwidev/survisland/api/item/ItemBuilder.html" class="type-name-link" title="class in com.lwidev.survisland.api.item">ItemBuilder</a> - Class in <a href="com/lwidev/survisland/api/item/package-summary.html">com.lwidev.survisland.api.item</a></dt>
 <dd>
 <div class="block">Fluent builder for <code>ItemStack</code>s.</div>
+</dd>
+</dl>
+<h2 class="title" id="I:K">K</h2>
+<dl class="index">
+<dt><a href="com/lwidev/survisland/api/item/ItemBuilder.html#keybind(java.lang.String)" class="member-name-link">keybind(String)</a> - Static method in class com.lwidev.survisland.api.item.<a href="com/lwidev/survisland/api/item/ItemBuilder.html" title="class in com.lwidev.survisland.api.item">ItemBuilder</a></dt>
+<dd>
+<div class="block"><a href="com/lwidev/survisland/api/item/ItemBuilder.html#keybind(java.lang.String,net.kyori.adventure.text.format.NamedTextColor)"><code>ItemBuilder.keybind(String, NamedTextColor)</code></a> in <code>NamedTextColor.GRAY</code>, the usual lore color.</div>
+</dd>
+<dt><a href="com/lwidev/survisland/api/item/ItemBuilder.html#keybind(java.lang.String,net.kyori.adventure.text.format.NamedTextColor)" class="member-name-link">keybind(String, NamedTextColor)</a> - Static method in class com.lwidev.survisland.api.item.<a href="com/lwidev/survisland/api/item/ItemBuilder.html" title="class in com.lwidev.survisland.api.item">ItemBuilder</a></dt>
+<dd>
+<div class="block">Vanilla keybind component (e.g.</div>
 </dd>
 </dl>
 <h2 class="title" id="I:M">M</h2>
@@ -477,7 +490,7 @@ each player's currently open menu plus their navigation history.</div>
 <div class="block"><code>count</code> followed by its agreeing word, e.g.</div>
 </dd>
 </dl>
-<a href="#I:A">A</a>&nbsp;<a href="#I:B">B</a>&nbsp;<a href="#I:C">C</a>&nbsp;<a href="#I:D">D</a>&nbsp;<a href="#I:E">E</a>&nbsp;<a href="#I:F">F</a>&nbsp;<a href="#I:G">G</a>&nbsp;<a href="#I:H">H</a>&nbsp;<a href="#I:I">I</a>&nbsp;<a href="#I:M">M</a>&nbsp;<a href="#I:N">N</a>&nbsp;<a href="#I:O">O</a>&nbsp;<a href="#I:P">P</a>&nbsp;<a href="#I:R">R</a>&nbsp;<a href="#I:S">S</a>&nbsp;<a href="#I:T">T</a>&nbsp;<a href="#I:W">W</a>&nbsp;<br><a href="allclasses-index.html">All&nbsp;Classes&nbsp;and&nbsp;Interfaces</a><span class="vertical-separator">|</span><a href="allpackages-index.html">All&nbsp;Packages</a><span class="vertical-separator">|</span><a href="constant-values.html">Constant&nbsp;Field&nbsp;Values</a></main>
+<a href="#I:A">A</a>&nbsp;<a href="#I:B">B</a>&nbsp;<a href="#I:C">C</a>&nbsp;<a href="#I:D">D</a>&nbsp;<a href="#I:E">E</a>&nbsp;<a href="#I:F">F</a>&nbsp;<a href="#I:G">G</a>&nbsp;<a href="#I:H">H</a>&nbsp;<a href="#I:I">I</a>&nbsp;<a href="#I:K">K</a>&nbsp;<a href="#I:M">M</a>&nbsp;<a href="#I:N">N</a>&nbsp;<a href="#I:O">O</a>&nbsp;<a href="#I:P">P</a>&nbsp;<a href="#I:R">R</a>&nbsp;<a href="#I:S">S</a>&nbsp;<a href="#I:T">T</a>&nbsp;<a href="#I:W">W</a>&nbsp;<br><a href="allclasses-index.html">All&nbsp;Classes&nbsp;and&nbsp;Interfaces</a><span class="vertical-separator">|</span><a href="allpackages-index.html">All&nbsp;Packages</a><span class="vertical-separator">|</span><a href="constant-values.html">Constant&nbsp;Field&nbsp;Values</a></main>
 </div>
 </body>
 </html>

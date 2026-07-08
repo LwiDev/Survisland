@@ -66,6 +66,8 @@ loadScripts(document, 'script');</script>
 <li><a href="#setAmount(int)" tabindex="0">setAmount(int)</a></li>
 <li><a href="#addLeftRightClickLore(java.lang.String,java.lang.String)" tabindex="0">addLeftRightClickLore(String, String)</a></li>
 <li><a href="#addClickLore(java.lang.String)" tabindex="0">addClickLore(String)</a></li>
+<li><a href="#keybind(java.lang.String)" tabindex="0">keybind(String)</a></li>
+<li><a href="#keybind(java.lang.String,net.kyori.adventure.text.format.NamedTextColor)" tabindex="0">keybind(String, NamedTextColor)</a></li>
 <li><a href="#build()" tabindex="0">build()</a></li>
 </ol>
 </li>
@@ -109,13 +111,15 @@ feature needs it, rather than up front.</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ItemBuilder.html" title="class in com.lwidev.survisland.api.item">ItemBuilder</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addClickLore(java.lang.String)" class="member-name-link">addClickLore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;action)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Consistent "Clic : ..." hint, for items with a single click action worth spelling out.</div>
+<div class="block">Consistent <code>"&lt;click key&gt; : ..."</code> hint, for items with a single click action worth
+spelling out (any click triggers it, so the left-click keybind is shown as the default label).</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ItemBuilder.html" title="class in com.lwidev.survisland.api.item">ItemBuilder</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addLeftRightClickLore(java.lang.String,java.lang.String)" class="member-name-link">addLeftRightClickLore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;leftAction,
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;rightAction)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Consistent "Clic gauche : .../Clic droit : ..." hint, for items whose two click types do different things.</div>
+<div class="block">Consistent <code>"&lt;left-click key&gt; : .../&lt;right-click key&gt; : ..."</code> hint, for items whose two
+click types do different things.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ItemBuilder.html" title="class in com.lwidev.survisland.api.item">ItemBuilder</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addLore(net.kyori.adventure.text.Component...)" class="member-name-link">addLore</a><wbr>(net.kyori.adventure.text.Component...&nbsp;lines)</code></div>
@@ -123,6 +127,17 @@ feature needs it, rather than up front.</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>org.bukkit.inventory.ItemStack</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#build()" class="member-name-link">build</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static net.kyori.adventure.text.Component</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#keybind(java.lang.String)" class="member-name-link">keybind</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;key)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block"><a href="#keybind(java.lang.String,net.kyori.adventure.text.format.NamedTextColor)"><code>keybind(String, NamedTextColor)</code></a> in <code>NamedTextColor.GRAY</code>, the usual lore color.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static net.kyori.adventure.text.Component</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#keybind(java.lang.String,net.kyori.adventure.text.format.NamedTextColor)" class="member-name-link">keybind</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;key,
+ net.kyori.adventure.text.format.NamedTextColor&nbsp;color)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Vanilla keybind component (e.g.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="ItemBuilder.html" title="class in com.lwidev.survisland.api.item">ItemBuilder</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#of(org.bukkit.inventory.ItemStack)" class="member-name-link">of</a><wbr>(org.bukkit.inventory.ItemStack&nbsp;item)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
@@ -239,7 +254,9 @@ feature needs it, rather than up front.</div>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="ItemBuilder.html" title="class in com.lwidev.survisland.api.item">ItemBuilder</a></span>&nbsp;<span class="element-name">addLeftRightClickLore</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;leftAction,
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;rightAction)</span></div>
-<div class="block">Consistent "Clic gauche : .../Clic droit : ..." hint, for items whose two click types do different things.</div>
+<div class="block">Consistent <code>"&lt;left-click key&gt; : .../&lt;right-click key&gt; : ..."</code> hint, for items whose two
+click types do different things. Uses keybind components rather than hardcoded "Clic gauche"/
+"Clic droit" text, so the label follows each player's own control bindings.</div>
 </div>
 </section>
 </li>
@@ -248,7 +265,27 @@ feature needs it, rather than up front.</div>
 <h3>addClickLore</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="ItemBuilder.html" title="class in com.lwidev.survisland.api.item">ItemBuilder</a></span>&nbsp;<span class="element-name">addClickLore</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;action)</span></div>
-<div class="block">Consistent "Clic : ..." hint, for items with a single click action worth spelling out.</div>
+<div class="block">Consistent <code>"&lt;click key&gt; : ..."</code> hint, for items with a single click action worth
+spelling out (any click triggers it, so the left-click keybind is shown as the default label).</div>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="keybind(java.lang.String)">
+<h3>keybind</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">net.kyori.adventure.text.Component</span>&nbsp;<span class="element-name">keybind</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;key)</span></div>
+<div class="block"><a href="#keybind(java.lang.String,net.kyori.adventure.text.format.NamedTextColor)"><code>keybind(String, NamedTextColor)</code></a> in <code>NamedTextColor.GRAY</code>, the usual lore color.</div>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="keybind(java.lang.String,net.kyori.adventure.text.format.NamedTextColor)">
+<h3>keybind</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">net.kyori.adventure.text.Component</span>&nbsp;<span class="element-name">keybind</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;key,
+ net.kyori.adventure.text.format.NamedTextColor&nbsp;color)</span></div>
+<div class="block">Vanilla keybind component (e.g. <code>keybind("attack")</code> → <code>key.attack</code>), so lore labels follow each player's own control bindings instead of a hardcoded name.</div>
 </div>
 </section>
 </li>
