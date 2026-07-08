@@ -9,7 +9,6 @@ import com.lwidev.survisland.api.utils.MessageUtils;
 import com.lwidev.survisland.api.utils.PluralUtils;
 import com.lwidev.survisland.menu.MenuContext;
 import com.lwidev.survisland.menu.game.announce.AnnounceMenu;
-import com.lwidev.survisland.utils.PauseManager;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Material;
@@ -33,12 +32,12 @@ public class GameMenu extends SurvislandMenu {
         Consumer<InventoryClickEvent> pauseToggleHandler = new Consumer<>() {
             @Override
             public void accept(InventoryClickEvent event) {
-                boolean paused = PauseManager.toggle(ctx.plugin());
+                boolean paused = ctx.pauseManager().toggle();
                 item(3, 5, MenuTheme.toggleItem("Pause", paused), this);
                 MessageUtils.sendSuccessMessage(viewer, "Partie ", MessageUtils.highlight(paused ? "mise en pause" : "reprise", BrandUtils.SECONDARY), ".");
             }
         };
-        item(3, 5, MenuTheme.toggleItem("Pause", PauseManager.isPaused()), pauseToggleHandler);
+        item(3, 5, MenuTheme.toggleItem("Pause", ctx.pauseManager().isPaused()), pauseToggleHandler);
         item(3, 6, ItemBuilder.of(Material.GOLD_NUGGET).setName(Component.text("Votes Gold / Marcus", BrandUtils.SECONDARY)).addClickLore("Notifier").build(), _ -> notifyVacancy(viewer, ctx));
     }
 

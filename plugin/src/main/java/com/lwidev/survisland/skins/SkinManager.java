@@ -6,6 +6,7 @@ import com.lwidev.survisland.api.skin.SkinApplier;
 import com.lwidev.survisland.api.skin.SkinData;
 import com.lwidev.survisland.api.utils.BrandUtils;
 import com.lwidev.survisland.api.utils.MessageUtils;
+import com.lwidev.survisland.api.utils.Shutdownable;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -20,7 +21,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CompletableFuture;
 
-public class SkinManager implements Listener {
+public class SkinManager implements Listener, Shutdownable {
     
     private final Survisland plugin;
     private final Map<String, String> forcedSkins; // Player name -> Skin input (name or texture)
@@ -327,6 +328,7 @@ public class SkinManager implements Listener {
         });
     }
     
+    @Override
     public void shutdown() {
         // Save all data before shutdown
         saveSkinData();

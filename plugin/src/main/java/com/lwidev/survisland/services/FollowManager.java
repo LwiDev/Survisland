@@ -1,7 +1,8 @@
-package com.lwidev.survisland.utils;
+package com.lwidev.survisland.services;
 
 import com.lwidev.survisland.Survisland;
 import com.lwidev.survisland.api.utils.MessageUtils;
+import com.lwidev.survisland.api.utils.Shutdownable;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -13,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class FollowManager implements Listener {
+public class FollowManager implements Listener, Shutdownable {
 
     private record FollowSession(UUID targetId, BukkitTask task) {
     }
@@ -74,6 +75,7 @@ public class FollowManager implements Listener {
         });
     }
 
+    @Override
     public void shutdown() {
         activeFollows.values().forEach(session -> session.task().cancel());
         activeFollows.clear();
