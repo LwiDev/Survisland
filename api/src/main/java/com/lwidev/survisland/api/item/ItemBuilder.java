@@ -71,16 +71,33 @@ public class ItemBuilder {
         return this;
     }
 
-    /** Consistent "Clic gauche : .../Clic droit : ..." hint, for items whose two click types do different things. */
+    /**
+     * Consistent "<left-click key> : .../<right-click key> : ..." hint, for items whose two click
+     * types do different things. Uses keybind components rather than hardcoded "Clic gauche"/"Clic
+     * droit" text, so the label follows each player's own control bindings.
+     */
     public ItemBuilder addLeftRightClickLore(String leftAction, String rightAction) {
         return addLore(
-                Component.text("Clic gauche : ", NamedTextColor.GRAY).append(Component.text(leftAction, BrandUtils.TERTIARY)),
-                Component.text("Clic droit : ", NamedTextColor.GRAY).append(Component.text(rightAction, BrandUtils.TERTIARY)));
+                keybind("attack").append(Component.text(" : ", NamedTextColor.GRAY)).append(Component.text(leftAction, BrandUtils.TERTIARY)),
+                keybind("use").append(Component.text(" : ", NamedTextColor.GRAY)).append(Component.text(rightAction, BrandUtils.TERTIARY)));
     }
 
-    /** Consistent "Clic : ..." hint, for items with a single click action worth spelling out. */
+    /**
+     * Consistent "<click key> : ..." hint, for items with a single click action worth spelling out
+     * (any click triggers it, so the left-click keybind is shown as the default label).
+     */
     public ItemBuilder addClickLore(String action) {
-        return addLore(Component.empty(), Component.text("Clic : ", NamedTextColor.GRAY).append(Component.text(action, BrandUtils.TERTIARY)));
+        return addLore(Component.empty(), keybind("attack").append(Component.text(" : ", NamedTextColor.GRAY)).append(Component.text(action, BrandUtils.TERTIARY)));
+    }
+
+    /** {@link #keybind(String, NamedTextColor)} in {@link NamedTextColor#GRAY}, the usual lore color. */
+    public static Component keybind(String key) {
+        return keybind(key, NamedTextColor.GRAY);
+    }
+
+    /** Vanilla keybind component (e.g. {@code keybind("attack")} → {@code key.attack}), so lore labels follow each player's own control bindings instead of a hardcoded name. */
+    public static Component keybind(String key, NamedTextColor color) {
+        return Component.keybind("key." + key, color);
     }
 
     public ItemStack build() {

@@ -44,6 +44,8 @@ public class ScheduleAnnounceMenu extends SurvislandMenu {
     }
 
     private ItemStack delayItem(int minutes) {
-        return ItemBuilder.of(Material.CLOCK).setName(Component.text(PluralUtils.withCount(minutes, "minute"), BrandUtils.TERTIARY)).build();
+        return ItemBuilder.of(Material.CLOCK).setName(Component.text(PluralUtils.withCount(minutes, "minute"), BrandUtils.TERTIARY))
+                .addClickLore("Programmer l'annonce")
+                .build();
     }
 }

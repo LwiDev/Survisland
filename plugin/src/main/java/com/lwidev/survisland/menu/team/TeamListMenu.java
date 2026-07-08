@@ -31,7 +31,7 @@ public class TeamListMenu extends SurvislandMenu {
         super(viewer, 6, "Équipes");
 
         List<Team> teams = new ArrayList<>(ctx.teamManager().teams());
-        paginate(teams, this::teamItem, (_, team) -> {
+        paginate(teams, team -> teamItem(team, onPick != null), (_, team) -> {
             if (onPick != null) {
                 onPick.accept(team);
             } else {
@@ -41,11 +41,14 @@ public class TeamListMenu extends SurvislandMenu {
 
     }
 
-    private ItemStack teamItem(Team team) {
+    private ItemStack teamItem(Team team, boolean picking) {
         TextColor color = team.hasColor() ? team.color() : NamedTextColor.WHITE;
-        return ItemBuilder.of(TeamManager.bannerMaterial(color))
+        ItemBuilder builder = ItemBuilder.of(TeamManager.bannerMaterial(color))
                 .setName(Component.text(team.getName(), color))
-                .setLore(Component.text(PluralUtils.withCount(team.getSize(), "membre"), NamedTextColor.GRAY))
-                .build();
+                .setLore(Component.text(PluralUtils.withCount(team.getSize(), "membre"), NamedTextColor.GRAY));
+        if (picking) {
+            builder.addClickLore("Choisir cette équipe");
+        }
+        return builder.build();
     }
 }

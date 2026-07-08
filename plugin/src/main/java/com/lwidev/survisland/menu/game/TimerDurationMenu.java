@@ -42,6 +42,8 @@ public class TimerDurationMenu extends SurvislandMenu {
     }
 
     private ItemStack presetItem(int minutes) {
-        return ItemBuilder.of(Material.CLOCK).setName(Component.text(PluralUtils.withCount(minutes, "minute"), BrandUtils.TERTIARY)).build();
+        return ItemBuilder.of(Material.CLOCK).setName(Component.text(PluralUtils.withCount(minutes, "minute"), BrandUtils.TERTIARY))
+                .addClickLore("Lancer le timer")
+                .build();
     }
 }
