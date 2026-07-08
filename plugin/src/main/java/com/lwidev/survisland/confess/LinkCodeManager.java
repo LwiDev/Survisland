@@ -1,6 +1,7 @@
 package com.lwidev.survisland.confess;
 
 import com.lwidev.survisland.Survisland;
+import com.lwidev.survisland.api.utils.Shutdownable;
 
 import java.security.SecureRandom;
 import java.util.concurrent.ConcurrentHashMap;
@@ -9,7 +10,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class LinkCodeManager {
+public class LinkCodeManager implements Shutdownable {
     
     private final Survisland plugin;
     private final ConcurrentHashMap<String, PendingLink> pendingLinks; // code -> PendingLink
@@ -142,6 +143,7 @@ public class LinkCodeManager {
         }
     }
     
+    @Override
     public void shutdown() {
         if (scheduler != null && !scheduler.isShutdown()) {
             scheduler.shutdown();

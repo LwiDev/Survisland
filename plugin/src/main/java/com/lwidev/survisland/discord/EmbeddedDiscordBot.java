@@ -1,6 +1,7 @@
 package com.lwidev.survisland.discord;
 
 import com.lwidev.survisland.Survisland;
+import com.lwidev.survisland.api.utils.Shutdownable;
 import com.lwidev.survisland.config.DiscordConfig;
 import com.lwidev.survisland.confess.ConfessLinkManager;
 import net.dv8tion.jda.api.JDA;
@@ -17,7 +18,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
 import java.util.logging.Level;
 
-public class EmbeddedDiscordBot extends ListenerAdapter {
+public class EmbeddedDiscordBot extends ListenerAdapter implements Shutdownable {
     
     private final Survisland plugin;
     private final DiscordConfig config;
@@ -131,6 +132,7 @@ public class EmbeddedDiscordBot extends ListenerAdapter {
         });
     }
     
+    @Override
     public void shutdown() {
         if (jda != null) {
             plugin.getLogger().info("Shutting down Discord bot...");

@@ -1,6 +1,7 @@
 package com.lwidev.survisland.listeners;
 
-import com.lwidev.survisland.utils.PauseManager;
+import com.lwidev.survisland.Survisland;
+import com.lwidev.survisland.services.PauseManager;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -16,132 +17,139 @@ import org.bukkit.event.player.*;
 
 public class PauseListener implements Listener {
 
+    private final PauseManager pauseManager;
+
+    public PauseListener(Survisland plugin, PauseManager pauseManager) {
+        this.pauseManager = pauseManager;
+        plugin.getServer().getPluginManager().registerEvents(this, plugin);
+    }
+
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onBlockBreak(BlockBreakEvent event) {
-        if (!PauseManager.isPaused()) {
+        if (!pauseManager.isPaused()) {
             return;
         }
 
         Player player = event.getPlayer();
-        if (PauseManager.isFrozen(player)) {
+        if (pauseManager.isFrozen(player)) {
             event.setCancelled(true);
         }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onEntityDamage(EntityDamageEvent event) {
-        if (!PauseManager.isPaused()) {
+        if (!pauseManager.isPaused()) {
             return;
         }
 
         // Empêcher les joueurs gelés de prendre TOUT type de dégâts (chute, feu, noyade, etc.)
-        if (event.getEntity() instanceof Player player && PauseManager.isFrozen(player)) {
+        if (event.getEntity() instanceof Player player && pauseManager.isFrozen(player)) {
             event.setCancelled(true);
         }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
-        if (!PauseManager.isPaused()) {
+        if (!pauseManager.isPaused()) {
             return;
         }
 
         // Empêcher les joueurs gelés d'attaquer
-        if (event.getDamager() instanceof Player damager && PauseManager.isFrozen(damager)) {
+        if (event.getDamager() instanceof Player damager && pauseManager.isFrozen(damager)) {
             event.setCancelled(true);
         }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerInteract(PlayerInteractEvent event) {
-        if (!PauseManager.isPaused()) {
+        if (!pauseManager.isPaused()) {
             return;
         }
 
         Player player = event.getPlayer();
-        if (PauseManager.isFrozen(player)) {
+        if (pauseManager.isFrozen(player)) {
             event.setCancelled(true);
         }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onEntityDismount(EntityDismountEvent event) {
-        if (!PauseManager.isPaused()) {
+        if (!pauseManager.isPaused()) {
             return;
         }
 
-        if (event.getEntity() instanceof Player player && PauseManager.isFrozen(player)) {
+        if (event.getEntity() instanceof Player player && pauseManager.isFrozen(player)) {
             event.setCancelled(true);
         }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerJoin(PlayerJoinEvent event) {
-        if (!PauseManager.isPaused()) {
+        if (!pauseManager.isPaused()) {
             return;
         }
 
         Player player = event.getPlayer();
         if (player.getGameMode() == GameMode.SURVIVAL || player.getGameMode() == GameMode.ADVENTURE) {
-            PauseManager.freezePlayer(player);
+            pauseManager.freezePlayer(player);
         }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onInventoryClick(InventoryClickEvent event) {
-        if (!PauseManager.isPaused()) {
+        if (!pauseManager.isPaused()) {
             return;
         }
 
-        if (event.getWhoClicked() instanceof Player player && PauseManager.isFrozen(player)) {
+        if (event.getWhoClicked() instanceof Player player && pauseManager.isFrozen(player)) {
             event.setCancelled(true);
         }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerDropItem(PlayerDropItemEvent event) {
-        if (!PauseManager.isPaused()) {
+        if (!pauseManager.isPaused()) {
             return;
         }
 
         Player player = event.getPlayer();
-        if (PauseManager.isFrozen(player)) {
+        if (pauseManager.isFrozen(player)) {
             event.setCancelled(true);
         }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerAttemptPickupItem(PlayerAttemptPickupItemEvent event) {
-        if (!PauseManager.isPaused()) {
+        if (!pauseManager.isPaused()) {
             return;
         }
 
         Player player = event.getPlayer();
-        if (PauseManager.isFrozen(player)) {
+        if (pauseManager.isFrozen(player)) {
             event.setCancelled(true);
         }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerSwapHandItems(PlayerSwapHandItemsEvent event) {
-        if (!PauseManager.isPaused()) {
+        if (!pauseManager.isPaused()) {
             return;
         }
 
         Player player = event.getPlayer();
-        if (PauseManager.isFrozen(player)) {
+        if (pauseManager.isFrozen(player)) {
             event.setCancelled(true);
         }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerItemHeld(PlayerItemHeldEvent event) {
-        if (!PauseManager.isPaused()) {
+        if (!pauseManager.isPaused()) {
             return;
         }
 
         Player player = event.getPlayer();
-        if (PauseManager.isFrozen(player)) {
+        if (pauseManager.isFrozen(player)) {
             event.setCancelled(true);
         }
     }

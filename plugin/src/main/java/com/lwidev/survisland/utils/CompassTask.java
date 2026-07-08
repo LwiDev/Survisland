@@ -82,7 +82,7 @@ public class CompassTask extends BukkitRunnable {
         this.cancel();
     }
     
-    public static void cleanupAll() {
+    public static void shutdownAll() {
         for (CompassTask task : activeTasks.values()) {
             if (!task.isCancelled()) {
                 task.cancel();
