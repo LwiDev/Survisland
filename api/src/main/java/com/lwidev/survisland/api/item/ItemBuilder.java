@@ -72,9 +72,9 @@ public class ItemBuilder {
     }
 
     /**
-     * Consistent "<left-click key> : .../<right-click key> : ..." hint, for items whose two click
-     * types do different things. Uses keybind components rather than hardcoded "Clic gauche"/"Clic
-     * droit" text, so the label follows each player's own control bindings.
+     * Consistent {@code "<left-click key> : .../<right-click key> : ..."} hint, for items whose two
+     * click types do different things. Uses keybind components rather than hardcoded "Clic gauche"/
+     * "Clic droit" text, so the label follows each player's own control bindings.
      */
     public ItemBuilder addLeftRightClickLore(String leftAction, String rightAction) {
         return addLore(
@@ -83,8 +83,8 @@ public class ItemBuilder {
     }
 
     /**
-     * Consistent "<click key> : ..." hint, for items with a single click action worth spelling out
-     * (any click triggers it, so the left-click keybind is shown as the default label).
+     * Consistent {@code "<click key> : ..."} hint, for items with a single click action worth
+     * spelling out (any click triggers it, so the left-click keybind is shown as the default label).
      */
     public ItemBuilder addClickLore(String action) {
         return addLore(Component.empty(), keybind("attack").append(Component.text(" : ", NamedTextColor.GRAY)).append(Component.text(action, BrandUtils.TERTIARY)));
