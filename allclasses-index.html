@@ -54,7 +54,23 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Class</div>
 <div class="table-header col-last">Description</div>
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="com/lwidev/survisland/api/utils/BrandUtils.html" title="class in com.lwidev.survisland.api.utils">BrandUtils</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="block">Survisland's brand palette, hex-exact so it renders identically everywhere Adventure components are
+used (menus, chat messages, ...) instead of falling back to the nearest of the 16 legacy named colors.</div>
+</div>
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="com/lwidev/survisland/api/menu/widget/ConfirmationMenu.html" title="class in com.lwidev.survisland.api.menu.widget">ConfirmationMenu</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="block">Generic yes/no confirmation dialog, showing the item the confirmation is actually about (e.g.</div>
+</div>
 <div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="com/lwidev/survisland/api/utils/DirectionUtils.html" title="class in com.lwidev.survisland.api.utils">DirectionUtils</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">&nbsp;</div>
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="com/lwidev/survisland/api/menu/widget/GameModeSelectMenu.html" title="class in com.lwidev.survisland.api.menu.widget">GameModeSelectMenu</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="block">Generic gamemode picker applied to one or several players at once (a single player's
+detail page, or every member of a team).</div>
+</div>
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="com/lwidev/survisland/api/utils/HeadsUtils.html" title="class in com.lwidev.survisland.api.utils">HeadsUtils</a></div>
 <div class="col-last even-row-color all-classes-table all-classes-table-tab2">&nbsp;</div>
 <div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="com/lwidev/survisland/api/item/ItemBuilder.html" title="class in com.lwidev.survisland.api.item">ItemBuilder</a></div>
 <div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
@@ -65,20 +81,43 @@ loadScripts(document, 'script');</script>
 <div class="block">Shared visual building blocks for <a href="com/lwidev/survisland/api/menu/SurvislandMenu.html" title="class in com.lwidev.survisland.api.menu"><code>SurvislandMenu</code></a>s: filler, navigation items, click sound.</div>
 </div>
 <div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="com/lwidev/survisland/api/utils/MessageUtils.html" title="class in com.lwidev.survisland.api.utils">MessageUtils</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">&nbsp;</div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="block">Sends prefixed chat messages built from a mix of plain strings (rendered in the message's neutral
+base color) and <code>Component</code>s (rendered as given) — use <a href="com/lwidev/survisland/api/utils/MessageUtils.html#highlight(java.lang.String)"><code>MessageUtils.highlight(String)</code></a> for the one
+or two words that actually matter in a sentence instead of coloring the whole line, e.g.:
+<code>sendSuccessMessage(player, "Il fait maintenant ", highlight("nuit", BrandUtils.SECONDARY), ".")</code>.</div>
+</div>
 <div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="com/lwidev/survisland/api/skin/MojangAPI.html" title="class in com.lwidev.survisland.api.skin">MojangAPI</a></div>
 <div class="col-last even-row-color all-classes-table all-classes-table-tab2">&nbsp;</div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="com/lwidev/survisland/api/menu/PlayerSelectionMenu.html" title="class in com.lwidev.survisland.api.menu">PlayerSelectionMenu</a></div>
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="com/lwidev/survisland/api/menu/player/PlayerInventoryMenu.html" title="class in com.lwidev.survisland.api.menu.player">PlayerInventoryMenu</a></div>
 <div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="block">Live view/edit of another player's full equipment — storage, hotbar, armor and offhand — plus a
+read-only glance at their health/food.</div>
+</div>
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="com/lwidev/survisland/api/menu/player/PlayerSelectionMenu.html" title="class in com.lwidev.survisland.api.menu.player">PlayerSelectionMenu</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">Base for menus that let the viewer pick a player from a paginated list (e.g.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="com/lwidev/survisland/api/skin/SkinApplier.html" title="class in com.lwidev.survisland.api.skin">SkinApplier</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">&nbsp;</div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="com/lwidev/survisland/api/skin/SkinData.html" title="class in com.lwidev.survisland.api.skin">SkinData</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">&nbsp;</div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="com/lwidev/survisland/api/item/SkullBuilder.html" title="class in com.lwidev.survisland.api.item">SkullBuilder</a></div>
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="com/lwidev/survisland/api/utils/PluralUtils.html" title="class in com.lwidev.survisland.api.utils">PluralUtils</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="block">French singular/plural agreement, so nobody has to hand-roll "(s)" suffixes at each call site.</div>
+</div>
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="com/lwidev/survisland/api/menu/player/ProfileSelectionMenu.html" title="class in com.lwidev.survisland.api.menu.player">ProfileSelectionMenu</a></div>
 <div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="block">Like <a href="com/lwidev/survisland/api/menu/player/PlayerSelectionMenu.html" title="class in com.lwidev.survisland.api.menu.player"><code>PlayerSelectionMenu</code></a>, but for pickers that must also list offline players
+(e.g.</div>
+</div>
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="com/lwidev/survisland/api/skin/SkinApplier.html" title="class in com.lwidev.survisland.api.skin">SkinApplier</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">&nbsp;</div>
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="com/lwidev/survisland/api/skin/SkinData.html" title="class in com.lwidev.survisland.api.skin">SkinData</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">&nbsp;</div>
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="com/lwidev/survisland/api/item/SkullBuilder.html" title="class in com.lwidev.survisland.api.item">SkullBuilder</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">Player-head variant of <a href="com/lwidev/survisland/api/item/ItemBuilder.html" title="class in com.lwidev.survisland.api.item"><code>ItemBuilder</code></a>, built from a <code>PlayerProfile</code>.</div>
+</div>
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="com/lwidev/survisland/api/utils/SoundUtils.html" title="class in com.lwidev.survisland.api.utils">SoundUtils</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="block">Centralized sounds by intent (not by feature), so any event needing the same cue reuses it.</div>
 </div>
 <div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="com/lwidev/survisland/api/command/Subcommand.html" title="class in com.lwidev.survisland.api.command">Subcommand</a></div>
 <div class="col-last odd-row-color all-classes-table all-classes-table-tab2">

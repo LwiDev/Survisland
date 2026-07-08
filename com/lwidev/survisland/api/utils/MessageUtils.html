@@ -62,11 +62,13 @@ loadScripts(document, 'script');</script>
 </li>
 <li><a href="#method-detail" tabindex="0">Method Details</a>
 <ol class="toc-list">
-<li><a href="#sendMessage(org.bukkit.command.CommandSender,java.lang.String)" tabindex="0">sendMessage(CommandSender, String)</a></li>
-<li><a href="#sendSuccessMessage(org.bukkit.command.CommandSender,java.lang.String)" tabindex="0">sendSuccessMessage(CommandSender, String)</a></li>
-<li><a href="#sendErrorMessage(org.bukkit.command.CommandSender,java.lang.String)" tabindex="0">sendErrorMessage(CommandSender, String)</a></li>
-<li><a href="#sendInfoMessage(org.bukkit.command.CommandSender,java.lang.String)" tabindex="0">sendInfoMessage(CommandSender, String)</a></li>
-<li><a href="#sendSecondaryMessage(org.bukkit.command.CommandSender,java.lang.String)" tabindex="0">sendSecondaryMessage(CommandSender, String)</a></li>
+<li><a href="#sendMessage(org.bukkit.command.CommandSender,java.lang.Object...)" tabindex="0">sendMessage(CommandSender, Object...)</a></li>
+<li><a href="#sendSuccessMessage(org.bukkit.command.CommandSender,java.lang.Object...)" tabindex="0">sendSuccessMessage(CommandSender, Object...)</a></li>
+<li><a href="#sendErrorMessage(org.bukkit.command.CommandSender,java.lang.Object...)" tabindex="0">sendErrorMessage(CommandSender, Object...)</a></li>
+<li><a href="#sendInfoMessage(org.bukkit.command.CommandSender,java.lang.Object...)" tabindex="0">sendInfoMessage(CommandSender, Object...)</a></li>
+<li><a href="#sendSecondaryMessage(org.bukkit.command.CommandSender,java.lang.Object...)" tabindex="0">sendSecondaryMessage(CommandSender, Object...)</a></li>
+<li><a href="#highlight(java.lang.String)" tabindex="0">highlight(String)</a></li>
+<li><a href="#highlight(java.lang.String,net.kyori.adventure.text.format.TextColor)" tabindex="0">highlight(String, TextColor)</a></li>
 </ol>
 </li>
 </ol>
@@ -84,6 +86,11 @@ loadScripts(document, 'script');</script>
 <div class="horizontal-scroll">
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">MessageUtils</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
+<div class="block">Sends prefixed chat messages built from a mix of plain strings (rendered in the message's neutral
+base color) and <code>Component</code>s (rendered as given) — use <a href="#highlight(java.lang.String)"><code>highlight(String)</code></a> for the one
+or two words that actually matter in a sentence instead of coloring the whole line, e.g.:
+<code>sendSuccessMessage(player, "Il fait maintenant ", highlight("nuit", BrandUtils.SECONDARY), ".")</code>.
+Errors are the one exception: they stay fully red, since the whole line being an error is the point.</div>
 </div>
 </section>
 <section class="summary">
@@ -112,25 +119,36 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static net.kyori.adventure.text.Component</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#highlight(java.lang.String)" class="member-name-link">highlight</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;text)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">A word or phrase to make stand out in an otherwise neutral sentence, in the brand's primary accent.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static net.kyori.adventure.text.Component</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#highlight(java.lang.String,net.kyori.adventure.text.format.TextColor)" class="member-name-link">highlight</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;text,
+ net.kyori.adventure.text.format.TextColor&nbsp;color)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">A word or phrase to make stand out in an otherwise neutral sentence, in the given color.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#sendErrorMessage(org.bukkit.command.CommandSender,java.lang.String)" class="member-name-link">sendErrorMessage</a><wbr>(org.bukkit.command.CommandSender&nbsp;sender,
- <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;message)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#sendErrorMessage(org.bukkit.command.CommandSender,java.lang.Object...)" class="member-name-link">sendErrorMessage</a><wbr>(org.bukkit.command.CommandSender&nbsp;sender,
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>...&nbsp;parts)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#sendInfoMessage(org.bukkit.command.CommandSender,java.lang.String)" class="member-name-link">sendInfoMessage</a><wbr>(org.bukkit.command.CommandSender&nbsp;sender,
- <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;message)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#sendInfoMessage(org.bukkit.command.CommandSender,java.lang.Object...)" class="member-name-link">sendInfoMessage</a><wbr>(org.bukkit.command.CommandSender&nbsp;sender,
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>...&nbsp;parts)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#sendMessage(org.bukkit.command.CommandSender,java.lang.String)" class="member-name-link">sendMessage</a><wbr>(org.bukkit.command.CommandSender&nbsp;sender,
- <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;message)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#sendMessage(org.bukkit.command.CommandSender,java.lang.Object...)" class="member-name-link">sendMessage</a><wbr>(org.bukkit.command.CommandSender&nbsp;sender,
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>...&nbsp;parts)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#sendSecondaryMessage(org.bukkit.command.CommandSender,java.lang.String)" class="member-name-link">sendSecondaryMessage</a><wbr>(org.bukkit.command.CommandSender&nbsp;sender,
- <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;message)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#sendSecondaryMessage(org.bukkit.command.CommandSender,java.lang.Object...)" class="member-name-link">sendSecondaryMessage</a><wbr>(org.bukkit.command.CommandSender&nbsp;sender,
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>...&nbsp;parts)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#sendSuccessMessage(org.bukkit.command.CommandSender,java.lang.String)" class="member-name-link">sendSuccessMessage</a><wbr>(org.bukkit.command.CommandSender&nbsp;sender,
- <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;message)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#sendSuccessMessage(org.bukkit.command.CommandSender,java.lang.Object...)" class="member-name-link">sendSuccessMessage</a><wbr>(org.bukkit.command.CommandSender&nbsp;sender,
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>...&nbsp;parts)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
@@ -166,47 +184,66 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="sendMessage(org.bukkit.command.CommandSender,java.lang.String)">
+<section class="detail" id="sendMessage(org.bukkit.command.CommandSender,java.lang.Object...)">
 <h3>sendMessage</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">sendMessage</span><wbr><span class="parameters">(org.bukkit.command.CommandSender&nbsp;sender,
- <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;message)</span></div>
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>...&nbsp;parts)</span></div>
 </div>
 </section>
 </li>
 <li>
-<section class="detail" id="sendSuccessMessage(org.bukkit.command.CommandSender,java.lang.String)">
+<section class="detail" id="sendSuccessMessage(org.bukkit.command.CommandSender,java.lang.Object...)">
 <h3>sendSuccessMessage</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">sendSuccessMessage</span><wbr><span class="parameters">(org.bukkit.command.CommandSender&nbsp;sender,
- <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;message)</span></div>
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>...&nbsp;parts)</span></div>
 </div>
 </section>
 </li>
 <li>
-<section class="detail" id="sendErrorMessage(org.bukkit.command.CommandSender,java.lang.String)">
+<section class="detail" id="sendErrorMessage(org.bukkit.command.CommandSender,java.lang.Object...)">
 <h3>sendErrorMessage</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">sendErrorMessage</span><wbr><span class="parameters">(org.bukkit.command.CommandSender&nbsp;sender,
- <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;message)</span></div>
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>...&nbsp;parts)</span></div>
 </div>
 </section>
 </li>
 <li>
-<section class="detail" id="sendInfoMessage(org.bukkit.command.CommandSender,java.lang.String)">
+<section class="detail" id="sendInfoMessage(org.bukkit.command.CommandSender,java.lang.Object...)">
 <h3>sendInfoMessage</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">sendInfoMessage</span><wbr><span class="parameters">(org.bukkit.command.CommandSender&nbsp;sender,
- <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;message)</span></div>
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>...&nbsp;parts)</span></div>
 </div>
 </section>
 </li>
 <li>
-<section class="detail" id="sendSecondaryMessage(org.bukkit.command.CommandSender,java.lang.String)">
+<section class="detail" id="sendSecondaryMessage(org.bukkit.command.CommandSender,java.lang.Object...)">
 <h3>sendSecondaryMessage</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">sendSecondaryMessage</span><wbr><span class="parameters">(org.bukkit.command.CommandSender&nbsp;sender,
- <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;message)</span></div>
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>...&nbsp;parts)</span></div>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="highlight(java.lang.String)">
+<h3>highlight</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">net.kyori.adventure.text.Component</span>&nbsp;<span class="element-name">highlight</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;text)</span></div>
+<div class="block">A word or phrase to make stand out in an otherwise neutral sentence, in the brand's primary accent.</div>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="highlight(java.lang.String,net.kyori.adventure.text.format.TextColor)">
+<h3>highlight</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">net.kyori.adventure.text.Component</span>&nbsp;<span class="element-name">highlight</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;text,
+ net.kyori.adventure.text.format.TextColor&nbsp;color)</span></div>
+<div class="block">A word or phrase to make stand out in an otherwise neutral sentence, in the given color.</div>
 </div>
 </section>
 </li>

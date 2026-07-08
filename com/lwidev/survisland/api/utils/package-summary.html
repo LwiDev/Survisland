@@ -71,10 +71,30 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Class</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="DirectionUtils.html" title="class in com.lwidev.survisland.api.utils">DirectionUtils</a></div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="BrandUtils.html" title="class in com.lwidev.survisland.api.utils">BrandUtils</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="block">Survisland's brand palette, hex-exact so it renders identically everywhere Adventure components are
+used (menus, chat messages, ...) instead of falling back to the nearest of the 16 legacy named colors.</div>
+</div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="DirectionUtils.html" title="class in com.lwidev.survisland.api.utils">DirectionUtils</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">&nbsp;</div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="HeadsUtils.html" title="class in com.lwidev.survisland.api.utils">HeadsUtils</a></div>
 <div class="col-last even-row-color class-summary class-summary-tab2">&nbsp;</div>
 <div class="col-first odd-row-color class-summary class-summary-tab2"><a href="MessageUtils.html" title="class in com.lwidev.survisland.api.utils">MessageUtils</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">&nbsp;</div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="block">Sends prefixed chat messages built from a mix of plain strings (rendered in the message's neutral
+base color) and <code>Component</code>s (rendered as given) — use <a href="MessageUtils.html#highlight(java.lang.String)"><code>MessageUtils.highlight(String)</code></a> for the one
+or two words that actually matter in a sentence instead of coloring the whole line, e.g.:
+<code>sendSuccessMessage(player, "Il fait maintenant ", highlight("nuit", BrandUtils.SECONDARY), ".")</code>.</div>
+</div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="PluralUtils.html" title="class in com.lwidev.survisland.api.utils">PluralUtils</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="block">French singular/plural agreement, so nobody has to hand-roll "(s)" suffixes at each call site.</div>
+</div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="SoundUtils.html" title="class in com.lwidev.survisland.api.utils">SoundUtils</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="block">Centralized sounds by intent (not by feature), so any event needing the same cue reuses it.</div>
+</div>
 </div>
 </div>
 </li>

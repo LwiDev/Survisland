@@ -63,9 +63,12 @@ loadScripts(document, 'script');</script>
 <li><a href="#method-detail" tabindex="0">Method Details</a>
 <ol class="toc-list">
 <li><a href="#filler()" tabindex="0">filler()</a></li>
+<li><a href="#filler(org.bukkit.Material)" tabindex="0">filler(Material)</a></li>
+<li><a href="#formatTitle(java.lang.String)" tabindex="0">formatTitle(String)</a></li>
 <li><a href="#backItem()" tabindex="0">backItem()</a></li>
 <li><a href="#previousPageItem()" tabindex="0">previousPageItem()</a></li>
 <li><a href="#nextPageItem()" tabindex="0">nextPageItem()</a></li>
+<li><a href="#toggleItem(java.lang.String,boolean)" tabindex="0">toggleItem(String, boolean)</a></li>
 </ol>
 </li>
 </ol>
@@ -121,11 +124,25 @@ loadScripts(document, 'script');</script>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#filler()" class="member-name-link">filler</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static org.bukkit.inventory.ItemStack</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#filler(org.bukkit.Material)" class="member-name-link">filler</a><wbr>(org.bukkit.Material&nbsp;material)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static net.kyori.adventure.text.Component</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#formatTitle(java.lang.String)" class="member-name-link">formatTitle</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;title)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Formats a menu title with the shared accent color.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static org.bukkit.inventory.ItemStack</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#nextPageItem()" class="member-name-link">nextPageItem</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static org.bukkit.inventory.ItemStack</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#previousPageItem()" class="member-name-link">previousPageItem</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static org.bukkit.inventory.ItemStack</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#toggleItem(java.lang.String,boolean)" class="member-name-link">toggleItem</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;label,
+ boolean&nbsp;enabled)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">On/off state item (e.g.</div>
+</div>
 </div>
 </div>
 </div>
@@ -168,6 +185,23 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="filler(org.bukkit.Material)">
+<h3>filler</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">org.bukkit.inventory.ItemStack</span>&nbsp;<span class="element-name">filler</span><wbr><span class="parameters">(org.bukkit.Material&nbsp;material)</span></div>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="formatTitle(java.lang.String)">
+<h3>formatTitle</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">net.kyori.adventure.text.Component</span>&nbsp;<span class="element-name">formatTitle</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;title)</span></div>
+<div class="block">Formats a menu title with the shared accent color.</div>
+</div>
+</section>
+</li>
+<li>
 <section class="detail" id="backItem()">
 <h3>backItem</h3>
 <div class="horizontal-scroll">
@@ -188,6 +222,16 @@ loadScripts(document, 'script');</script>
 <h3>nextPageItem</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">org.bukkit.inventory.ItemStack</span>&nbsp;<span class="element-name">nextPageItem</span>()</div>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="toggleItem(java.lang.String,boolean)">
+<h3>toggleItem</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">org.bukkit.inventory.ItemStack</span>&nbsp;<span class="element-name">toggleItem</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;label,
+ boolean&nbsp;enabled)</span></div>
+<div class="block">On/off state item (e.g. a feature toggle button), consistent wool color + label across menus.</div>
 </div>
 </section>
 </li>
