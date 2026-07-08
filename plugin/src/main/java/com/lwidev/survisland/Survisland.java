@@ -7,6 +7,7 @@ import com.lwidev.survisland.commands.SetLiveCommand;
 import com.lwidev.survisland.commands.ConfessCommand;
 import com.lwidev.survisland.commands.LinkCommand;
 import com.lwidev.survisland.commands.CampCommand;
+import com.lwidev.survisland.commands.FollowCommand;
 import com.lwidev.survisland.commands.MenuCommand;
 import com.lwidev.survisland.commands.PauseCommand;
 import com.lwidev.survisland.commands.SkinCommand;
@@ -23,6 +24,7 @@ import com.lwidev.survisland.skins.SkinManager;
 import com.lwidev.survisland.config.DiscordConfig;
 import com.lwidev.survisland.teams.TeamManager;
 import com.lwidev.survisland.utils.CompassTask;
+import com.lwidev.survisland.utils.FollowManager;
 import com.lwidev.survisland.utils.PauseManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -36,6 +38,7 @@ public final class Survisland extends JavaPlugin {
     private SkinManager skinManager;
     private DiscordConfig discordConfig;
     private TimerService timerService;
+    private FollowManager followManager;
 
     @Override
     public void onEnable() {
@@ -52,6 +55,7 @@ public final class Survisland extends JavaPlugin {
             this.skinManager = new SkinManager(this);
             new ChatSpecManager(this);
             this.timerService = new TimerService(this);
+            this.followManager = new FollowManager(this);
 
             // Initialize Discord bot asynchronously
             initializeDiscordBot();
@@ -91,6 +95,9 @@ public final class Survisland extends JavaPlugin {
         if (timerService != null) {
             timerService.cleanup();
         }
+        if (followManager != null) {
+            followManager.shutdown();
+        }
         getLogger().info("Survisland plugin disabled");
     }
     
@@ -113,10 +120,11 @@ public final class Survisland extends JavaPlugin {
                 new CampCommand(this),
                 new PauseCommand(this),
                 new SkinCommand(skinManager),
+                new FollowCommand(this, followManager),
                 new MenuCommand(new MenuContext(this, new TeamManager(), new AnnouncementService(this), timerService, new VoteService(this)))
         );
 
-        getLogger().info("Commandes enregistrées : /live, /setlive, /confess, /link, /camp, /pause, /skin, /menu");
+        getLogger().info("Commandes enregistrées : /live, /setlive, /confess, /link, /camp, /pause, /skin, /follow, /menu");
     }
     
     private void initializeDiscordBot() {

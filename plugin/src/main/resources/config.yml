@@ -40,3 +40,11 @@ chatspec:
   
   # Couleur du chat spectateur
   color: "GRAY"
+
+# Configuration de la commande /follow (suivre un joueur en mode spectateur)
+follow:
+  # Distance (en blocs) au-delà de laquelle le suiveur est téléporté vers le joueur suivi
+  max-distance: 15
+
+  # Intervalle de vérification de la distance, en ticks (20 ticks = 1 seconde)
+  check-interval-ticks: 10

@@ -29,18 +29,17 @@ Doc technique du module `api` générée automatiquement à chaque push sur `mai
 Les commandes sont enregistrées via Brigadier (pas de bloc `commands:`/`permissions:` dans
 `plugin.yml` — tout est généré par le code, voir `com.lwidev.survisland.api.command`).
 
-| Commande | Alias | Description | Permission | Défaut |
-|---|---|---|---|---|
-| `/live <message>` | — | Envoie un message sur Discord | `survisland.live` | op |
-| `/setlive [channel_id]` | — | Configure le channel Discord cible | `survisland.setlive` | op |
-| `/confess <message>` | `/conf` | Envoie un message dans son confess Discord lié | `survisland.confess` | true |
-| `/link` | — | Génère un code pour lier son compte au confess Discord (`/verify <code>` côté Discord) | `survisland.link` | true |
-| `/camp` | `/campement` | Affiche la direction vers son campement dans l'action bar | `survisland.camp` | true |
-| `/pause` | — | Active/désactive la pause du jeu (gel des joueurs) | `survisland.pause` | op |
-| `/skin force <joueurs> <skin>` | — | Force un skin (pseudo ou texture) pour un ou plusieurs joueurs, en ligne ou non (accepte les target-selectors `@p`/`@a`/etc.) | `survisland.skin.force` | op |
-| `/skin restore <joueurs>` | — | Restaure le skin original d'un ou plusieurs joueurs | `survisland.skin.restore` | op |
-| `/skin list` | — | Liste les skins forcés actifs | `survisland.skin.list` | op |
-| `/menu` | — | Ouvre le centre de contrôle GUI (équipes, joueurs, partie) | `survisland.menu` | op |
+| Commande | Alias | Arguments | Description | Permission | Défaut |
+|---|---|---|---|---|---|
+| `/live` | — | `<message>` | Envoie un message sur Discord | `survisland.live` | op |
+| `/setlive` | — | `[channel_id]` | Configure le channel Discord cible | `survisland.setlive` | op |
+| `/confess` | `/conf` | `<message>` | Envoie un message dans son confess Discord lié | `survisland.confess` | joueur |
+| `/link` | — | — | Génère un code pour lier son compte au confess Discord (`/verify <code>` côté Discord) | `survisland.link` | joueur |
+| `/camp` | `/campement` | — | Affiche la direction vers son campement dans l'action bar | `survisland.camp` | joueur |
+| `/pause` | — | — | Active/désactive la pause du jeu (gel des joueurs) | `survisland.pause` | op |
+| `/skin` | — | `force <joueurs> <skin>`<br>`restore <joueurs>`<br>`list` | Force un skin (pseudo ou texture) pour un ou plusieurs joueurs, en ligne ou non (accepte les target-selectors `@p`/`@a`/etc.)<br>Restaure le skin original d'un ou plusieurs joueurs<br>Liste les skins forcés actifs | `survisland.skin.force`<br>`survisland.skin.restore`<br>`survisland.skin.list` | op |
+| `/follow` | — | `<joueur>`<br>`stop` | Suit un joueur en mode spectateur (téléportation automatique s'il s'éloigne)<br>Arrête le suivi en cours | `survisland.follow`<br>`survisland.follow.stop` | joueur |
+| `/menu` | — | — | Ouvre le centre de contrôle GUI (équipes, joueurs, partie) | `survisland.menu` | op |
 
 ## Charte graphique
 
@@ -83,6 +82,10 @@ chatspec:
   enabled: false
   prefix: "[SPEC]"
   color: "GRAY"
+
+follow:
+  max-distance: 15           # blocs
+  check-interval-ticks: 10   # 20 ticks = 1 seconde
 
 skins:
   enabled: false
