@@ -1,6 +1,7 @@
-package com.lwidev.survisland.api.menu;
+package com.lwidev.survisland.api.menu.player;
 
 import com.lwidev.survisland.api.item.ItemBuilder;
+import com.lwidev.survisland.api.menu.SurvislandMenu;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.entity.Player;
@@ -24,10 +25,10 @@ public abstract class PlayerSelectionMenu extends SurvislandMenu {
 
     /** Declares the paginated player list using the default full-width layout. */
     protected final void selectFrom(List<Player> candidates, BiConsumer<InventoryClickEvent, Player> onSelect) {
-        paginate(candidates, PlayerSelectionMenu::playerItem, onSelect);
+        paginate(candidates, this::playerItem, onSelect);
     }
 
-    private static ItemStack playerItem(Player target) {
+    private ItemStack playerItem(Player target) {
         return ItemBuilder.skull(target.getUniqueId(), target.getName()).setName(Component.text(target.getName(), NamedTextColor.WHITE)).build();
     }
 }

@@ -4,6 +4,7 @@ import com.lwidev.survisland.Survisland;
 import com.lwidev.survisland.api.skin.MojangAPI;
 import com.lwidev.survisland.api.skin.SkinApplier;
 import com.lwidev.survisland.api.skin.SkinData;
+import com.lwidev.survisland.api.utils.BrandUtils;
 import com.lwidev.survisland.api.utils.MessageUtils;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -224,7 +225,7 @@ public class SkinManager implements Listener {
                     plugin.getLogger().warning("Failed to apply skin for " + player.getName() + ": " + throwable.getMessage());
                 } else {
                     String displayName = MojangAPI.isValidBase64Texture(skinInput) ? "texture personnalisée" : skinInput;
-                    MessageUtils.sendSuccessMessage(player, "Skin appliqué : " + displayName);
+                    MessageUtils.sendSuccessMessage(player, "Skin appliqué : ", MessageUtils.highlight(displayName, BrandUtils.PRIMARY));
                 }
             });
         });
@@ -256,7 +257,7 @@ public class SkinManager implements Listener {
                     plugin.getLogger().info("Skin application result: " + success);
                     
                     if (success) {
-                        MessageUtils.sendSuccessMessage(player, "Skin appliqué : texture personnalisée");
+                        MessageUtils.sendSuccessMessage(player, "Skin appliqué : ", MessageUtils.highlight("texture personnalisée", BrandUtils.PRIMARY));
                     } else {
                         MessageUtils.sendErrorMessage(player, "Erreur lors de l'application du skin");
                     }

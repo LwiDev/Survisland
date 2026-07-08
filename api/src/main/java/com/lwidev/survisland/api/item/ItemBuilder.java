@@ -1,6 +1,8 @@
 package com.lwidev.survisland.api.item;
 
+import com.lwidev.survisland.api.utils.BrandUtils;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -41,6 +43,11 @@ public class ItemBuilder {
         return new SkullBuilder(ownerId, ownerName);
     }
 
+    /** Decorative head variant from a raw base64 "textures" property blob (e.g. copied from minecraft-heads.com). */
+    public static SkullBuilder skull(String base64Texture) {
+        return new SkullBuilder(base64Texture);
+    }
+
     public ItemBuilder setName(Component name) {
         meta.displayName(noItalic(name));
         return this;
@@ -62,6 +69,18 @@ public class ItemBuilder {
     public ItemBuilder setAmount(int amount) {
         item.setAmount(amount);
         return this;
+    }
+
+    /** Consistent "Clic gauche : .../Clic droit : ..." hint, for items whose two click types do different things. */
+    public ItemBuilder addLeftRightClickLore(String leftAction, String rightAction) {
+        return addLore(
+                Component.text("Clic gauche : ", NamedTextColor.GRAY).append(Component.text(leftAction, BrandUtils.TERTIARY)),
+                Component.text("Clic droit : ", NamedTextColor.GRAY).append(Component.text(rightAction, BrandUtils.TERTIARY)));
+    }
+
+    /** Consistent "Clic : ..." hint, for items with a single click action worth spelling out. */
+    public ItemBuilder addClickLore(String action) {
+        return addLore(Component.empty(), Component.text("Clic : ", NamedTextColor.GRAY).append(Component.text(action, BrandUtils.TERTIARY)));
     }
 
     public ItemStack build() {

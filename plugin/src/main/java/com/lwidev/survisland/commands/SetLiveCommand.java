@@ -3,6 +3,7 @@ package com.lwidev.survisland.commands;
 import com.lwidev.survisland.Survisland;
 import com.lwidev.survisland.api.command.SurvislandCommand;
 import com.lwidev.survisland.discord.EmbeddedDiscordBot;
+import com.lwidev.survisland.api.utils.BrandUtils;
 import com.lwidev.survisland.api.utils.MessageUtils;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.StringArgumentType;
@@ -33,9 +34,9 @@ public class SetLiveCommand extends SurvislandCommand {
 
         if (currentChannel == null || currentChannel.isEmpty()) {
             MessageUtils.sendInfoMessage(sender, "Aucun channel Discord configuré.");
-            MessageUtils.sendSecondaryMessage(sender, "Utilisez §e/setlive <channel_id>§7 pour configurer un channel.");
+            MessageUtils.sendSecondaryMessage(sender, "Utilisez ", MessageUtils.highlight("/setlive <channel_id>", BrandUtils.TERTIARY), " pour configurer un channel.");
         } else {
-            MessageUtils.sendSuccessMessage(sender, "Channel Discord actuel : §e" + currentChannel);
+            MessageUtils.sendSuccessMessage(sender, "Channel Discord actuel : ", MessageUtils.highlight(currentChannel, BrandUtils.PRIMARY));
         }
     }
 
@@ -55,7 +56,7 @@ public class SetLiveCommand extends SurvislandCommand {
         plugin.saveConfig();
         plugin.getDiscordConfig().setLiveChannelId(channelId);
 
-        MessageUtils.sendSuccessMessage(sender, "Channel Discord configuré : " + channelId);
+        MessageUtils.sendSuccessMessage(sender, "Channel Discord configuré : ", MessageUtils.highlight(channelId, BrandUtils.PRIMARY));
         MessageUtils.sendSecondaryMessage(sender, "Vous pouvez maintenant utiliser /live <message> pour envoyer des messages !");
 
         discordBot.sendLiveMessage("Configuration du channel réussie !", "System", (success, error) -> {

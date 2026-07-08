@@ -3,6 +3,7 @@ package com.lwidev.survisland.commands;
 import com.destroystokyo.paper.profile.PlayerProfile;
 import com.lwidev.survisland.api.command.SurvislandCommand;
 import com.lwidev.survisland.skins.SkinManager;
+import com.lwidev.survisland.api.utils.BrandUtils;
 import com.lwidev.survisland.api.utils.MessageUtils;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.StringArgumentType;
@@ -30,7 +31,7 @@ public class SkinCommand extends SurvislandCommand {
                             List<String> targets = names(resolvePlayerProfiles(ctx, "joueurs"));
                             String skin = StringArgumentType.getString(ctx, "skin");
                             targets.forEach(target -> skinManager.forceSkin(target, skin));
-                            MessageUtils.sendSuccessMessage(ctx.getSource().getSender(), "Skin '" + skin + "' forcé pour " + describe(targets) + " !");
+                            MessageUtils.sendSuccessMessage(ctx.getSource().getSender(), "Skin ", MessageUtils.highlight(skin, BrandUtils.PRIMARY), " forcé pour ", MessageUtils.highlight(describe(targets), BrandUtils.SECONDARY), " !");
                             return Command.SINGLE_SUCCESS;
                         });
 
@@ -47,7 +48,7 @@ public class SkinCommand extends SurvislandCommand {
                     }
 
                     restored.forEach(skinManager::removeForcedSkin);
-                    MessageUtils.sendSuccessMessage(sender, "Skin original restauré pour " + describe(restored) + " !");
+                    MessageUtils.sendSuccessMessage(sender, "Skin original restauré pour ", MessageUtils.highlight(describe(restored), BrandUtils.SECONDARY), " !");
                     return Command.SINGLE_SUCCESS;
                 });
 
@@ -61,8 +62,8 @@ public class SkinCommand extends SurvislandCommand {
                         return Command.SINGLE_SUCCESS;
                     }
 
-                    MessageUtils.sendMessage(sender, "§e=== Skins Forcés ===");
-                    forcedSkins.forEach((playerName, skin) -> MessageUtils.sendMessage(sender, "§e  " + playerName + " §7» §f" + skin));
+                    MessageUtils.sendMessage(sender, MessageUtils.highlight("=== Skins Forcés ===", BrandUtils.SECONDARY));
+                    forcedSkins.forEach((playerName, skin) -> MessageUtils.sendSecondaryMessage(sender, "  ", MessageUtils.highlight(playerName, BrandUtils.PRIMARY), " » ", MessageUtils.highlight(skin, BrandUtils.TERTIARY)));
                     return Command.SINGLE_SUCCESS;
                 });
     }

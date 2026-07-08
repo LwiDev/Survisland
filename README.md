@@ -37,10 +37,28 @@ Les commandes sont enregistrées via Brigadier (pas de bloc `commands:`/`permiss
 | `/link` | — | Génère un code pour lier son compte au confess Discord (`/verify <code>` côté Discord) | `survisland.link` | true |
 | `/camp` | `/campement` | Affiche la direction vers son campement dans l'action bar | `survisland.camp` | true |
 | `/pause` | — | Active/désactive la pause du jeu (gel des joueurs) | `survisland.pause` | op |
-| `/skin force <joueur> <skin>` | — | Force un skin (pseudo ou texture) pour un joueur (accepte les target-selectors `@p`/`@a`/etc.) | `survisland.skin.force` | op |
-| `/skin restore <joueur>` | — | Restaure le skin original d'un joueur | `survisland.skin.restore` | op |
-| `/skin all <skin\|restore>` | — | Applique un skin à tous les joueurs connectés, ou restaure tout le monde | `survisland.skin.all` | op |
+| `/skin force <joueurs> <skin>` | — | Force un skin (pseudo ou texture) pour un ou plusieurs joueurs, en ligne ou non (accepte les target-selectors `@p`/`@a`/etc.) | `survisland.skin.force` | op |
+| `/skin restore <joueurs>` | — | Restaure le skin original d'un ou plusieurs joueurs | `survisland.skin.restore` | op |
 | `/skin list` | — | Liste les skins forcés actifs | `survisland.skin.list` | op |
+| `/menu` | — | Ouvre le centre de contrôle GUI (équipes, joueurs, partie) | `survisland.menu` | op |
+
+## Charte graphique
+
+Les couleurs de la marque sont centralisées dans `BrandUtils` (module `api`) — toujours en hex-exact
+(`TextColor`), jamais via les 16 couleurs nommées legacy, pour un rendu identique partout (menus,
+messages). À utiliser par rôle, pas au goût :
+
+| Rôle | Couleur | Hex | Usage |
+|---|---|---|---|
+| `PRIMARY` | Orange Survisland | `#FF8C1A` | Éléments les plus importants d'un écran (titres, action principale) |
+| `SECONDARY` | Jaune doré | `#FFC94D` | Navigation/actions courantes |
+| `TERTIARY` | Bleu azur | `#1BA8E0` | Actions utilitaires/admin appliquées à une cible (gamemode, téléportation, effets...) |
+
+Les couleurs sémantiques (vert/rouge pour confirmer-annuler, activé-désactivé, succès-erreur) sont
+volontairement séparées de cette triade de marque. Pour les messages de commande, passer par
+`MessageUtils` (`sendSuccessMessage`, `sendErrorMessage`, ...) plutôt que de coder la couleur à la main
+— c'est déjà branché sur la bonne couleur (rouge pour les erreurs, etc.) et garde le préfixe
+`[Survisland]` cohérent partout.
 
 ## Configuration (`config.yml`)
 
@@ -50,6 +68,16 @@ discord:
   live-channel-id: ""
   message-format: "**{sender} »** {message}"
   confess-format: "{message}"
+
+menu:
+  announcement-presets:
+    - "Immunité dans 30 minutes"
+    - "Immunité dans 10 minutes"
+    - "Confort dans 30 minutes"
+    - "Confort dans 10 minutes"
+  vote-recipients:
+    gold: "GoldVision98"
+    marcus: "Marcouscous"
 
 chatspec:
   enabled: false
