@@ -3,6 +3,7 @@ package com.lwidev.survisland;
 import com.lwidev.survisland.api.command.SurvislandCommandManager;
 import com.lwidev.survisland.api.menu.SurvislandMenuManager;
 import com.lwidev.survisland.api.utils.Shutdownable;
+import com.lwidev.survisland.commands.AfkCommand;
 import com.lwidev.survisland.commands.LiveCommand;
 import com.lwidev.survisland.commands.SetLiveCommand;
 import com.lwidev.survisland.commands.ConfessCommand;
@@ -26,6 +27,7 @@ import com.lwidev.survisland.confess.LinkCodeManager;
 import com.lwidev.survisland.discord.EmbeddedDiscordBot;
 import com.lwidev.survisland.chatspec.ChatSpecManager;
 import com.lwidev.survisland.menu.MenuContext;
+import com.lwidev.survisland.services.AfkManager;
 import com.lwidev.survisland.services.DamageManager;
 import com.lwidev.survisland.services.FollowManager;
 import com.lwidev.survisland.services.PauseManager;
@@ -49,6 +51,7 @@ public final class Survisland extends JavaPlugin {
     private DiscordConfig discordConfig;
     private TimerService timerService;
     private FollowManager followManager;
+    private AfkManager afkManager;
     private PauseManager pauseManager;
     private DamageManager damageManager;
     private JoinLeaveListener joinLeaveListener;
@@ -71,6 +74,7 @@ public final class Survisland extends JavaPlugin {
             this.timerService = track(new TimerService(this));
             this.followManager = track(new FollowManager(this));
             this.pauseManager = track(new PauseManager(this));
+            this.afkManager = track(new AfkManager(this));
             new PauseListener(this, pauseManager);
             this.damageManager = track(new DamageManager());
             this.joinLeaveListener = new JoinLeaveListener(this);
@@ -129,6 +133,7 @@ public final class Survisland extends JavaPlugin {
                 new PauseCommand(pauseManager),
                 new SkinCommand(skinManager),
                 new FollowCommand(this, followManager),
+                new AfkCommand(this, afkManager),
                 new MenuCommand(new MenuContext(this, new TeamManager(), new AnnouncementService(this), timerService, new VoteService(this), pauseManager)),
                 new PvpCommand(),
                 new DegatsCommand(damageManager),
@@ -136,7 +141,7 @@ public final class Survisland extends JavaPlugin {
                 new ConfigCommand(this)
         );
 
-        getLogger().info("Commandes enregistrées : /live, /setlive, /confess, /link, /camp, /pause, /skin, /follow, /menu, /pvp, /degats, /say, /config");
+        getLogger().info("Commandes enregistrées : /live, /setlive, /confess, /link, /camp, /pause, /skin, /follow, /afk, /menu, /pvp, /degats, /say, /config");
     }
 
     private void initializeDiscordBot() {

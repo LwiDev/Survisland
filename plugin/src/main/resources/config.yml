@@ -68,3 +68,8 @@ say:
   # Son joué à tous les joueurs à l'envoi du message : la clé namespaced vanilla, comme dans /playsound
   # (ex: entity.player.levelup, block.note_block.bit...). Laisser vide ("") pour désactiver le son.
   sound: "block.note_block.bit"
+
+#Configuration de la commande /afk affichant les joueurs inactifs
+afk:
+  # Temps minimum avant d'être affiché inactif
+  min-time-afk: 3
