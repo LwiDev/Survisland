@@ -3,15 +3,7 @@ package com.lwidev.survisland;
 import com.lwidev.survisland.api.command.SurvislandCommandManager;
 import com.lwidev.survisland.api.menu.SurvislandMenuManager;
 import com.lwidev.survisland.api.utils.Shutdownable;
-import com.lwidev.survisland.commands.LiveCommand;
-import com.lwidev.survisland.commands.SetLiveCommand;
-import com.lwidev.survisland.commands.ConfessCommand;
-import com.lwidev.survisland.commands.LinkCommand;
-import com.lwidev.survisland.commands.CampCommand;
-import com.lwidev.survisland.commands.FollowCommand;
-import com.lwidev.survisland.commands.MenuCommand;
-import com.lwidev.survisland.commands.PauseCommand;
-import com.lwidev.survisland.commands.SkinCommand;
+import com.lwidev.survisland.commands.*;
 import com.lwidev.survisland.confess.ConfessLinkManager;
 import com.lwidev.survisland.game.AnnouncementService;
 import com.lwidev.survisland.game.TimerService;
@@ -21,6 +13,7 @@ import com.lwidev.survisland.confess.LinkCodeManager;
 import com.lwidev.survisland.discord.EmbeddedDiscordBot;
 import com.lwidev.survisland.chatspec.ChatSpecManager;
 import com.lwidev.survisland.menu.MenuContext;
+import com.lwidev.survisland.services.AfkManager;
 import com.lwidev.survisland.services.FollowManager;
 import com.lwidev.survisland.services.PauseManager;
 import com.lwidev.survisland.skins.SkinManager;
@@ -42,6 +35,7 @@ public final class Survisland extends JavaPlugin {
     private DiscordConfig discordConfig;
     private TimerService timerService;
     private FollowManager followManager;
+    private AfkManager afkManager;
     private PauseManager pauseManager;
     private final List<Shutdownable> shutdownables = new ArrayList<>();
 
@@ -62,6 +56,7 @@ public final class Survisland extends JavaPlugin {
             this.timerService = track(new TimerService(this));
             this.followManager = track(new FollowManager(this));
             this.pauseManager = track(new PauseManager(this));
+            this.afkManager = track(new AfkManager(this));
             new PauseListener(this, pauseManager);
             shutdownables.add(CompassTask::shutdownAll);
 
@@ -114,6 +109,7 @@ public final class Survisland extends JavaPlugin {
                 new PauseCommand(pauseManager),
                 new SkinCommand(skinManager),
                 new FollowCommand(this, followManager),
+                new AfkCommand(this, afkManager),
                 new MenuCommand(new MenuContext(this, new TeamManager(), new AnnouncementService(this), timerService, new VoteService(this), pauseManager))
         );
 
