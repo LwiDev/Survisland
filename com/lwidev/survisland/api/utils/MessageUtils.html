@@ -67,6 +67,7 @@ loadScripts(document, 'script');</script>
 <li><a href="#sendErrorMessage(org.bukkit.command.CommandSender,java.lang.Object...)" tabindex="0">sendErrorMessage(CommandSender, Object...)</a></li>
 <li><a href="#sendInfoMessage(org.bukkit.command.CommandSender,java.lang.Object...)" tabindex="0">sendInfoMessage(CommandSender, Object...)</a></li>
 <li><a href="#sendSecondaryMessage(org.bukkit.command.CommandSender,java.lang.Object...)" tabindex="0">sendSecondaryMessage(CommandSender, Object...)</a></li>
+<li><a href="#colorize(java.lang.String)" tabindex="0">colorize(String)</a></li>
 <li><a href="#highlight(java.lang.String)" tabindex="0">highlight(String)</a></li>
 <li><a href="#highlight(java.lang.String,net.kyori.adventure.text.format.TextColor)" tabindex="0">highlight(String, TextColor)</a></li>
 </ol>
@@ -120,36 +121,41 @@ Errors are the one exception: they stay fully red, since the whole line being an
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static net.kyori.adventure.text.Component</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#highlight(java.lang.String)" class="member-name-link">highlight</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;text)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#colorize(java.lang.String)" class="member-name-link">colorize</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;legacyText)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
-<div class="block">A word or phrase to make stand out in an otherwise neutral sentence, in the brand's primary accent.</div>
+<div class="block">Translates admin-authored text from config.yml (legacy "&amp;" color codes, e.g.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static net.kyori.adventure.text.Component</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#highlight(java.lang.String,net.kyori.adventure.text.format.TextColor)" class="member-name-link">highlight</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;text,
- net.kyori.adventure.text.format.TextColor&nbsp;color)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#highlight(java.lang.String)" class="member-name-link">highlight</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;text)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">A word or phrase to make stand out in an otherwise neutral sentence, in the brand's primary accent.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static net.kyori.adventure.text.Component</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#highlight(java.lang.String,net.kyori.adventure.text.format.TextColor)" class="member-name-link">highlight</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;text,
+ net.kyori.adventure.text.format.TextColor&nbsp;color)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">A word or phrase to make stand out in an otherwise neutral sentence, in the given color.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#sendErrorMessage(org.bukkit.command.CommandSender,java.lang.Object...)" class="member-name-link">sendErrorMessage</a><wbr>(org.bukkit.command.CommandSender&nbsp;sender,
- <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>...&nbsp;parts)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#sendInfoMessage(org.bukkit.command.CommandSender,java.lang.Object...)" class="member-name-link">sendInfoMessage</a><wbr>(org.bukkit.command.CommandSender&nbsp;sender,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#sendErrorMessage(org.bukkit.command.CommandSender,java.lang.Object...)" class="member-name-link">sendErrorMessage</a><wbr>(org.bukkit.command.CommandSender&nbsp;sender,
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>...&nbsp;parts)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#sendMessage(org.bukkit.command.CommandSender,java.lang.Object...)" class="member-name-link">sendMessage</a><wbr>(org.bukkit.command.CommandSender&nbsp;sender,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#sendInfoMessage(org.bukkit.command.CommandSender,java.lang.Object...)" class="member-name-link">sendInfoMessage</a><wbr>(org.bukkit.command.CommandSender&nbsp;sender,
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>...&nbsp;parts)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#sendSecondaryMessage(org.bukkit.command.CommandSender,java.lang.Object...)" class="member-name-link">sendSecondaryMessage</a><wbr>(org.bukkit.command.CommandSender&nbsp;sender,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#sendMessage(org.bukkit.command.CommandSender,java.lang.Object...)" class="member-name-link">sendMessage</a><wbr>(org.bukkit.command.CommandSender&nbsp;sender,
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>...&nbsp;parts)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#sendSuccessMessage(org.bukkit.command.CommandSender,java.lang.Object...)" class="member-name-link">sendSuccessMessage</a><wbr>(org.bukkit.command.CommandSender&nbsp;sender,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#sendSecondaryMessage(org.bukkit.command.CommandSender,java.lang.Object...)" class="member-name-link">sendSecondaryMessage</a><wbr>(org.bukkit.command.CommandSender&nbsp;sender,
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>...&nbsp;parts)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#sendSuccessMessage(org.bukkit.command.CommandSender,java.lang.Object...)" class="member-name-link">sendSuccessMessage</a><wbr>(org.bukkit.command.CommandSender&nbsp;sender,
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>...&nbsp;parts)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
 </div>
@@ -225,6 +231,17 @@ Errors are the one exception: they stay fully red, since the whole line being an
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">sendSecondaryMessage</span><wbr><span class="parameters">(org.bukkit.command.CommandSender&nbsp;sender,
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>...&nbsp;parts)</span></div>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="colorize(java.lang.String)">
+<h3>colorize</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">net.kyori.adventure.text.Component</span>&nbsp;<span class="element-name">colorize</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;legacyText)</span></div>
+<div class="block">Translates admin-authored text from config.yml (legacy "&amp;" color codes, e.g. "&amp;c%message%")
+into a <code>Component</code>. Reserved for those user-configurable strings — everywhere else, compose
+messages programmatically via <a href="#highlight(java.lang.String)"><code>highlight(String)</code></a> and the brand's hex colors instead.</div>
 </div>
 </section>
 </li>

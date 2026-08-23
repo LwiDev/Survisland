@@ -67,6 +67,7 @@ loadScripts(document, 'script');</script>
 <li><a href="#playComplete(org.bukkit.entity.Player)" tabindex="0">playComplete(Player)</a></li>
 <li><a href="#playComplete()" tabindex="0">playComplete()</a></li>
 <li><a href="#play(org.bukkit.entity.Player,org.bukkit.Sound)" tabindex="0">play(Player, Sound)</a></li>
+<li><a href="#fromConfigName(java.lang.String)" tabindex="0">fromConfigName(String)</a></li>
 </ol>
 </li>
 </ol>
@@ -113,26 +114,32 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#play(org.bukkit.entity.Player,org.bukkit.Sound)" class="member-name-link">play</a><wbr>(org.bukkit.entity.Player&nbsp;player,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static org.bukkit.Sound</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#fromConfigName(java.lang.String)" class="member-name-link">fromConfigName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Resolves a sound from an admin-configured name in config.yml — the vanilla namespaced key, same
+as used by <code>/playsound</code> (e.g.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#play(org.bukkit.entity.Player,org.bukkit.Sound)" class="member-name-link">play</a><wbr>(org.bukkit.entity.Player&nbsp;player,
  org.bukkit.Sound&nbsp;sound)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#playComplete()" class="member-name-link">playComplete</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#playComplete()" class="member-name-link">playComplete</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Same cue, to every online player.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#playComplete(org.bukkit.entity.Player)" class="member-name-link">playComplete</a><wbr>(org.bukkit.entity.Player&nbsp;player)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#playNotify()" class="member-name-link">playNotify</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#playComplete(org.bukkit.entity.Player)" class="member-name-link">playComplete</a><wbr>(org.bukkit.entity.Player&nbsp;player)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#playNotify()" class="member-name-link">playNotify</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Same cue, to every online player.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#playNotify(org.bukkit.entity.Player)" class="member-name-link">playNotify</a><wbr>(org.bukkit.entity.Player&nbsp;player)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#playNotify(org.bukkit.entity.Player)" class="member-name-link">playNotify</a><wbr>(org.bukkit.entity.Player&nbsp;player)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
 </div>
@@ -206,6 +213,18 @@ loadScripts(document, 'script');</script>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">play</span><wbr><span class="parameters">(org.bukkit.entity.Player&nbsp;player,
  org.bukkit.Sound&nbsp;sound)</span></div>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="fromConfigName(java.lang.String)">
+<h3>fromConfigName</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">org.bukkit.Sound</span>&nbsp;<span class="element-name">fromConfigName</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</span></div>
+<div class="block">Resolves a sound from an admin-configured name in config.yml — the vanilla namespaced key, same
+as used by <code>/playsound</code> (e.g. "entity.player.levelup", "block.note_block.bit" — note the
+underscore there is part of the sound's own name, not a word separator to convert). Returns
+<code>null</code> if it doesn't match a known sound.</div>
 </div>
 </section>
 </li>
