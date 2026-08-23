@@ -3,6 +3,7 @@ package com.lwidev.survisland.api.utils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.command.CommandSender;
 
 /**
@@ -34,6 +35,15 @@ public class MessageUtils {
 
     public static void sendSecondaryMessage(CommandSender sender, Object... parts) {
         sender.sendMessage(PREFIX.append(build(NamedTextColor.GRAY, parts)));
+    }
+
+    /**
+     * Translates admin-authored text from config.yml (legacy "&amp;" color codes, e.g. "&amp;c%message%")
+     * into a {@link Component}. Reserved for those user-configurable strings — everywhere else, compose
+     * messages programmatically via {@link #highlight} and the brand's hex colors instead.
+     */
+    public static Component colorize(String legacyText) {
+        return LegacyComponentSerializer.legacyAmpersand().deserialize(legacyText);
     }
 
     /** A word or phrase to make stand out in an otherwise neutral sentence, in the brand's primary accent. */

@@ -76,7 +76,7 @@ menu:
     - "Confort dans 10 minutes"
   vote-recipients:
     gold: "GoldVision98"
-    marcus: "Marcouscous"
+    marcus: "Maarcouscous"
 
 chatspec:
   enabled: false

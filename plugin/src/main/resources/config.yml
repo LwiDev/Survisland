@@ -28,7 +28,7 @@ menu:
   # Pseudos des deux joueurs notifiés (via un title en jeu) quand une place se libère
   vote-recipients:
     gold: "GoldVision98"
-    marcus: "Marcouscous"
+    marcus: "Maarcouscous"
 
 # Configuration du chat spectateur (non implémenté)
 chatspec:
@@ -48,3 +48,23 @@ follow:
 
   # Intervalle de vérification de la distance, en ticks (20 ticks = 1 seconde)
   check-interval-ticks: 10
+
+# Messages de connexion/déconnexion des joueurs (codes couleur "&" acceptés)
+join-leave:
+  # Activer ou désactiver les messages de join/leave
+  enabled: true
+
+  # Message affiché quand un joueur rejoint la partie (%player% = pseudo)
+  join-message: "&a+ &7%player% a rejoint la partie"
+
+  # Message affiché quand un joueur quitte la partie (%player% = pseudo)
+  leave-message: "&c- &7%player% a quitté la partie"
+
+# Configuration de la commande /say (message annoncé à tous les joueurs, précédé du préfixe classique "[Survisland] ")
+say:
+  # Format du message : %player% = expéditeur, %message% = contenu du message (codes couleur "&" acceptés)
+  format: "&f%player% &7: &c%message%"
+
+  # Son joué à tous les joueurs à l'envoi du message : la clé namespaced vanilla, comme dans /playsound
+  # (ex: entity.player.levelup, block.note_block.bit...). Laisser vide ("") pour désactiver le son.
+  sound: "block.note_block.bit"

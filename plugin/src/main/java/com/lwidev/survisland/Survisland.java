@@ -8,25 +8,32 @@ import com.lwidev.survisland.commands.SetLiveCommand;
 import com.lwidev.survisland.commands.ConfessCommand;
 import com.lwidev.survisland.commands.LinkCommand;
 import com.lwidev.survisland.commands.CampCommand;
+import com.lwidev.survisland.commands.ConfigCommand;
 import com.lwidev.survisland.commands.FollowCommand;
 import com.lwidev.survisland.commands.MenuCommand;
 import com.lwidev.survisland.commands.PauseCommand;
+import com.lwidev.survisland.commands.PvpCommand;
+import com.lwidev.survisland.commands.DegatsCommand;
+import com.lwidev.survisland.commands.SayCommand;
 import com.lwidev.survisland.commands.SkinCommand;
 import com.lwidev.survisland.confess.ConfessLinkManager;
 import com.lwidev.survisland.game.AnnouncementService;
 import com.lwidev.survisland.game.TimerService;
 import com.lwidev.survisland.game.VoteService;
+import com.lwidev.survisland.listeners.JoinLeaveListener;
 import com.lwidev.survisland.listeners.PauseListener;
 import com.lwidev.survisland.confess.LinkCodeManager;
 import com.lwidev.survisland.discord.EmbeddedDiscordBot;
 import com.lwidev.survisland.chatspec.ChatSpecManager;
 import com.lwidev.survisland.menu.MenuContext;
+import com.lwidev.survisland.services.DamageManager;
 import com.lwidev.survisland.services.FollowManager;
 import com.lwidev.survisland.services.PauseManager;
 import com.lwidev.survisland.skins.SkinManager;
 import com.lwidev.survisland.config.DiscordConfig;
 import com.lwidev.survisland.teams.TeamManager;
 import com.lwidev.survisland.utils.CompassTask;
+import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
@@ -43,6 +50,8 @@ public final class Survisland extends JavaPlugin {
     private TimerService timerService;
     private FollowManager followManager;
     private PauseManager pauseManager;
+    private DamageManager damageManager;
+    private JoinLeaveListener joinLeaveListener;
     private final List<Shutdownable> shutdownables = new ArrayList<>();
 
     @Override
@@ -63,6 +72,8 @@ public final class Survisland extends JavaPlugin {
             this.followManager = track(new FollowManager(this));
             this.pauseManager = track(new PauseManager(this));
             new PauseListener(this, pauseManager);
+            this.damageManager = track(new DamageManager());
+            this.joinLeaveListener = new JoinLeaveListener(this);
             shutdownables.add(CompassTask::shutdownAll);
 
             // Initialize Discord bot asynchronously
@@ -73,6 +84,10 @@ public final class Survisland extends JavaPlugin {
 
             // Register the menu system's single listener
             SurvislandMenuManager.register(this);
+
+            // Register listeners
+            getServer().getPluginManager().registerEvents(joinLeaveListener, this);
+            getServer().getPluginManager().registerEvents(damageManager, this);
 
             getLogger().info("Survisland plugin enabled successfully!");
 
@@ -114,10 +129,14 @@ public final class Survisland extends JavaPlugin {
                 new PauseCommand(pauseManager),
                 new SkinCommand(skinManager),
                 new FollowCommand(this, followManager),
-                new MenuCommand(new MenuContext(this, new TeamManager(), new AnnouncementService(this), timerService, new VoteService(this), pauseManager))
+                new MenuCommand(new MenuContext(this, new TeamManager(), new AnnouncementService(this), timerService, new VoteService(this), pauseManager)),
+                new PvpCommand(),
+                new DegatsCommand(damageManager),
+                new SayCommand(this),
+                new ConfigCommand(this)
         );
 
-        getLogger().info("Commandes enregistrées : /live, /setlive, /confess, /link, /camp, /pause, /skin, /follow, /menu");
+        getLogger().info("Commandes enregistrées : /live, /setlive, /confess, /link, /camp, /pause, /skin, /follow, /menu, /pvp, /degats, /say, /config");
     }
 
     private void initializeDiscordBot() {
@@ -148,5 +167,18 @@ public final class Survisland extends JavaPlugin {
 
     public LinkCodeManager getLinkCodeManager() {
         return linkCodeManager;
+    }
+
+    /**
+     * Reloads config.yml and re-applies it to the config-driven state that's normally only read once
+     * at startup (e.g. {@link JoinLeaveListener}'s cached format strings). Commands like {@code /say}
+     * already re-read {@link #getConfig()} on every use and don't need anything extra here.
+     */
+    public void reloadPluginConfig() {
+        reloadConfig();
+
+        HandlerList.unregisterAll(joinLeaveListener);
+        joinLeaveListener = new JoinLeaveListener(this);
+        getServer().getPluginManager().registerEvents(joinLeaveListener, this);
     }
 }
