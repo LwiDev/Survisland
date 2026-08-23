@@ -28,7 +28,7 @@ repositories {
 
 dependencies {
     // Paper API with NMS access
-    paperweight.paperDevBundle("26.2.build.48-alpha")
+    paperweight.paperDevBundle("26.2.build.116-stable")
 
     // Survisland command/menu API
     implementation project(':api')
