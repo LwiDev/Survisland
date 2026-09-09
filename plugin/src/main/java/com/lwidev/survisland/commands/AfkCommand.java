@@ -13,7 +13,6 @@ public class AfkCommand extends SurvislandCommand {
 
     public AfkCommand(Survisland plugin, AfkManager afkManager) {
         super("afk", "Permet de se mettre afk", List.of(), true, PermissionDefault.TRUE);
-        double miniTime = plugin.getConfig().getDouble("afk.min-time-afk", 3);
 
         executes(ctx -> {
             Player player = (Player) ctx.getSource().getSender();
