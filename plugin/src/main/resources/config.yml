@@ -72,4 +72,6 @@ say:
 #Configuration de la commande /afk affichant les joueurs inactifs
 afk:
   # Temps minimum avant d'être affiché inactif
-  min-time-afk: 3
+  min-time-afk: 300000
+  # Intervalle de vérification d'inactivité, en ticks (20 ticks = 1 seconde)
+  check-interval-ticks: 400

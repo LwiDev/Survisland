@@ -11,8 +11,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
@@ -28,6 +30,8 @@ public class AfkManager implements Listener, Shutdownable {
     private final HashMap<UUID, Listener> afkListeners;
     private final ArrayList<UUID> playersAFK;
     private final HashMap<UUID, Team> teamHashMap;
+    public final HashMap<UUID, Long> lastActivity;
+    private BukkitTask afkGlobalTask;
 
     public AfkManager(Survisland survisland) {
         this.plugin = survisland;
@@ -35,23 +39,26 @@ public class AfkManager implements Listener, Shutdownable {
         afkListeners = new HashMap<>();
         teamHashMap = new HashMap<>();
         playersAFK = new ArrayList<>();
+        lastActivity = new HashMap<>();
 
         Scoreboard scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
         Team afkTeam = scoreboard.getTeam(TEAM_AFK);
         if(afkTeam == null) {
             creationAfkTeam(scoreboard);
         }
+
+        launchTaskAutoAfk();
     }
 
     private static void creationAfkTeam(Scoreboard scoreboard) {
         Team afkTeam;
         afkTeam = scoreboard.registerNewTeam(TEAM_AFK);
         afkTeam.color(NamedTextColor.GRAY);
-        afkTeam.prefix(Component.text("[AFK] ")
+        afkTeam.prefix(Component.text("|| ")
                 .color(NamedTextColor.GRAY)
                 .decorate(TextDecoration.ITALIC)
         );
-        afkTeam.suffix(Component.text(" ♫")
+        afkTeam.suffix(Component.text(" AFK")
                 .color(NamedTextColor.GRAY)
                 .decorate(TextDecoration.ITALIC)
         );
@@ -63,7 +70,10 @@ public class AfkManager implements Listener, Shutdownable {
             HandlerList.unregisterAll(afkListeners.remove(idPlayer));
             stopSession(Bukkit.getPlayer(idPlayer));
         }
-
+        if(afkGlobalTask != null) {
+            afkGlobalTask.cancel();
+        }
+        lastActivity.clear();
         afkListeners.clear();
         playersAFK.clear();
     }
@@ -74,8 +84,9 @@ public class AfkManager implements Listener, Shutdownable {
      */
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
-        System.out.println(event.getPlayer().getUniqueId());
-        stopSession(event.getPlayer());
+        Player player = event.getPlayer();
+        stopSession(player);
+        lastActivity.remove(player.getUniqueId());
     }
 
     /**
@@ -96,7 +107,6 @@ public class AfkManager implements Listener, Shutdownable {
      */
     private void unSetAfkPayers(Player joueurAfk) {
         Team team = joueurAfk.getScoreboard().getEntryTeam(joueurAfk.getName());
-        System.out.println(teamHashMap);
         Object valueOldTeam = teamHashMap.get(joueurAfk.getUniqueId());
         if (valueOldTeam != null) {
             Team oldTeamPlayer = Bukkit.getScoreboardManager().getMainScoreboard().getTeam(
@@ -160,4 +170,28 @@ public class AfkManager implements Listener, Shutdownable {
     }
 
 
+    @EventHandler
+    public void onMove(PlayerMoveEvent moveEvent) {
+        lastActivity.put(moveEvent.getPlayer().getUniqueId(), System.currentTimeMillis());
+    }
+
+    private void launchTaskAutoAfk() {
+        long checkIntereval = plugin.getConfig().getLong("afk.check-interval-ticks");
+        afkGlobalTask = Bukkit.getScheduler().runTaskTimer(plugin, () -> {
+            long now = System.currentTimeMillis();
+            long delayAfk = plugin.getConfig().getLong("afk.min-time-afk");
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                UUID idPlayer = player.getUniqueId();
+                long lastActivityTime = lastActivity.getOrDefault(idPlayer, now);
+                if(!playersAFK.contains(idPlayer) && now - lastActivityTime > delayAfk) {
+                    startAfk(player);
+                }
+            }
+        }, 0L, checkIntereval);
+    }
+
+    @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent joinEvent) {
+        lastActivity.put(joinEvent.getPlayer().getUniqueId(), System.currentTimeMillis());
+    }
 }
