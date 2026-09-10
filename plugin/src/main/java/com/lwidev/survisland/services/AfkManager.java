@@ -3,9 +3,9 @@ package com.lwidev.survisland.services;
 import com.lwidev.survisland.Survisland;
 import com.lwidev.survisland.api.utils.MessageUtils;
 import com.lwidev.survisland.api.utils.Shutdownable;
+
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -15,7 +15,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitTask;
-import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
 import java.util.ArrayList;
@@ -24,12 +23,10 @@ import java.util.UUID;
 
 public class AfkManager implements Listener, Shutdownable {
 
-
-    public static final String TEAM_AFK = "zteamAFK";
+    private final String nameAfkTag = "AFK";
     private final Survisland plugin;
     private final HashMap<UUID, Listener> afkListeners;
     private final ArrayList<UUID> playersAFK;
-    private final HashMap<UUID, Team> teamHashMap;
     public final HashMap<UUID, Long> lastActivity;
     private BukkitTask afkGlobalTask;
 
@@ -37,31 +34,10 @@ public class AfkManager implements Listener, Shutdownable {
         this.plugin = survisland;
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
         afkListeners = new HashMap<>();
-        teamHashMap = new HashMap<>();
         playersAFK = new ArrayList<>();
         lastActivity = new HashMap<>();
 
-        Scoreboard scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
-        Team afkTeam = scoreboard.getTeam(TEAM_AFK);
-        if(afkTeam == null) {
-            creationAfkTeam(scoreboard);
-        }
-
         launchTaskAutoAfk();
-    }
-
-    private static void creationAfkTeam(Scoreboard scoreboard) {
-        Team afkTeam;
-        afkTeam = scoreboard.registerNewTeam(TEAM_AFK);
-        afkTeam.color(NamedTextColor.GRAY);
-        afkTeam.prefix(Component.text("|| ")
-                .color(NamedTextColor.GRAY)
-                .decorate(TextDecoration.ITALIC)
-        );
-        afkTeam.suffix(Component.text(" AFK")
-                .color(NamedTextColor.GRAY)
-                .decorate(TextDecoration.ITALIC)
-        );
     }
 
     @Override
@@ -106,17 +82,23 @@ public class AfkManager implements Listener, Shutdownable {
      * @param joueurAfk JoueurAfk
      */
     private void unSetAfkPayers(Player joueurAfk) {
+        joueurAfk.removeScoreboardTag(nameAfkTag);
         Team team = joueurAfk.getScoreboard().getEntryTeam(joueurAfk.getName());
-        Object valueOldTeam = teamHashMap.get(joueurAfk.getUniqueId());
-        if (valueOldTeam != null) {
-            Team oldTeamPlayer = Bukkit.getScoreboardManager().getMainScoreboard().getTeam(
-                    teamHashMap.get(joueurAfk.getUniqueId()).getName()
-            );
-            oldTeamPlayer.addEntry(joueurAfk.getName());
+        Component baseName;
+        if (team != null) {
+            Component prefix = team.prefix() == null ? Component.empty() : team.prefix();
+            Component suffix = team.suffix() == null ? Component.empty() : team.suffix();
+
+            baseName = Component.empty()
+                    .append(prefix)
+                    .append(Component.text(joueurAfk.getName())
+                            .color(team.color() == null ? NamedTextColor.WHITE : team.color()))
+                    .append(suffix);
+        } else {
+            baseName = Component.text(joueurAfk.getName());
         }
 
-        team.removeEntry(joueurAfk.getName());
-        teamHashMap.remove(joueurAfk.getUniqueId());
+        joueurAfk.playerListName(baseName);
     }
 
     /**
@@ -154,19 +136,25 @@ public class AfkManager implements Listener, Shutdownable {
      * @param joueurAfk Joueur afk
      */
     private void setPlayerAFK(Player joueurAfk) {
-        Scoreboard scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
         Team team = joueurAfk.getScoreboard().getEntryTeam(joueurAfk.getName());
-        Team afkTeam = scoreboard.getTeam(TEAM_AFK);
-
-        if(afkTeam == null) {
-            creationAfkTeam(scoreboard);
-        }
-
-        teamHashMap.put(joueurAfk.getUniqueId(), team);
+        Component baseName;
         if (team != null) {
-            team.removeEntry(joueurAfk.getName());
+            Component prefix = team.prefix() == null ? Component.empty() : team.prefix();
+            Component suffix = team.suffix() == null ? Component.empty() : team.suffix();
+
+            baseName = Component.empty()
+                    .append(prefix)
+                    .append(Component.text(joueurAfk.getName())
+                            .color(team.color() == null ? NamedTextColor.GRAY : team.color()))
+                    .append(suffix);
+        } else {
+            baseName = Component.text(joueurAfk.getName());
         }
-        afkTeam.addEntry(joueurAfk.getName());
+
+        joueurAfk.playerListName(Component.text("\uD83D\uDCA4  ")
+                .append(baseName));
+
+        joueurAfk.addScoreboardTag(nameAfkTag);
     }
 
 
@@ -192,6 +180,7 @@ public class AfkManager implements Listener, Shutdownable {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent joinEvent) {
+        unSetAfkPayers(joinEvent.getPlayer());
         lastActivity.put(joinEvent.getPlayer().getUniqueId(), System.currentTimeMillis());
     }
 }
