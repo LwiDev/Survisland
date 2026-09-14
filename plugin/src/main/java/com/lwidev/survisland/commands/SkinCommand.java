@@ -21,7 +21,7 @@ public class SkinCommand extends SurvislandCommand {
     private static final String TARGET_HINT = "un pseudo de joueur (en ligne ou non) ou un sélecteur (@a, @p, @r, @s)";
 
     public SkinCommand(SkinManager skinManager) {
-        super("skin", "Gérer les skins forcés", PermissionDefault.TRUE);
+        super("skin", "Gérer les skins forcés", PermissionDefault.OP);
 
         subcommand("force")
                 .argument("joueurs", ArgumentTypes.playerProfiles(), TARGET_HINT)

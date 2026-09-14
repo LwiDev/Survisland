@@ -167,41 +167,48 @@ public class EmbeddedDiscordBot extends ListenerAdapter implements Shutdownable 
         if (!event.getName().equals("verify")) {
             return;
         }
-        
+
         // Vérifier que la commande est utilisée dans un confess
         String channelName = event.getChannel().getName();
         if (!channelName.startsWith("confess-")) {
             event.reply("❌ Cette commande ne peut être utilisée que dans un salon de confess !").setEphemeral(true).queue();
             return;
         }
-        
+
         String verificationCode = Objects.requireNonNull(event.getOption("code")).getAsString().toUpperCase();
         if (confessLinkManager == null) {
             event.reply("❌ Le système de confession n'est pas initialisé !").setEphemeral(true).queue();
             return;
         }
-        
+
         // Vérifier le code via le LinkCodeManager
         if (plugin.getLinkCodeManager() == null) {
             event.reply("❌ Le système de codes de liaison n'est pas initialisé !").setEphemeral(true).queue();
             return;
         }
-        
-        boolean success = plugin.getLinkCodeManager().validateAndConsumeLinkCode(verificationCode, channelName);
-        
-        if (success) {
-            event.reply("✅ Votre compte a été lié avec succès au salon " + channelName + " !\n" +
-                       "Vous pouvez maintenant utiliser `/confess <message>` en jeu.").setEphemeral(true).queue();
-            
-            plugin.getLogger().info("Discord user successfully verified code " + verificationCode + " and linked to " + channelName);
-        } else {
-            event.reply("❌ Code de vérification invalide ou expiré !\n" +
-                       "Générez un nouveau code avec `/link` en jeu.").setEphemeral(true).queue();
-                       
-            plugin.getLogger().warning("Discord user failed to verify code: " + verificationCode);
-        }
+
+        // On accuse réception tout de suite (le token d'interaction expire au bout de 3s) :
+        // la validation du code écrit ensuite sur disque (confess-links.json), ce qui peut
+        // dépasser ce délai et faire croire à un code expiré alors que le lien a bien été créé.
+        event.deferReply(true).queue();
+
+        CompletableFuture.runAsync(() -> {
+            boolean success = plugin.getLinkCodeManager().validateAndConsumeLinkCode(verificationCode, channelName);
+
+            if (success) {
+                event.getHook().sendMessage("✅ Votre compte a été lié avec succès au salon " + channelName + " !\n" +
+                           "Vous pouvez maintenant utiliser `/confess <message>` en jeu.").queue();
+
+                plugin.getLogger().info("Discord user successfully verified code " + verificationCode + " and linked to " + channelName);
+            } else {
+                event.getHook().sendMessage("❌ Code de vérification invalide ou expiré !\n" +
+                           "Générez un nouveau code avec `/link` en jeu.").queue();
+
+                plugin.getLogger().warning("Discord user failed to verify code: " + verificationCode);
+            }
+        });
     }
-    
+
     public void setConfessLinkManager(ConfessLinkManager confessLinkManager) {
         this.confessLinkManager = confessLinkManager;
     }
