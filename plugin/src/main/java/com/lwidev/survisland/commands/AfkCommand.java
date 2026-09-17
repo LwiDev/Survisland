@@ -23,14 +23,11 @@ public class AfkCommand extends SurvislandCommand {
             return Command.SINGLE_SUCCESS;
         });
 
-        restrictedArgument("joueur", ArgumentTypes.player(), "un joueur en ligne à basculer en afk",
-                PermissionDefault.OP, ctx -> {
+        restrictedArgument("joueur", ArgumentTypes.player(), "un joueur en ligne à basculer en afk", PermissionDefault.OP, ctx -> {
                     CommandSender sender = ctx.getSource().getSender();
                     Player target = resolvePlayer(ctx, "joueur");
-
                     boolean nowAfk = afkManager.toggleAfk(target);
-                    MessageUtils.sendSuccessMessage(sender, MessageUtils.highlight(target.getName()),
-                            nowAfk ? " est maintenant afk." : " n'est plus afk.");
+                    MessageUtils.sendSuccessMessage(sender, MessageUtils.highlight(target.getName()), nowAfk ? " est maintenant afk." : " n'est plus afk.");
                     return Command.SINGLE_SUCCESS;
                 });
     }
