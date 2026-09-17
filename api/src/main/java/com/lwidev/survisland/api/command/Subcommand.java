@@ -42,7 +42,7 @@ public final class Subcommand {
     /** Adds the final argument of this subcommand's chain, executed directly. */
     public <T> Subcommand argument(String name, ArgumentType<T> type, Command<CommandSourceStack> executor) {
         chain.argument(name, type);
-        chain.executes(executor);
+        chain.tailExecutes(executor);
         return this;
     }
 
@@ -53,7 +53,7 @@ public final class Subcommand {
      */
     public <T> Subcommand argument(String name, ArgumentType<T> type, String hint, Command<CommandSourceStack> executor) {
         chain.argument(name, type, hint);
-        chain.executes(executor);
+        chain.tailExecutes(executor);
         return this;
     }
 
@@ -71,7 +71,7 @@ public final class Subcommand {
      */
     public <T> Subcommand argument(String name, ArgumentType<T> type, String hint, SuggestionProvider<CommandSourceStack> suggestions, Command<CommandSourceStack> executor) {
         chain.argument(name, type, hint, suggestions);
-        chain.executes(executor);
+        chain.tailExecutes(executor);
         return this;
     }
 

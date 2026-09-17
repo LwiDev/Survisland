@@ -1,0 +1,190 @@
+package com.lwidev.survisland.services;
+
+import com.lwidev.survisland.Survisland;
+import com.lwidev.survisland.api.utils.MessageUtils;
+import com.lwidev.survisland.api.utils.Shutdownable;
+
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.scheduler.BukkitTask;
+import org.bukkit.scoreboard.Team;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.UUID;
+
+public class AfkManager implements Listener, Shutdownable {
+
+    private final String nameAfkTag = "AFK";
+    private final Survisland plugin;
+    private final ArrayList<UUID> playersAFK;
+    public final HashMap<UUID, Long> lastActivity;
+    private BukkitTask afkGlobalTask;
+
+    public AfkManager(Survisland survisland) {
+        this.plugin = survisland;
+        plugin.getServer().getPluginManager().registerEvents(this, plugin);
+        playersAFK = new ArrayList<>();
+        lastActivity = new HashMap<>();
+
+        launchTaskAutoAfk();
+    }
+
+    @Override
+    public void shutdown() {
+        if (afkGlobalTask != null) {
+            afkGlobalTask.cancel();
+        }
+        for (UUID idPlayer : new ArrayList<>(playersAFK)) {
+            Player player = Bukkit.getPlayer(idPlayer);
+            if (player != null) {
+                stopSession(player);
+            }
+        }
+        lastActivity.clear();
+        playersAFK.clear();
+    }
+
+    /**
+     * Évènement du joueur se déconnectant
+     * @param event PlayerQuitEvent
+     */
+    @EventHandler
+    public void onPlayerQuit(PlayerQuitEvent event) {
+        Player player = event.getPlayer();
+        stopSession(player);
+        lastActivity.remove(player.getUniqueId());
+    }
+
+    /**
+     * Stop la mise en Afk d'un joueur
+     * @param joueurAfk joueur afk
+     */
+    private void stopSession(Player joueurAfk) {
+        unSetAfkPayers(joueurAfk);
+        playersAFK.remove(joueurAfk.getUniqueId());
+        MessageUtils.sendInfoMessage(joueurAfk, "Vous n'êtes plus afk.");
+    }
+
+    /**
+     * Le joueur est actuellement dans la Team Afk
+     * On lui enlève la Team afk et on lui remet son ancienne team S'il en avait une
+     * @param joueurAfk JoueurAfk
+     */
+    private void unSetAfkPayers(Player joueurAfk) {
+        joueurAfk.removeScoreboardTag(nameAfkTag);
+        Team team = joueurAfk.getScoreboard().getEntryTeam(joueurAfk.getName());
+        Component baseName;
+        if (team != null) {
+            Component prefix = team.prefix() == null ? Component.empty() : team.prefix();
+            Component suffix = team.suffix() == null ? Component.empty() : team.suffix();
+
+            baseName = Component.empty()
+                    .append(prefix)
+                    .append(Component.text(joueurAfk.getName())
+                            .color(team.color() == null ? NamedTextColor.WHITE : team.color()))
+                    .append(suffix);
+        } else {
+            baseName = Component.text(joueurAfk.getName());
+        }
+
+        joueurAfk.playerListName(baseName);
+    }
+
+    /**
+     * Fonction principale qui fait les vérifications puis passe le joueur en afk.
+     * Le retour d'afk est détecté par le {@link #onMove} global, pas besoin d'un listener dédié.
+     * @param joueurAfk Joueur afk
+     */
+    public void startAfk(Player joueurAfk) {
+        UUID idJoueur = joueurAfk.getUniqueId();
+        if(playersAFK.contains(idJoueur)) {
+            MessageUtils.sendMessage(joueurAfk,"Vous êtes déjà afk.");
+            return;
+        }
+
+        playersAFK.add(idJoueur);
+        setPlayerAFK(joueurAfk);
+        MessageUtils.sendSuccessMessage(joueurAfk, "Vous êtes maintenant afk.");
+    }
+
+    /**
+     * Bascule l'état afk d'un joueur, à l'initiative d'un OP (ex : {@code /afk <joueur>}).
+     * @param joueurAfk joueur ciblé
+     * @return {@code true} si le joueur est afk après l'appel, {@code false} sinon
+     */
+    public boolean toggleAfk(Player joueurAfk) {
+        boolean etaitAfk = playersAFK.contains(joueurAfk.getUniqueId());
+        if (etaitAfk) {
+            stopSession(joueurAfk);
+        } else {
+            startAfk(joueurAfk);
+        }
+        return !etaitAfk;
+    }
+
+    /**
+     * Ajoute le joueur dans la team afk et sauvegarde son ancienne équipe
+     * @param joueurAfk Joueur afk
+     */
+    private void setPlayerAFK(Player joueurAfk) {
+        Team team = joueurAfk.getScoreboard().getEntryTeam(joueurAfk.getName());
+        Component baseName;
+        if (team != null) {
+            Component prefix = team.prefix() == null ? Component.empty() : team.prefix();
+            Component suffix = team.suffix() == null ? Component.empty() : team.suffix();
+
+            baseName = Component.empty()
+                    .append(prefix)
+                    .append(Component.text(joueurAfk.getName())
+                            .color(team.color() == null ? NamedTextColor.GRAY : team.color()))
+                    .append(suffix);
+        } else {
+            baseName = Component.text(joueurAfk.getName());
+        }
+
+        joueurAfk.playerListName(Component.text("\uD83D\uDCA4  ")
+                .append(baseName));
+
+        joueurAfk.addScoreboardTag(nameAfkTag);
+    }
+
+
+    @EventHandler
+    public void onMove(PlayerMoveEvent moveEvent) {
+        Player player = moveEvent.getPlayer();
+        UUID idPlayer = player.getUniqueId();
+        lastActivity.put(idPlayer, System.currentTimeMillis());
+        if (playersAFK.contains(idPlayer)) {
+            stopSession(player);
+        }
+    }
+
+    private void launchTaskAutoAfk() {
+        long checkIntereval = plugin.getConfig().getLong("afk.check-interval-ticks");
+        afkGlobalTask = Bukkit.getScheduler().runTaskTimer(plugin, () -> {
+            long now = System.currentTimeMillis();
+            long delayAfk = plugin.getConfig().getLong("afk.min-time-afk");
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                UUID idPlayer = player.getUniqueId();
+                long lastActivityTime = lastActivity.getOrDefault(idPlayer, now);
+                if(!playersAFK.contains(idPlayer) && now - lastActivityTime > delayAfk) {
+                    startAfk(player);
+                }
+            }
+        }, 0L, checkIntereval);
+    }
+
+    @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent joinEvent) {
+        unSetAfkPayers(joinEvent.getPlayer());
+        lastActivity.put(joinEvent.getPlayer().getUniqueId(), System.currentTimeMillis());
+    }
+}

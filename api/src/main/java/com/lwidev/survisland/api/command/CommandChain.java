@@ -26,11 +26,14 @@ import java.util.stream.Collectors;
  */
 final class CommandChain {
 
-    private record ArgSpec<T>(String name, ArgumentType<T> type, String hint, SuggestionProvider<CommandSourceStack> suggestions) {
+    private record ArgSpec<T>(String name, ArgumentType<T> type, String hint, SuggestionProvider<CommandSourceStack> suggestions, String permission) {
         RequiredArgumentBuilder<CommandSourceStack, T> toBuilder() {
             RequiredArgumentBuilder<CommandSourceStack, T> builder = Commands.argument(name, type);
             if (suggestions != null) {
                 builder.suggests(suggestions);
+            }
+            if (permission != null) {
+                builder.requires(source -> source.getSender().hasPermission(permission));
             }
             return builder;
         }
@@ -58,6 +61,7 @@ final class CommandChain {
     private final List<ArgSpec<?>> steps = new ArrayList<>();
     private final List<Branch> branches = new ArrayList<>();
     private Command<CommandSourceStack> executor;
+    private Command<CommandSourceStack> zeroArgExecutor;
 
     CommandChain(String label) {
         this.label = label;
@@ -77,16 +81,36 @@ final class CommandChain {
      * @param suggestions optional tab-completion suggestions for this argument
      */
     <T> void argument(String name, ArgumentType<T> type, String hint, SuggestionProvider<CommandSourceStack> suggestions) {
-        steps.add(new ArgSpec<>(name, type, hint, suggestions));
+        steps.add(new ArgSpec<>(name, type, hint, suggestions, null));
     }
 
+    /**
+     * @param hint       short human-readable description of the expected value, shown when this argument is missing
+     * @param permission permission node required to reach this argument (and anything chained after it) —
+     *                   senders without it can't complete or tab-complete past this point
+     */
+    <T> void restrictedArgument(String name, ArgumentType<T> type, String hint, String permission) {
+        steps.add(new ArgSpec<>(name, type, hint, null, permission));
+    }
+
+    /**
+     * Sets the executor run when this chain's root node itself is reached with nothing more
+     * to parse — whether that's because this chain has no steps at all, or because a sender
+     * stopped right at the root of a chain that also has further steps (e.g. plain {@code /afk}
+     * alongside a further {@code /afk <joueur>} step).
+     */
     void executes(Command<CommandSourceStack> executor) {
+        this.zeroArgExecutor = executor;
+    }
+
+    /** Sets the executor for this chain's tail step — run once all of this chain's arguments are supplied. */
+    void tailExecutes(Command<CommandSourceStack> executor) {
         this.executor = executor;
     }
 
-    /** Whether this chain has a no-argument executor (used for root-level usage fallback). */
+    /** Whether this chain has an executor set (used for root-level usage fallback). */
     boolean hasExecutor() {
-        return executor != null;
+        return executor != null || zeroArgExecutor != null;
     }
 
     void onLiteral(String name, Command<CommandSourceStack> executor) {
@@ -109,8 +133,8 @@ final class CommandChain {
      */
     void applyTo(ArgumentBuilder<CommandSourceStack, ?> node) {
         if (steps.isEmpty()) {
-            if (executor != null) {
-                node.executes(executor);
+            if (zeroArgExecutor != null) {
+                node.executes(zeroArgExecutor);
             }
             for (Branch branch : branches) {
                 node.then(branch.build());
@@ -136,9 +160,10 @@ final class CommandChain {
             nodes.get(i).then(nodes.get(i + 1));
         }
 
-        // Reached with zero arguments (e.g. "/skin force" alone): report what's missing
-        // instead of leaving Brigadier to report a generic "incomplete command".
-        node.executes(usageFallback(steps.getFirst()));
+        // Reached with zero arguments (e.g. "/skin force" alone): run the explicit zero-arg
+        // executor if one was set (e.g. plain "/afk"), otherwise report what's missing instead
+        // of leaving Brigadier to report a generic "incomplete command".
+        node.executes(zeroArgExecutor != null ? zeroArgExecutor : usageFallback(steps.getFirst()));
         node.then(nodes.getFirst());
     }
 

@@ -25,6 +25,9 @@ public final class SurvislandCommandManager {
             for (String sub : command.subcommandNames()) {
                 registerPermission(pluginManager, command.permission() + "." + sub, command.permissionDefault());
             }
+            for (SurvislandCommand.RestrictedArgument restricted : command.restrictedArguments()) {
+                registerPermission(pluginManager, restricted.permission(), restricted.permissionDefault());
+            }
         }
 
         plugin.getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, event -> {
