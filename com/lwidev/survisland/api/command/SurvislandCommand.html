@@ -64,6 +64,7 @@ loadScripts(document, 'script');</script>
 <li><a href="#argument(java.lang.String,com.mojang.brigadier.arguments.ArgumentType,java.lang.String)" tabindex="0">argument(String, ArgumentType, String)</a></li>
 <li><a href="#argument(java.lang.String,com.mojang.brigadier.arguments.ArgumentType,com.mojang.brigadier.Command)" tabindex="0">argument(String, ArgumentType, Command)</a></li>
 <li><a href="#argument(java.lang.String,com.mojang.brigadier.arguments.ArgumentType,java.lang.String,com.mojang.brigadier.Command)" tabindex="0">argument(String, ArgumentType, String, Command)</a></li>
+<li><a href="#restrictedArgument(java.lang.String,com.mojang.brigadier.arguments.ArgumentType,java.lang.String,org.bukkit.permissions.PermissionDefault,com.mojang.brigadier.Command)" tabindex="0">restrictedArgument(String, ArgumentType, String, PermissionDefault, Command)</a></li>
 <li><a href="#executes(com.mojang.brigadier.Command)" tabindex="0">executes(Command)</a></li>
 <li><a href="#onLiteral(java.lang.String,com.mojang.brigadier.Command)" tabindex="0">onLiteral(String, Command)</a></li>
 <li><a href="#onArgument(java.lang.String,com.mojang.brigadier.arguments.ArgumentType,com.mojang.brigadier.Command)" tabindex="0">onArgument(String, ArgumentType, Command)</a></li>
@@ -151,7 +152,7 @@ No <code>.then(...)</code> chaining and no manual registration bookkeeping neede
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final <a href="SurvislandCommand.html" title="class in com.lwidev.survisland.api.command">SurvislandCommand</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#executes(com.mojang.brigadier.Command)" class="member-name-link">executes</a><wbr>(com.mojang.brigadier.Command&lt;io.papermc.paper.command.brigadier.CommandSourceStack&gt;&nbsp;executor)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Sets the executor for this command's own (flat) argument chain (no-argument case).</div>
+<div class="block">Sets the executor run when this command's own root is reached with nothing more to parse (no-argument case).</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final &lt;T&gt;&nbsp;<a href="SurvislandCommand.html" title="class in com.lwidev.survisland.api.command">SurvislandCommand</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onArgument(java.lang.String,com.mojang.brigadier.arguments.ArgumentType,com.mojang.brigadier.Command)" class="member-name-link">onArgument</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
@@ -192,9 +193,20 @@ No <code>.then(...)</code> chaining and no manual registration bookkeeping neede
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Resolves a multi-player selector argument (@a/@e/@r or a single name).</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final <a href="Subcommand.html" title="class in com.lwidev.survisland.api.command">Subcommand</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#subcommand(java.lang.String)" class="member-name-link">subcommand</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final &lt;T&gt;&nbsp;<a href="SurvislandCommand.html" title="class in com.lwidev.survisland.api.command">SurvislandCommand</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#restrictedArgument(java.lang.String,com.mojang.brigadier.arguments.ArgumentType,java.lang.String,org.bukkit.permissions.PermissionDefault,com.mojang.brigadier.Command)" class="member-name-link">restrictedArgument</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
+ com.mojang.brigadier.arguments.ArgumentType&lt;T&gt;&nbsp;type,
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;hint,
+ org.bukkit.permissions.PermissionDefault&nbsp;permissionDefault,
+ com.mojang.brigadier.Command&lt;io.papermc.paper.command.brigadier.CommandSourceStack&gt;&nbsp;executor)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Adds the final argument of this command's own (flat) chain, executed directly, restricted to
+senders holding "<code>&lt;permission()&gt;.&lt;name&gt;</code>" — registered with its own <code>permissionDefault</code>,
+independent of this command's own default.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final <a href="Subcommand.html" title="class in com.lwidev.survisland.api.command">Subcommand</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#subcommand(java.lang.String)" class="member-name-link">subcommand</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Declares a subcommand (e.g.</div>
 </div>
 </div>
@@ -299,11 +311,32 @@ No <code>.then(...)</code> chaining and no manual registration bookkeeping neede
 </section>
 </li>
 <li>
+<section class="detail" id="restrictedArgument(java.lang.String,com.mojang.brigadier.arguments.ArgumentType,java.lang.String,org.bukkit.permissions.PermissionDefault,com.mojang.brigadier.Command)">
+<h3>restrictedArgument</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="type-parameters">&lt;T&gt;</span>&nbsp;<span class="return-type"><a href="SurvislandCommand.html" title="class in com.lwidev.survisland.api.command">SurvislandCommand</a></span>&nbsp;<span class="element-name">restrictedArgument</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
+ com.mojang.brigadier.arguments.ArgumentType&lt;T&gt;&nbsp;type,
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;hint,
+ org.bukkit.permissions.PermissionDefault&nbsp;permissionDefault,
+ com.mojang.brigadier.Command&lt;io.papermc.paper.command.brigadier.CommandSourceStack&gt;&nbsp;executor)</span></div>
+<div class="block">Adds the final argument of this command's own (flat) chain, executed directly, restricted to
+senders holding "<code>&lt;permission()&gt;.&lt;name&gt;</code>" — registered with its own <code>permissionDefault</code>,
+independent of this command's own default. Lets a command open to everyone (e.g. <code>/afk</code>)
+still gate one specific argument (e.g. <code>/afk &lt;joueur&gt;</code>) to OPs only, while the plain
+no-argument form (set via <a href="#executes(com.mojang.brigadier.Command)"><code>executes(Command)</code></a>) keeps working for everyone.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>hint</code> - short human-readable description of the expected value, shown if this argument ends up missing</dd>
+</dl>
+</div>
+</section>
+</li>
+<li>
 <section class="detail" id="executes(com.mojang.brigadier.Command)">
 <h3>executes</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type"><a href="SurvislandCommand.html" title="class in com.lwidev.survisland.api.command">SurvislandCommand</a></span>&nbsp;<span class="element-name">executes</span><wbr><span class="parameters">(com.mojang.brigadier.Command&lt;io.papermc.paper.command.brigadier.CommandSourceStack&gt;&nbsp;executor)</span></div>
-<div class="block">Sets the executor for this command's own (flat) argument chain (no-argument case).</div>
+<div class="block">Sets the executor run when this command's own root is reached with nothing more to parse (no-argument case).</div>
 </div>
 </section>
 </li>

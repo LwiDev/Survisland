@@ -173,7 +173,7 @@ used (menus, chat messages, ...) instead of falling back to the nearest of the 1
 <dd>&nbsp;</dd>
 <dt><a href="com/lwidev/survisland/api/command/SurvislandCommand.html#executes(com.mojang.brigadier.Command)" class="member-name-link">executes(Command)</a> - Method in class com.lwidev.survisland.api.command.<a href="com/lwidev/survisland/api/command/SurvislandCommand.html" title="class in com.lwidev.survisland.api.command">SurvislandCommand</a></dt>
 <dd>
-<div class="block">Sets the executor for this command's own (flat) argument chain (no-argument case).</div>
+<div class="block">Sets the executor run when this command's own root is reached with nothing more to parse (no-argument case).</div>
 </dd>
 </dl>
 <h2 class="title" id="I:F">F</h2>
@@ -395,6 +395,12 @@ read-only glance at their health/food.</div>
 <dt><a href="com/lwidev/survisland/api/command/SurvislandCommand.html#resolvePlayers(com.mojang.brigadier.context.CommandContext,java.lang.String)" class="member-name-link">resolvePlayers(CommandContext, String)</a> - Method in class com.lwidev.survisland.api.command.<a href="com/lwidev/survisland/api/command/SurvislandCommand.html" title="class in com.lwidev.survisland.api.command">SurvislandCommand</a></dt>
 <dd>
 <div class="block">Resolves a multi-player selector argument (@a/@e/@r or a single name).</div>
+</dd>
+<dt><a href="com/lwidev/survisland/api/command/SurvislandCommand.html#restrictedArgument(java.lang.String,com.mojang.brigadier.arguments.ArgumentType,java.lang.String,org.bukkit.permissions.PermissionDefault,com.mojang.brigadier.Command)" class="member-name-link">restrictedArgument(String, ArgumentType, String, PermissionDefault, Command)</a> - Method in class com.lwidev.survisland.api.command.<a href="com/lwidev/survisland/api/command/SurvislandCommand.html" title="class in com.lwidev.survisland.api.command">SurvislandCommand</a></dt>
+<dd>
+<div class="block">Adds the final argument of this command's own (flat) chain, executed directly, restricted to
+senders holding "<code>&lt;permission()&gt;.&lt;name&gt;</code>" — registered with its own <code>permissionDefault</code>,
+independent of this command's own default.</div>
 </dd>
 </dl>
 <h2 class="title" id="I:S">S</h2>
