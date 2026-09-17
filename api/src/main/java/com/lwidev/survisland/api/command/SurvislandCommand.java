@@ -47,6 +47,11 @@ public abstract class SurvislandCommand {
     private final PermissionDefault permissionDefault;
     private final CommandChain rootChain;
     private final List<Subcommand> subcommands = new ArrayList<>();
+    private final List<RestrictedArgument> restrictedArguments = new ArrayList<>();
+
+    /** A permission node gating one argument of this command's own chain, registered with its own default. */
+    record RestrictedArgument(String permission, PermissionDefault permissionDefault) {
+    }
 
     protected SurvislandCommand(String name, String description, PermissionDefault permissionDefault) {
         this(name, description, List.of(), false, permissionDefault);
@@ -94,7 +99,7 @@ public abstract class SurvislandCommand {
     /** Adds the final argument of this command's own (flat) chain, executed directly. */
     public final <T> SurvislandCommand argument(String name, ArgumentType<T> type, Command<CommandSourceStack> executor) {
         rootChain.argument(name, type);
-        rootChain.executes(executor);
+        rootChain.tailExecutes(executor);
         return this;
     }
 
@@ -105,11 +110,29 @@ public abstract class SurvislandCommand {
      */
     public final <T> SurvislandCommand argument(String name, ArgumentType<T> type, String hint, Command<CommandSourceStack> executor) {
         rootChain.argument(name, type, hint);
-        rootChain.executes(executor);
+        rootChain.tailExecutes(executor);
         return this;
     }
 
-    /** Sets the executor for this command's own (flat) argument chain (no-argument case). */
+    /**
+     * Adds the final argument of this command's own (flat) chain, executed directly, restricted to
+     * senders holding "{@code <permission()>.<name>}" — registered with its own {@code permissionDefault},
+     * independent of this command's own default. Lets a command open to everyone (e.g. {@code /afk})
+     * still gate one specific argument (e.g. {@code /afk <joueur>}) to OPs only, while the plain
+     * no-argument form (set via {@link #executes}) keeps working for everyone.
+     *
+     * @param hint short human-readable description of the expected value, shown if this argument ends up missing
+     */
+    public final <T> SurvislandCommand restrictedArgument(String name, ArgumentType<T> type, String hint,
+                                                            PermissionDefault permissionDefault, Command<CommandSourceStack> executor) {
+        String permission = permission() + "." + name;
+        restrictedArguments.add(new RestrictedArgument(permission, permissionDefault));
+        rootChain.restrictedArgument(name, type, hint, permission);
+        rootChain.tailExecutes(executor);
+        return this;
+    }
+
+    /** Sets the executor run when this command's own root is reached with nothing more to parse (no-argument case). */
     public final SurvislandCommand executes(Command<CommandSourceStack> executor) {
         rootChain.executes(executor);
         return this;
@@ -173,6 +196,11 @@ public abstract class SurvislandCommand {
     /** Subcommand names, used by {@link SurvislandCommandManager} to auto-register their permissions. */
     final List<String> subcommandNames() {
         return subcommands.stream().map(Subcommand::name).toList();
+    }
+
+    /** Restricted-argument permissions, used by {@link SurvislandCommandManager} to auto-register them. */
+    final List<RestrictedArgument> restrictedArguments() {
+        return restrictedArguments;
     }
 
     /** Builds the full Brigadier node for this command, ready to register. */
