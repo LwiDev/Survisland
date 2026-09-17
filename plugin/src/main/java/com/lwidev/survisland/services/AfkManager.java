@@ -49,7 +49,6 @@ public class AfkManager implements Listener, Shutdownable {
             }
         }
         lastActivity.clear();
-        afkListeners.clear();
         playersAFK.clear();
     }
 
@@ -70,7 +69,6 @@ public class AfkManager implements Listener, Shutdownable {
      */
     private void stopSession(Player joueurAfk) {
         unSetAfkPayers(joueurAfk);
-        afkListeners.remove(joueurAfk.getUniqueId());
         playersAFK.remove(joueurAfk.getUniqueId());
         MessageUtils.sendInfoMessage(joueurAfk, "Vous n'êtes plus afk.");
     }
@@ -101,7 +99,8 @@ public class AfkManager implements Listener, Shutdownable {
     }
 
     /**
-     * Fonction principale qui fait les vérifications puis créé un listener quand le joueur ne sera plus afk
+     * Fonction principale qui fait les vérifications puis passe le joueur en afk.
+     * Le retour d'afk est détecté par le {@link #onMove} global, pas besoin d'un listener dédié.
      * @param joueurAfk Joueur afk
      */
     public void startAfk(Player joueurAfk) {
@@ -113,21 +112,22 @@ public class AfkManager implements Listener, Shutdownable {
 
         playersAFK.add(idJoueur);
         setPlayerAFK(joueurAfk);
-
-        Listener listener = new Listener() {
-            @EventHandler
-            public void onMove(PlayerMoveEvent moveEvent) {
-                if (!moveEvent.getPlayer().getUniqueId().equals(idJoueur))
-                    return;
-
-                stopSession(joueurAfk);
-                HandlerList.unregisterAll(this);
-            }
-        };
-
-        Bukkit.getPluginManager().registerEvents(listener, plugin);
-        afkListeners.put(idJoueur, listener);
         MessageUtils.sendSuccessMessage(joueurAfk, "Vous êtes maintenant afk.");
+    }
+
+    /**
+     * Bascule l'état afk d'un joueur, à l'initiative d'un OP (ex : {@code /afk <joueur>}).
+     * @param joueurAfk joueur ciblé
+     * @return {@code true} si le joueur est afk après l'appel, {@code false} sinon
+     */
+    public boolean toggleAfk(Player joueurAfk) {
+        boolean etaitAfk = playersAFK.contains(joueurAfk.getUniqueId());
+        if (etaitAfk) {
+            stopSession(joueurAfk);
+        } else {
+            startAfk(joueurAfk);
+        }
+        return !etaitAfk;
     }
 
     /**
@@ -159,7 +159,12 @@ public class AfkManager implements Listener, Shutdownable {
 
     @EventHandler
     public void onMove(PlayerMoveEvent moveEvent) {
-        lastActivity.put(moveEvent.getPlayer().getUniqueId(), System.currentTimeMillis());
+        Player player = moveEvent.getPlayer();
+        UUID idPlayer = player.getUniqueId();
+        lastActivity.put(idPlayer, System.currentTimeMillis());
+        if (playersAFK.contains(idPlayer)) {
+            stopSession(player);
+        }
     }
 
     private void launchTaskAutoAfk() {
