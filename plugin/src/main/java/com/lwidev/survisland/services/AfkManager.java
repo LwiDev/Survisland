@@ -9,7 +9,6 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -25,7 +24,6 @@ public class AfkManager implements Listener, Shutdownable {
 
     private final String nameAfkTag = "AFK";
     private final Survisland plugin;
-    private final HashMap<UUID, Listener> afkListeners;
     private final ArrayList<UUID> playersAFK;
     public final HashMap<UUID, Long> lastActivity;
     private BukkitTask afkGlobalTask;
@@ -33,7 +31,6 @@ public class AfkManager implements Listener, Shutdownable {
     public AfkManager(Survisland survisland) {
         this.plugin = survisland;
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
-        afkListeners = new HashMap<>();
         playersAFK = new ArrayList<>();
         lastActivity = new HashMap<>();
 
@@ -42,12 +39,14 @@ public class AfkManager implements Listener, Shutdownable {
 
     @Override
     public void shutdown() {
-        for (UUID idPlayer : playersAFK) {
-            HandlerList.unregisterAll(afkListeners.remove(idPlayer));
-            stopSession(Bukkit.getPlayer(idPlayer));
-        }
-        if(afkGlobalTask != null) {
+        if (afkGlobalTask != null) {
             afkGlobalTask.cancel();
+        }
+        for (UUID idPlayer : new ArrayList<>(playersAFK)) {
+            Player player = Bukkit.getPlayer(idPlayer);
+            if (player != null) {
+                stopSession(player);
+            }
         }
         lastActivity.clear();
         afkListeners.clear();
