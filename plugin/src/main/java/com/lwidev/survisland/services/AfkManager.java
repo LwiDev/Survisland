@@ -151,7 +151,7 @@ public class AfkManager implements Listener, Shutdownable {
      * @param joueurAfk Joueur afk
      */
     private void setPlayerAFK(Player joueurAfk) {
-        joueurAfk.playerListName(Component.text("\uD83D\uDCA4  ").append(buildTeamAwareName(joueurAfk, NamedTextColor.GRAY)));
+        joueurAfk.playerListName(Component.text("💤  ").append(buildTeamAwareName(joueurAfk, NamedTextColor.GRAY)));
         joueurAfk.addScoreboardTag(nameAfkTag);
     }
 
