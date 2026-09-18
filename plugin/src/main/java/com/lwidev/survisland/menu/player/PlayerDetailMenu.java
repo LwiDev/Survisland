@@ -91,6 +91,10 @@ public class PlayerDetailMenu extends SurvislandMenu {
         item(row, col, ItemBuilder.of(Material.WHITE_BANNER).setName(Component.text("Changer d'équipe", BrandUtils.TERTIARY)).build(),
                 _ -> openSubMenu(new TeamListMenu(viewer, ctx, team -> {
                     ctx.teamManager().addMember(team, target);
+                    Player onlineTarget = target.getPlayer();
+                    if (onlineTarget != null) {
+                        ctx.afkManager().refreshDisplayName(onlineTarget);
+                    }
                     MessageUtils.sendSuccessMessage(viewer, MessageUtils.highlight(target.getName(), BrandUtils.PRIMARY), " rejoint ", MessageUtils.highlight(team.getName(), BrandUtils.SECONDARY), ".");
                     new PlayerDetailMenu(viewer, ctx, target).open();
                 })));

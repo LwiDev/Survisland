@@ -80,22 +80,23 @@ public class AfkManager implements Listener, Shutdownable {
      */
     private void unSetAfkPayers(Player joueurAfk) {
         joueurAfk.removeScoreboardTag(nameAfkTag);
+        joueurAfk.playerListName(buildTeamAwareName(joueurAfk, NamedTextColor.WHITE));
+    }
+
+    /**
+     * Construit le nom du joueur en respectant le prefix/suffix/couleur de sa team, si elle en a une.
+     * @param joueurAfk joueur concerné
+     * @param fallbackColor couleur utilisée si la team n'a pas de couleur définie
+     */
+    private Component buildTeamAwareName(Player joueurAfk, NamedTextColor fallbackColor) {
         Team team = joueurAfk.getScoreboard().getEntryTeam(joueurAfk.getName());
-        Component baseName;
-        if (team != null) {
-            Component prefix = team.prefix() == null ? Component.empty() : team.prefix();
-            Component suffix = team.suffix() == null ? Component.empty() : team.suffix();
-
-            baseName = Component.empty()
-                    .append(prefix)
-                    .append(Component.text(joueurAfk.getName())
-                            .color(team.color() == null ? NamedTextColor.WHITE : team.color()))
-                    .append(suffix);
-        } else {
-            baseName = Component.text(joueurAfk.getName());
+        if (team == null) {
+            return Component.text(joueurAfk.getName());
         }
-
-        joueurAfk.playerListName(baseName);
+        return Component.empty()
+                .append(team.prefix())
+                .append(Component.text(joueurAfk.getName()).color(team.hasColor() ? team.color() : fallbackColor))
+                .append(team.suffix());
     }
 
     /**
@@ -113,6 +114,21 @@ public class AfkManager implements Listener, Shutdownable {
         playersAFK.add(idJoueur);
         setPlayerAFK(joueurAfk);
         MessageUtils.sendSuccessMessage(joueurAfk, "Vous êtes maintenant afk.");
+    }
+
+    /**
+     * Recalcule le tab list du joueur selon son état afk actuel et sa team actuelle.
+     * À appeler après tout changement affectant sa team (ajout/retrait/suppression) pour qu'il
+     * ne reste pas figé sur l'ancien prefix/suffix/couleur tant que le joueur ne se
+     * reconnecte pas ou ne bascule pas afk.
+     * @param player joueur en ligne concerné
+     */
+    public void refreshDisplayName(Player player) {
+        if (playersAFK.contains(player.getUniqueId())) {
+            setPlayerAFK(player);
+        } else {
+            unSetAfkPayers(player);
+        }
     }
 
     /**
@@ -135,24 +151,7 @@ public class AfkManager implements Listener, Shutdownable {
      * @param joueurAfk Joueur afk
      */
     private void setPlayerAFK(Player joueurAfk) {
-        Team team = joueurAfk.getScoreboard().getEntryTeam(joueurAfk.getName());
-        Component baseName;
-        if (team != null) {
-            Component prefix = team.prefix() == null ? Component.empty() : team.prefix();
-            Component suffix = team.suffix() == null ? Component.empty() : team.suffix();
-
-            baseName = Component.empty()
-                    .append(prefix)
-                    .append(Component.text(joueurAfk.getName())
-                            .color(team.color() == null ? NamedTextColor.GRAY : team.color()))
-                    .append(suffix);
-        } else {
-            baseName = Component.text(joueurAfk.getName());
-        }
-
-        joueurAfk.playerListName(Component.text("\uD83D\uDCA4  ")
-                .append(baseName));
-
+        joueurAfk.playerListName(Component.text("💤  ").append(buildTeamAwareName(joueurAfk, NamedTextColor.GRAY)));
         joueurAfk.addScoreboardTag(nameAfkTag);
     }
 

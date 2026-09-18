@@ -134,7 +134,7 @@ public final class Survisland extends JavaPlugin {
                 new SkinCommand(skinManager),
                 new FollowCommand(this, followManager),
                 new AfkCommand(this, afkManager),
-                new MenuCommand(new MenuContext(this, new TeamManager(), new AnnouncementService(this), timerService, new VoteService(this), pauseManager)),
+                new MenuCommand(new MenuContext(this, new TeamManager(), new AnnouncementService(this), timerService, new VoteService(this), pauseManager, afkManager)),
                 new PvpCommand(),
                 new DegatsCommand(damageManager),
                 new SayCommand(this),
