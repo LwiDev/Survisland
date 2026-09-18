@@ -166,6 +166,14 @@ public class AfkManager implements Listener, Shutdownable {
         }
     }
 
+    /**
+     * Boucle périodique : détecte les nouveaux joueurs afk, et resynchronise le tab list de tout
+     * le monde sur sa team actuelle. Ce deuxième point est nécessaire car {@code playerListName}
+     * n'est plus mis à jour automatiquement par Minecraft une fois défini manuellement (voir
+     * {@link #setPlayerAFK}/{@link #unSetAfkPayers}) — sans cette resynchronisation, un joueur
+     * ayant déjà été afk resterait figé sur son ancienne team si elle change entre-temps (via un
+     * datapack ou toute autre source externe à ce plugin).
+     */
     private void launchTaskAutoAfk() {
         long checkIntereval = plugin.getConfig().getLong("afk.check-interval-ticks");
         afkGlobalTask = Bukkit.getScheduler().runTaskTimer(plugin, () -> {
@@ -176,6 +184,8 @@ public class AfkManager implements Listener, Shutdownable {
                 long lastActivityTime = lastActivity.getOrDefault(idPlayer, now);
                 if(!playersAFK.contains(idPlayer) && now - lastActivityTime > delayAfk) {
                     startAfk(player);
+                } else {
+                    refreshDisplayName(player);
                 }
             }
         }, 0L, checkIntereval);
