@@ -27,10 +27,7 @@ import com.lwidev.survisland.confess.LinkCodeManager;
 import com.lwidev.survisland.discord.EmbeddedDiscordBot;
 import com.lwidev.survisland.chatspec.ChatSpecManager;
 import com.lwidev.survisland.menu.MenuContext;
-import com.lwidev.survisland.services.AfkManager;
-import com.lwidev.survisland.services.DamageManager;
-import com.lwidev.survisland.services.FollowManager;
-import com.lwidev.survisland.services.PauseManager;
+import com.lwidev.survisland.services.*;
 import com.lwidev.survisland.skins.SkinManager;
 import com.lwidev.survisland.config.DiscordConfig;
 import com.lwidev.survisland.teams.TeamManager;
@@ -52,6 +49,7 @@ public final class Survisland extends JavaPlugin {
     private TimerService timerService;
     private FollowManager followManager;
     private AfkManager afkManager;
+    private TabListManager tabListManager;
     private PauseManager pauseManager;
     private DamageManager damageManager;
     private JoinLeaveListener joinLeaveListener;
@@ -75,6 +73,7 @@ public final class Survisland extends JavaPlugin {
             this.followManager = track(new FollowManager(this));
             this.pauseManager = track(new PauseManager(this));
             this.afkManager = track(new AfkManager(this));
+            this.tabListManager = track(new TabListManager(this, afkManager));
             new PauseListener(this, pauseManager);
             this.damageManager = track(new DamageManager());
             this.joinLeaveListener = new JoinLeaveListener(this);
@@ -134,7 +133,7 @@ public final class Survisland extends JavaPlugin {
                 new SkinCommand(skinManager),
                 new FollowCommand(this, followManager),
                 new AfkCommand(this, afkManager),
-                new MenuCommand(new MenuContext(this, new TeamManager(), new AnnouncementService(this), timerService, new VoteService(this), pauseManager, afkManager)),
+                new MenuCommand(new MenuContext(this, new TeamManager(), new AnnouncementService(this), timerService, new VoteService(this), pauseManager, afkManager, tabListManager)),
                 new PvpCommand(),
                 new DegatsCommand(damageManager),
                 new SayCommand(this),
@@ -156,10 +155,6 @@ public final class Survisland extends JavaPlugin {
             getLogger().log(Level.SEVERE, "Error during Discord bot initialization", throwable);
             return null;
         });
-    }
-
-    public EmbeddedDiscordBot getDiscordBot() {
-        return discordBot;
     }
 
     public DiscordConfig getDiscordConfig() {
