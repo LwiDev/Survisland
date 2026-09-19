@@ -13,7 +13,6 @@ import com.lwidev.survisland.menu.MenuContext;
 import com.lwidev.survisland.menu.team.TeamListMenu;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -93,7 +92,7 @@ public class PlayerDetailMenu extends SurvislandMenu {
                     ctx.teamManager().addMember(team, target);
                     Player onlineTarget = target.getPlayer();
                     if (onlineTarget != null) {
-                        ctx.afkManager().refreshDisplayName(onlineTarget);
+                        ctx.tabListManager().refresh(onlineTarget);
                     }
                     MessageUtils.sendSuccessMessage(viewer, MessageUtils.highlight(target.getName(), BrandUtils.PRIMARY), " rejoint ", MessageUtils.highlight(team.getName(), BrandUtils.SECONDARY), ".");
                     new PlayerDetailMenu(viewer, ctx, target).open();
