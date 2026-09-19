@@ -93,6 +93,7 @@ public class PlayerDetailMenu extends SurvislandMenu {
                     Player onlineTarget = target.getPlayer();
                     if (onlineTarget != null) {
                         ctx.tabListManager().refresh(onlineTarget);
+                    }
                     MessageUtils.sendSuccessMessage(viewer, MessageUtils.highlight(target.getName(), BrandUtils.PRIMARY), " rejoint ", MessageUtils.highlight(team.getName(), BrandUtils.SECONDARY), ".");
                     new PlayerDetailMenu(viewer, ctx, target).open();
                 })));
