@@ -3,7 +3,6 @@ package com.lwidev.survisland;
 import com.lwidev.survisland.api.command.SurvislandCommandManager;
 import com.lwidev.survisland.api.menu.SurvislandMenuManager;
 import com.lwidev.survisland.api.utils.Shutdownable;
-import com.lwidev.survisland.commands.AfkCommand;
 import com.lwidev.survisland.commands.LiveCommand;
 import com.lwidev.survisland.commands.SetLiveCommand;
 import com.lwidev.survisland.commands.ConfessCommand;
@@ -48,7 +47,6 @@ public final class Survisland extends JavaPlugin {
     private DiscordConfig discordConfig;
     private TimerService timerService;
     private FollowManager followManager;
-    private AfkManager afkManager;
     private TabListManager tabListManager;
     private PauseManager pauseManager;
     private DamageManager damageManager;
@@ -72,8 +70,7 @@ public final class Survisland extends JavaPlugin {
             this.timerService = track(new TimerService(this));
             this.followManager = track(new FollowManager(this));
             this.pauseManager = track(new PauseManager(this));
-            this.afkManager = track(new AfkManager(this));
-            this.tabListManager = track(new TabListManager(this, afkManager));
+            this.tabListManager = track(new TabListManager(this));
             new PauseListener(this, pauseManager);
             this.damageManager = track(new DamageManager());
             this.joinLeaveListener = new JoinLeaveListener(this);
@@ -132,8 +129,7 @@ public final class Survisland extends JavaPlugin {
                 new PauseCommand(pauseManager),
                 new SkinCommand(skinManager),
                 new FollowCommand(this, followManager),
-                new AfkCommand(this, afkManager),
-                new MenuCommand(new MenuContext(this, new TeamManager(), new AnnouncementService(this), timerService, new VoteService(this), pauseManager, afkManager, tabListManager)),
+                new MenuCommand(new MenuContext(this, new TeamManager(), new AnnouncementService(this), timerService, new VoteService(this), pauseManager, tabListManager)),
                 new PvpCommand(),
                 new DegatsCommand(damageManager),
                 new SayCommand(this),

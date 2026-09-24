@@ -13,12 +13,10 @@ import org.bukkit.scoreboard.Team;
 public class TabListManager implements Shutdownable {
 
     private final Survisland plugin;
-    private final AfkManager afkManager;
     private BukkitTask refreshTask;
 
-    public TabListManager(Survisland plugin, AfkManager afkManager) {
+    public TabListManager(Survisland plugin) {
         this.plugin = plugin;
-        this.afkManager = afkManager;
         launchRefreshLoop();
     }
 
@@ -36,7 +34,7 @@ public class TabListManager implements Shutdownable {
      * @param player joueur concerné
      */
     public void refresh(Player player) {
-        player.playerListName(afkManager.isAfk(player) ? Component.text("💤  ").append(buildTeamAwareName(player, NamedTextColor.GRAY)) : buildTeamAwareName(player, NamedTextColor.WHITE));
+        player.playerListName(buildTeamAwareName(player, NamedTextColor.WHITE));
     }
 
     private Component buildTeamAwareName(Player player, NamedTextColor fallbackColor) {

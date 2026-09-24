@@ -10,5 +10,5 @@ import com.lwidev.survisland.services.TabListManager;
 import com.lwidev.survisland.teams.TeamManager;
 
 /** Bundles the services every /menu page may need, so page constructors take one argument instead of five. */
-public record MenuContext(Survisland plugin, TeamManager teamManager, AnnouncementService announcementService, TimerService timerService, VoteService voteService, PauseManager pauseManager, AfkManager afkManager, TabListManager tabListManager) {
+public record MenuContext(Survisland plugin, TeamManager teamManager, AnnouncementService announcementService, TimerService timerService, VoteService voteService, PauseManager pauseManager, TabListManager tabListManager) {
 }
