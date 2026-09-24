@@ -39,7 +39,7 @@ Les commandes sont enregistrées via Brigadier (pas de bloc `commands:`/`permiss
 | `/pause` | — | — | Active/désactive la pause du jeu (gel des joueurs) | `survisland.pause` | op |
 | `/skin` | — | `force <joueurs> <skin>`<br>`restore <joueurs>`<br>`list` | Force un skin (pseudo ou texture) pour un ou plusieurs joueurs, en ligne ou non (accepte les target-selectors `@p`/`@a`/etc.)<br>Restaure le skin original d'un ou plusieurs joueurs<br>Liste les skins forcés actifs | `survisland.skin.force`<br>`survisland.skin.restore`<br>`survisland.skin.list` | op |
 | `/follow` | — | `<joueur>`<br>`stop` | Suit un joueur en mode spectateur (téléportation automatique s'il s'éloigne)<br>Arrête le suivi en cours | `survisland.follow`<br>`survisland.follow.stop` | joueur |
-| `/afk` | — | — <br>`<joueur>` | Se met afk soi-même<br>Bascule l'état afk d'un autre joueur | `survisland.afk`<br>`survisland.afk.joueur` | joueur<br>op |
+| `/afk` **[DÉSACTIVÉ]** | — | — <br>`<joueur>` | Se met afk soi-même<br>Bascule l'état afk d'un autre joueur | `survisland.afk`<br>`survisland.afk.joueur` | joueur<br>op |
 | `/menu` | — | — | Ouvre le centre de contrôle GUI (équipes, joueurs, partie) | `survisland.menu` | op |
 | `/pvp` | — | — <br>`on`/`off` | Affiche l'état actuel du PvP<br>Active/désactive le PvP sur tous les mondes | `survisland.pvp` | op |
 | `/degats` | — | — <br>`on`/`off` | Affiche l'état actuel des dégâts<br>Active/désactive les dégâts (invulnérabilité des joueurs) | `survisland.degats` | op |
